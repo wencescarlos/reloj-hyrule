@@ -49,8 +49,8 @@
 |----------|----------|
 | Wemos D1 mini (ESP8266) | 1 |
 | Matriz LED MAX7219 4 en 1 (32 × 8, módulos de 32 × 32 mm) | 1 |
-| Tornillo M3 × 8 mm de cabeza avellanada (DIN 7991, allen) | 4 |
-| Inserto roscado térmico M3 (largo 5,7 mm, Ø exterior 4,6 mm) | 4 |
+| Tornillo M3 × 8 allen de cabeza cilíndrica (DIN 912), todos iguales | 8 |
+| Inserto roscado térmico M3 (largo 5,7 mm, Ø exterior 4,6 mm) | 8 |
 | Cables dupont o cable fino | 5 |
 | Cargador USB de 5 V y cable micro-USB | 1 |
 | Filamento PLA: gris piedra, blanco, verde y dorado | — |
@@ -71,7 +71,7 @@
 
 ## 🖨️ Impresión 3D: versión 2 "bloques de piedra antigua"
 
-Carcasa **diseñada desde cero** como dos bloques de piedra de Hyrule: una losa con la pantalla y la cresta del logo, sobre un pedestal con una Trifuerza dorada incrustada, esquinas desgastadas, grietas talladas y dos patas que inclinan el reloj 8° hacia atrás. El Wemos va **dentro del pedestal**, con el **USB en el centro de la tapa trasera, justo debajo de la Trifuerza**. La tapa se cierra con **4 tornillos**.
+Carcasa **diseñada desde cero** como dos bloques de piedra de Hyrule: una losa con la pantalla y la cresta del logo, sobre un pedestal con una Trifuerza dorada incrustada, esquinas desgastadas, grietas talladas y dos patas que inclinan el reloj 8° hacia atrás. El Wemos va **dentro del pedestal**, con el **USB en el centro de la tapa trasera, justo debajo de la Trifuerza**. La matriz queda sujeta con **dos barras con lengüetas elásticas** y la tapa se cierra con **tornillos allen** encajados a ras. Todos los tornillos son iguales: **M3 × 8 DIN 912** ([esquema de tornillería](imagenes/esquema_tornilleria.svg)).
 
 <p align="center">
   <img src="imagenes/reloj_v2_trasera.png" alt="Tapa trasera con Trifuerza y USB" width="380">
@@ -87,6 +87,7 @@ Todas las piezas están en [`modelos_3d/`](modelos_3d/):
 | Ventana difusora | `ventana_difusora.stl` | **Blanco** (deja pasar la luz) |
 | Trifuerza dorada de la tapa | `trifuerza_dorada_trasera.stl` | Dorado silk |
 | Trifuerza dorada del pedestal | `trifuerza_dorada_frontal.stl` | Dorado silk |
+| Barras de sujeción de la matriz | `barras_sujecion_matriz.stl` | Cualquiera |
 | Fondo del logo | `fondo_logo.stl` | Verde |
 | Letras del logo | `logo_letras_geektoybox.stl` | Dorado silk |
 

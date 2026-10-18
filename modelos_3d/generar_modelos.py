@@ -18,13 +18,14 @@
 #
 #  Genera, en la carpeta "piezas/":
 #     cuerpo_piedra.stl              carcasa (losa + pedestal + patas + cresta)
-#     tapa_trasera.stl               tapa con Trifuerza, puerto USB y 4 tornillos
+#     tapa_trasera.stl               tapa con Trifuerza, puerto USB y 4 tornillos allen
+#     barras_sujecion_matriz.stl     2 barras que aprietan la matriz contra la ventana
 #     ventana_difusora.stl           placa blanca delante de los LED
 #     trifuerza_dorada_trasera.stl   Trifuerza dorada de la tapa (30 mm)
 #     trifuerza_dorada_frontal.stl   Trifuerza dorada del pedestal (15 mm)
 #     fondo_logo.stl                 fondo verde con el rebaje de las letras
 #
-#  Tornillería: 4 x M3 x 8 avellanados + 4 insertos térmicos M3 (Ø4,0 mm).
+#  Tornillería: 8 x M3 x 8 DIN 912 (allen) + 8 insertos térmicos M3 (agujero Ø4,0).
 # ===========================================================================
 import argparse, os, sys
 import numpy as np
@@ -35,11 +36,11 @@ from shapely.ops import unary_union
 
 # ------------------------------------------------------------------ medidas
 # Marco del cuerpo: x horizontal, y hacia arriba, z hacia atrás (z=0 frente)
-D        = 44.0      # fondo de la carcasa
+D        = 46.0      # fondo de la carcasa
 PARED    = 3.0       # grosor de paredes
 FRENTE   = 3.0       # grosor de la pared frontal
 REBAJE   = 1.5       # escalón donde apoya la tapa trasera
-TAPA     = 3.0       # grosor de la tapa trasera
+TAPA     = 5.0       # grosor de la tapa trasera (cabezas allen cajeadas)
 
 LOSA_X, LOSA_Y0, LOSA_Y1 = 78.0, 28.0, 86.0      # bloque superior (±x)
 PED_X,  PED_Y0,  PED_Y1  = 84.0, 0.0, 28.0       # pedestal (±x)
@@ -59,9 +60,22 @@ D1_PCB_GROSOR = 1.2
 USB_SOBRESALE = 1.0
 Z_TAPA_INT = D - TAPA         # cara interior de la tapa (41)
 
-# Tornillos: 4 x M3 x 8 avellanados + insertos térmicos M3 (agujero 4,0)
+# Tapa: 4 x M3 x 8 DIN 912 (allen, cabeza cilíndrica) + insertos térmicos M3 (agujero 4,0)
 TORNILLOS = [(-69.0, 77.0), (69.0, 77.0), (-75.0, 9.0), (75.0, 9.0)]
 INSERTO_D, INSERTO_PROF = 4.0, 8.0
+CABEZA_D, CABEZA_H = 6.5, 3.3            # cajeado para la cabeza DIN 912 (Ø5,5 x 3)
+# Barras de sujeción de la matriz: se atornillan FIRMES sobre torretas altas y
+# llevan lengüetas elásticas que empujan la matriz contra la ventana.
+# Valen para matrices de 9 a 14,5 mm (cara de los LED -> trasera de la placa).
+# Todos los tornillos del reloj son iguales: M3 x 8 DIN 912.
+BARRAS_Y = (46.0, 68.0)                   # alturas de las dos barras
+BARRA_X = 71.0                            # tornillos de las barras (±x)
+MARCO_Z = 10.0                            # altura del marco que centra la matriz
+H_MIN, H_MAX = 9.0, 14.5                  # grosores de matriz admitidos
+ASIENTO_Z = FRENTE + H_MAX + 2.0          # las barras se apoyan aquí (19,5): nunca tocan la placa
+BARRA_GROSOR = 3.0
+LENGUETA_GROSOR = 1.4                     # lengüeta elástica
+PUNTA_Z = FRENTE + H_MIN - 0.5            # hasta dónde llega la punta en reposo (11,5)
 
 def ext(poly, h, z0=0.0):
     geoms = [g for g in getattr(poly, "geoms", [poly]) if g.area > 1e-6]
@@ -148,10 +162,10 @@ def pata(lado):
          [(x1 + .1, PATA_Y0 - .1), (x1 - 3, PATA_Y0 - .1), (x1 + .1, PATA_Y0 + 3)]]
     return piedra(x0, PATA_Y0, x1, 1.0, m)
 CONTORNO = unary_union([LOSA, PED])              # silueta del cuerpo (sin patas)
-INTERIOR = unary_union([box(-LOSA_X + PARED, LOSA_Y0 - 1, LOSA_X - PARED, LOSA_Y1 - PARED),
-                        box(-PED_X + PARED, PED_Y0 + PARED, PED_X - PARED, PED_Y1 + 1)])
-TAPA_2D = unary_union([box(-LOSA_X + REBAJE, LOSA_Y0, LOSA_X - REBAJE, LOSA_Y1 - REBAJE),
-                       box(-PED_X + REBAJE, PED_Y0 + REBAJE, PED_X - REBAJE, PED_Y1 + 0.01)])
+LIMPIO = unary_union([box(-LOSA_X, LOSA_Y0, LOSA_X, LOSA_Y1), box(-PED_X, PED_Y0, PED_X, PED_Y1)])
+# El hueco interior y el rebaje de la tapa respetan las mellas: pared mínima de 2 mm
+INTERIOR = LIMPIO.buffer(-PARED, join_style=2).intersection(CONTORNO.buffer(-2.0, join_style=2))
+TAPA_2D = LIMPIO.buffer(-REBAJE, join_style=2).intersection(CONTORNO.buffer(-1.2, join_style=2))
 TAPA_2D = TAPA_2D.buffer(-0.2, join_style=2)      # holgura
 
 # ------------------------------------------------------------ logo / cresta
@@ -207,10 +221,10 @@ def cuerpo(L0):
               ext(rrect(vx, vy, DIFUSOR[0] + 0.4, DIFUSOR[1] + 0.4, 1.0), DIFUSOR[2] + 0.01, FRENTE - DIFUSOR[2])])
     mw, mh = MATRIZ
     marco = rrect(vx, vy, DIFUSOR[0] + 4.0, DIFUSOR[1] + 4.0, 1).difference(rrect(vx, vy, mw, mh, 0.5))
-    marco = marco.difference(box(vx - mw/2 - 3, vy - 7, vx - mw/2 + 1, vy + 7))   # paso de cables
-    marco = marco.difference(box(vx + mw/2 - 1, vy - 7, vx + mw/2 + 3, vy + 7))
+    marco = marco.difference(box(vx - mw/2 - 8, vy - 7, vx - mw/2 + 1, vy + 7))   # paso de pines y cables
+    marco = marco.difference(box(vx + mw/2 - 1, vy - 7, vx + mw/2 + 8, vy + 7))
     rebaje = rrect(vx, vy, DIFUSOR[0] + 0.4, DIFUSOR[1] + 0.4, 1.0)
-    piezas = [c, ext(marco, 9.0, FRENTE), ext(marco.difference(rebaje.buffer(0.01)), 0.8, FRENTE - 0.5)]   # el marco se apoya en la pared
+    piezas = [c, ext(marco, MARCO_Z - FRENTE, FRENTE), ext(marco.difference(rebaje.buffer(0.01)), 0.8, FRENTE - 0.5)]   # el marco se apoya en la pared
     # Cresta del logo
     if L0 is not None:
         cresta, _, guias = cresta_y_fondo(L0)
@@ -227,6 +241,12 @@ def cuerpo(L0):
         torre = unary_union([Point(x, y).buffer(4.8, resolution=24),
                              box(min(x, lado_x), min(y, lado_y), max(x, lado_x), max(y, lado_y))]).intersection(CONTORNO)
         piezas.append(ext(torre, Z_TAPA_INT - FRENTE, FRENTE))     # desde el frente: se imprime sin soportes
+    # Torretas para las barras que sujetan la matriz
+    for yb_ in BARRAS_Y:
+        for sx in (1, -1):
+            t2 = unary_union([Point(sx * BARRA_X, yb_).buffer(4.2, resolution=24),
+                              box(min(sx * BARRA_X, sx * (LOSA_X - 1)), yb_ - 4.2, max(sx * BARRA_X, sx * (LOSA_X - 1)), yb_ + 4.2)])
+            piezas.append(ext(t2.intersection(CONTORNO), ASIENTO_Z - FRENTE + 0.5, FRENTE - 0.5))
     # Cuna del Wemos D1 mini (guías, apoyos y tope delantero)
     a2 = D1_ANCHO / 2
     z_fin = Z_TAPA_INT - USB_SOBRESALE                       # borde trasero de la placa
@@ -237,11 +257,16 @@ def cuerpo(L0):
         apoyo = box(min(s*(a2-0.8), s*(a2+0.3)), yb, max(s*(a2-0.8), s*(a2+0.3)), D1_PCB_Y)       # apoyo bajo el borde
         guia  = box(min(s*(a2+0.3), s*(a2+1.9)), yb, max(s*(a2+0.3), s*(a2+1.9)), D1_PCB_Y + 4.0) # pared lateral
         piezas += [ext(apoyo, largo, z_ini), ext(guia, largo, z_ini)]
-    piezas.append(ext(box(-a2 + 1, yb, a2 - 1, D1_PCB_Y + D1_PCB_GROSOR + 1.0), z_ini - 0.6 - FRENTE + 0.01, FRENTE))
+    for s_ in (1, -1):   # tope delantero: dos postes en las esquinas de la placa
+        piezas.append(ext(box(min(s_*10.6, s_*(a2+0.3)), yb, max(s_*10.6, s_*(a2+0.3)), D1_PCB_Y + D1_PCB_GROSOR + 1.0),
+                          z_ini - 0.6 - FRENTE + 0.01, FRENTE))
     c = U(piezas)
     if L0 is not None:
         for (u, v) in guias:   # agujeros para las guías de filamento del fondo del logo
             c = R(c, ext(Point(-u, LOSA_Y1 + 6.0 + v).buffer(0.95, resolution=24), 2.6 + 1, -1))
+    for yb_ in BARRAS_Y:       # insertos de las barras de la matriz
+        for sx in (1, -1):
+            c = R(c, ext(Point(sx * BARRA_X, yb_).buffer(INSERTO_D / 2, resolution=32), INSERTO_PROF + 1, ASIENTO_Z - INSERTO_PROF))
     for (x, y) in TORNILLOS:   # agujeros para los insertos térmicos M3
         c = R(c, ext(Point(x, y).buffer(INSERTO_D / 2, resolution=32), INSERTO_PROF + 1, Z_TAPA_INT - INSERTO_PROF))
     # Trifuerza dorada del frente (en el pedestal)
@@ -263,17 +288,21 @@ def cuerpo(L0):
     return c
 
 def tapa():
-    p = con_chaflan(TAPA_2D, TAPA, 0.0, chaflan=0.6, pasos=2)        # z=0: cara exterior
+    # La tapa se imprime boca abajo y luego se le da la vuelta (giro sobre el eje vertical):
+    # por eso su silueta y su texto se dibujan en espejo respecto al cuerpo.
+    espejo = lambda g: affinity.scale(g, xfact=-1, yfact=1, origin=(0, 0))
+    p = con_chaflan(espejo(TAPA_2D), TAPA, 0.0, chaflan=0.6, pasos=2)        # z=0: cara exterior
     agujeros = []
     for (x, y) in TORNILLOS:
-        # agujero avellanado (90°) para tornillo M3 de cabeza plana, en una sola pieza
-        perfil = [(0, -1), (3.55, -1), (3.55, 0), (1.7, 1.85), (1.7, TAPA + 1), (0, TAPA + 1)]
+        # agujero con cajeado para tornillo allen M3 DIN 912 (la cabeza queda a ras)
+        perfil = [(0, -1), (CABEZA_D / 2 + 0.4, -1), (CABEZA_D / 2 + 0.4, 0), (CABEZA_D / 2, 0.4),
+                  (CABEZA_D / 2, CABEZA_H), (1.7, CABEZA_H), (1.7, TAPA + 1), (0, TAPA + 1)]
         av = trimesh.creation.revolve(perfil, sections=48)
         av.apply_translation([x, y, 0]); agujeros.append(av)
     # Puerto USB (rebaje exterior + hueco) justo debajo de la Trifuerza
     yusb = D1_PCB_Y + D1_PCB_GROSOR / 2 + 1.5
     agujeros.append(ext(rrect(0, yusb, 12.0, 10.0, 2.0), TAPA + 2, -1))
-    agujeros.append(ext(rrect(0, yusb, 14.5, 12.5, 2.5), 1.2 + 1, -1))
+    agujeros.append(ext(rrect(0, yusb, 14.5, 12.5, 2.5), 3.5 + 1, -1))   # el conector entra 3,5 mm
     # Trifuerza grande
     hueco, _ = triforce(0, 40.0, 30.0, 1.6)
     agujeros.append(ext(hueco, TAPA + 2, -1))
@@ -292,6 +321,37 @@ def trifuerza_dorada(alto, hueco, holgura=0.15, grosor=TAPA, pestana=0.6, margen
     pieza = U([ext(grande.buffer(margen, join_style=1), pestana),
                ext(h.buffer(-holgura, join_style=2), grosor, pestana)])
     return pieza
+
+def barras():
+    """Dos barras con 4 lengüetas elásticas cada una.
+    Se imprimen con la cara trasera sobre la cama (z=0); las columnas apuntan a la matriz."""
+    T, t = BARRA_GROSOR, LENGUETA_GROSOR
+    alto_col = (ASIENTO_Z + T - PUNTA_Z) - t          # columna desde la lengüeta hasta la punta
+    piezas = []
+    for k in range(2):
+        cuerpo2d = rrect(0, 0, 2 * (LOSA_X - PARED - 1.2), 7.0, 2.0)
+        hueco2d, lengs, cols = [], [], []
+        for cx in (-48, -16, 16, 48):
+            s_ = 1 if cx > 0 else -1                      # raíz hacia fuera, punta hacia el centro
+            x0, x1 = sorted([cx - s_ * 13.0, cx + s_ * 13.0])
+            cuerpo2d = cuerpo2d.union(rrect(cx, 4.0, 30.0, 11.0, 1.5))      # ensanche hacia el centro de la matriz
+            lengua = box(x0, 2.0, x1, 7.0)
+            ranura = box(x0 - (0 if s_ > 0 else 1.0), 1.0, x1 + (1.0 if s_ > 0 else 0), 8.0).difference(
+                     box(x0 - 2 if s_ > 0 else x0, 2.0, x1 if s_ > 0 else x1 + 2, 7.0))
+            hueco2d.append(ranura)
+            lengs.append(lengua)
+            px = x1 - 2.5 if s_ > 0 else x0 + 2.5
+            cols.append(box(px - 2.5, 2.0, px + 2.5, 7.0))
+        b = ext(cuerpo2d, T)
+        b = R(b, [ext(unary_union(hueco2d), T + 2, -1), ext(unary_union(lengs), T, t)])   # ranuras y lengüeta fina
+        b = U([b, ext(unary_union(cols), alto_col, t)])
+        for sx in (1, -1):
+            b = R(b, ext(Point(sx * BARRA_X, 0).buffer(1.7, resolution=24), T + 2, -1))
+        if k == 1:   # la barra de arriba: girada 180° (las lengüetas miran hacia abajo, al centro)
+            b.apply_transform(np.array([[-1, 0, 0, 0], [0, -1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1.]]))
+        b.apply_translation([0, k * 26.0, 0])
+        piezas.append(b)
+    return trimesh.util.concatenate(piezas)
 
 def difusor():
     return ext(rrect(0, 0, *DIFUSOR[:2], 1.0), DIFUSOR[2])
@@ -318,6 +378,7 @@ def main():
     out(trifuerza_dorada(30.0, 1.6), "trifuerza_dorada_trasera.stl")
     out(trifuerza_dorada(15.0, 0.9, grosor=FRENTE), "trifuerza_dorada_frontal.stl")
     out(difusor(), "ventana_difusora.stl")
+    out(barras(), "barras_sujecion_matriz.stl")
     out(fondo_logo(L0), "fondo_logo.stl")
 
 if __name__ == "__main__":
