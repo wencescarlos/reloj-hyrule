@@ -35,14 +35,13 @@ time_t sim_epoch=0;
 extern "C" time_t time(time_t* t){time_t v=sim_epoch+sim_ms/1000; if(t)*t=v; return v;}
 int main(int argc,char**argv){
   srand(atoi(argv[2]));
-  Config::valoresPorDefecto(); strcpy(ajustes.nombre,"Alejandro"); ajustes.cumpleDia=25; ajustes.cumpleMes=10;
-  if(argc>4 && std::string(argv[4])=="en") ajustes.idioma=IDIOMA_EN;   // idioma opcional: es / en
+  Config::valoresPorDefecto(); strcpy(ajustes.nombre,"Lucas"); ajustes.cumpleDia=25; ajustes.cumpleMes=10;
   configTime(ajustes.zona,"","","");
   sim_epoch=1792342980; // 2026-10-18 18:23 UTC aprox
   Pantalla::iniciar(); cuadros.clear();
   std::string que=argv[1];
   struct tm t; Tiempo::ahora(t);
-  if(que=="reloj"||que=="relojcorto"){ int n=que=="reloj"?80:15; for(int i=0;i<n;i++){Tiempo::ahora(t);Pantalla::limpiar();Esfera::hora(t,(sim_ms%1000));Pantalla::mostrar();esperar(100);} }
+  if(que=="reloj"){ for(int i=0;i<80;i++){Tiempo::ahora(t);Pantalla::limpiar();Esfera::hora(t,(sim_ms%1000));Pantalla::mostrar();esperar(100);} }
   else if(que=="reloj12"){ ajustes.formato24=0; ajustes.modoSegundos=SEG_BARRA; for(int i=0;i<30;i++){Tiempo::ahora(t);Pantalla::limpiar();Esfera::hora(t,(sim_ms%1000));Pantalla::mostrar();esperar(100);} }
   else if(que=="fecha"){ Pantalla::limpiar(); Esfera::fechaCorta(t); Pantalla::mostrar(); esperar(1500);}
   else if(que=="arranque") Anim::arranque();

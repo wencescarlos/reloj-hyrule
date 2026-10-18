@@ -23,21 +23,18 @@ Para evitar cualquier confusión o acusación de plagio, aquí se detalla qué e
 | Fuente de letras y dibujos en píxeles (`arte.py`, `fuente.h`, `sprites.h`) | **Original**, dibujado a mano píxel a píxel. No usa sprites, imágenes ni recursos de los juegos | CC BY-NC-SA 4.0 |
 | Frases y textos del reloj | **Originales**, salvo algunas referencias breves a frases populares de la saga, a modo de homenaje | CC BY-NC-SA 4.0 |
 | Página de configuración | **Original** | CC BY-NC-SA 4.0 |
-| Script `generar_modelos.py` y `trifuerza_dorada.stl` | **Originales** | CC BY-NC-SA 4.0 |
-| Modelos 3D de la caja y del logo | **De otros autores** (ver abajo), usados con su licencia | CC BY-NC 4.0 |
+| Carcasa v2 (`cuerpo_piedra.stl`, `tapa_trasera.stl`, `ventana_difusora.stl`, Trifuerzas doradas) y `generar_modelos.py` | **Originales**, diseñados desde cero | CC BY-NC-SA 4.0 |
+| Letras del logo | **De geektoybox** (ver abajo), usadas con su licencia | CC BY-NC 4.0 |
 | Música y sonidos | El reloj **no reproduce ninguna música ni sonido** de los juegos | — |
 
 ## Créditos a otros autores
 
-Los modelos 3D de otros autores se usan **respetando su licencia Creative Commons 4.0 Reconocimiento-NoComercial (CC BY-NC 4.0)**, que permite compartirlos y remezclarlos **citando al autor** y **sin fines comerciales**, exactamente como hace este proyecto.
+| Obra | Autor original | Licencia | Cómo se usa |
+|------|----------------|----------|-------------|
+| *Legend of Zelda Logo Text* | **geektoybox**: [Printables](https://www.printables.com/model/499505-legend-of-zelda-logo-text) | CC BY-NC 4.0 | Se incluye **sin cambios** (`logo_letras_geektoybox.stl`). Su contorno se usa para el fondo (`fondo_logo.stl`) y la cresta de la carcasa. |
+| Idea del reloj con Wemos D1 mini + MAX7219 | **Qrome (David Payne)**: [Marquee Scroller](https://github.com/Qrome/marquee-scroller) | MIT (código) | Solo como inspiración del hardware. **No se usa su código ni su caja**: el firmware y la carcasa v2 son nuevos. |
 
-| Obra | Autor original | Licencia | Qué se ha hecho |
-|------|----------------|----------|-----------------|
-| *ESP8266 Wemos Clock News Weather Scrolling Marquee* (base y tapa trasera) | **Qrome (David Payne)**: [Printables](https://www.printables.com/model/25374-esp8266-wemos-clock-news-weather-scrolling-marquee) | CC BY-NC 4.0 | **Remezcla:** cresta para el logo en la base (`base_reloj_zelda.stl`) y Trifuerza recortada en la tapa (`tapa_trifuerza.stl`). |
-| *Legend of Zelda Logo Text* | **geektoybox**: [Printables](https://www.printables.com/model/499505-legend-of-zelda-logo-text) | CC BY-NC 4.0 | Se incluye **sin cambios** (`logo_letras_geektoybox.stl`). Su contorno se usa para el fondo (`fondo_logo.stl`) y la cresta. |
-| Idea del hardware (Wemos D1 mini + MAX7219) | Hardware genérico de uso común | — | Solo se usa el mismo hardware; el firmware es nuevo. |
-
-Las remezclas se comparten con la licencia **CC BY-NC-SA 4.0**, que mantiene el reconocimiento a los autores y la prohibición de uso comercial. La **Trifuerza dorada** (`trifuerza_dorada.stl`) y el script `generar_modelos.py` son diseños **originales** de este proyecto.
+Se respeta la licencia CC BY-NC 4.0 del logo: se cita al autor y no hay ningún uso comercial. Las piezas derivadas del logo se comparten con la licencia **CC BY-NC-SA 4.0**, que mantiene ambas condiciones.
 
 Si eres autor de alguna de estas obras y prefieres que se retire o se cambie el crédito, abre un *issue* y se hará enseguida.
 

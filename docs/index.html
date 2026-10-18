@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="es"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Reloj de Hyrule · Hyrule Clock</title>
-<meta name="description" content="Reloj con aventuras para pequeños héroes. Proyecto de fans sin ánimo de lucro. · A clock with adventures for little heroes. Non-profit fan project.">
+<title>Reloj de Hyrule</title>
+<meta name="description" content="Reloj con aventuras para pequeños héroes. Proyecto de fans sin ánimo de lucro.">
 <style>
 :root{--fondo:#0f2418;--tarjeta:#173323;--borde:#c9a227;--oro:#e8c04a;--texto:#f3ecd2;--suave:#b8c4a8}
 *{box-sizing:border-box}
@@ -22,79 +22,43 @@ img{max-width:100%;border-radius:10px;display:block;margin:10px auto}
 .boton.sec{background:#0d1d13;color:var(--oro);border:1px solid var(--borde)}
 code{background:#0d1d13;padding:2px 6px;border-radius:5px}
 footer{text-align:center;color:var(--suave);font-size:.85em;margin:28px 0 40px}
-.idiomas{display:inline-flex;margin-top:14px;border:1px solid var(--borde);border-radius:30px;overflow:hidden}
-.idiomas button{border:0;background:#0d1d13;color:var(--suave);padding:7px 16px;font:inherit;font-size:.9em;cursor:pointer}
-.idiomas button[aria-pressed=true]{background:linear-gradient(#e8c04a,#b38a1b);color:#1d1606;font-weight:700}
-/* Cada texto existe en los dos idiomas: solo se ve el del idioma elegido */
-html[lang=es] [lang=en],html[lang=en] [lang=es]{display:none}
 </style></head><body><main>
 
 <header>
  <svg viewBox="0 0 64 56" aria-hidden="true"><g fill="#e8c04a">
   <polygon points="32,0 48,28 16,28"/><polygon points="16,28 32,56 0,56"/><polygon points="48,28 64,56 32,56"/></g></svg>
- <h1><span lang="es">RELOJ DE HYRULE</span><span lang="en">HYRULE CLOCK</span></h1>
- <div><span lang="es">Un reloj con aventuras para pequeños héroes</span><span lang="en">A clock with adventures for little heroes</span></div>
- <div class="idiomas" role="group" aria-label="Idioma / Language">
-  <button type="button" data-idioma="es" aria-pressed="true">Español</button><button type="button" data-idioma="en" aria-pressed="false">English</button>
- </div>
+ <h1>RELOJ DE HYRULE</h1>
+ <div>Un reloj con aventuras para pequeños héroes</div>
 </header>
 
 <section class="aviso">
- <div lang="es">
-  <h2>⚠️ Proyecto de fans sin ánimo de lucro</h2>
-  <p>Hecho en casa como regalo para un niño y compartido <b>gratis</b> como homenaje a <i>The Legend of Zelda</i>.
-  <b>No es oficial</b> ni tiene relación con Nintendo. <i>The Legend of Zelda</i> es una marca registrada de Nintendo.
-  <b>Prohibida su venta</b> (licencia CC BY-NC-SA 4.0). Código, letras y dibujos en píxeles originales.
-  <a href="https://github.com/wencescarlos/reloj-hyrule/blob/main/AVISO_LEGAL.md">Aviso legal y créditos</a>.</p>
- </div>
- <div lang="en">
-  <h2>⚠️ Non-profit fan project</h2>
-  <p>Made at home as a gift for a child and shared <b>for free</b> as a tribute to <i>The Legend of Zelda</i>.
-  It is <b>unofficial</b> and not affiliated with Nintendo. <i>The Legend of Zelda</i> is a registered trademark of Nintendo.
-  <b>Not for sale</b> (CC BY-NC-SA 4.0 license). Original code, font and pixel art.
-  <a href="https://github.com/wencescarlos/reloj-hyrule/blob/main/AVISO_LEGAL.md">Legal notice and credits (Spanish)</a>.</p>
- </div>
+ <h2>⚠️ Proyecto de fans sin ánimo de lucro</h2>
+ <p>Hecho en casa como regalo para un niño y compartido <b>gratis</b> como homenaje a <i>The Legend of Zelda</i>.
+ <b>No es oficial</b> ni tiene relación con Nintendo. <i>The Legend of Zelda</i> es una marca registrada de Nintendo.
+ <b>Prohibida su venta</b> (licencia CC BY-NC-SA 4.0). Código, letras y dibujos en píxeles originales.
+ <a href="https://github.com/wencescarlos/reloj-hyrule/blob/main/AVISO_LEGAL.md">Aviso legal y créditos</a>.</p>
 </section>
 
 <section>
- <img lang="es" src="https://raw.githubusercontent.com/wencescarlos/reloj-hyrule/main/imagenes/DEMO.gif" alt="Animaciones del reloj">
- <img lang="en" src="https://raw.githubusercontent.com/wencescarlos/reloj-hyrule/main/imagenes/en/DEMO.gif" alt="Clock animations" loading="lazy">
- <p lang="es">Hora exacta por internet, formato de 24 h o de 12 h con AM/PM, fecha, 11 aventuras al azar, el nombre del niño,
- cumpleaños, buenos días y buenas noches, modo noche y configuración desde el móvil. <b>En español o en inglés.</b></p>
- <p lang="en">Exact time from the internet, 24-hour or 12-hour format with AM/PM, date, 11 random adventures, the child's name,
- birthday, good morning and good night, night mode and setup from your phone. <b>In English or Spanish.</b></p>
- <a class="boton" href="https://github.com/wencescarlos/reloj-hyrule"><span lang="es">Ver el proyecto en GitHub</span><span lang="en">View the project on GitHub</span></a>
- <a class="boton sec" lang="en" href="https://github.com/wencescarlos/reloj-hyrule/blob/main/README.en.md">README in English</a>
+ <img src="https://raw.githubusercontent.com/wencescarlos/reloj-hyrule/main/imagenes/DEMO.gif" alt="Animaciones del reloj">
+ <p>Hora exacta por internet, formato de 24 h o de 12 h con AM/PM, fecha, 11 aventuras al azar, el nombre del niño,
+ cumpleaños, buenos días y buenas noches, modo noche y configuración desde el móvil.</p>
+ <a class="boton" href="https://github.com/wencescarlos/reloj-hyrule">Ver el proyecto en GitHub</a>
 </section>
 
 <section>
  <h2>Firmware</h2>
- <p><span lang="es">Última versión publicada:</span><span lang="en">Latest published version:</span> <b id="version">…</b></p>
- <a class="boton" href="firmware.bin" download><span lang="es">Descargar firmware.bin</span><span lang="en">Download firmware.bin</span></a>
+ <p>Última versión publicada: <b id="version">…</b></p>
+ <a class="boton" href="firmware.bin" download>Descargar firmware.bin</a>
  <a class="boton sec" href="version.txt">version.txt</a>
- <p lang="es">Los relojes consultan esta página una vez al día y <b>se actualizan solos</b> cuando hay una versión nueva.
+ <p>Los relojes consultan esta página una vez al día y <b>se actualizan solos</b> cuando hay una versión nueva.
  Para instalarlo la primera vez: <code>esptool.py write_flash 0x0 firmware.bin</code> o el Arduino IDE
  (<a href="https://github.com/wencescarlos/reloj-hyrule#-instalar-el-programa">instrucciones</a>).</p>
- <p lang="en">Clocks check this page once a day and <b>update themselves</b> when there is a new version.
- To install it the first time: <code>esptool.py write_flash 0x0 firmware.bin</code> or the Arduino IDE
- (<a href="https://github.com/wencescarlos/reloj-hyrule/blob/main/README.en.md#-installing-the-firmware">instructions</a>).</p>
- <p lang="es">El idioma del reloj (español o inglés) se elige en su página de configuración, en http://reloj-hyrule.local.</p>
- <p lang="en">The clock's language (English or Spanish) is chosen on its settings page, at http://reloj-hyrule.local.</p>
 </section>
 
-<footer><span lang="es">Hecho con cariño y sin ánimo de lucro · Proyecto no oficial y sin relación con Nintendo · Prohibida su venta · CC BY-NC-SA 4.0</span><span lang="en">Made with love, not for profit · Unofficial project, not affiliated with Nintendo · Not for sale · CC BY-NC-SA 4.0</span></footer>
+<footer>Hecho con cariño y sin ánimo de lucro · Proyecto no oficial y sin relación con Nintendo · Prohibida su venta · CC BY-NC-SA 4.0</footer>
 </main>
 <script>
-// Idioma: el que se eligió la última vez, o el del navegador
-function ponerIdioma(l){
- document.documentElement.lang=l;
- document.title=l==="en"?"Hyrule Clock":"Reloj de Hyrule";
- document.querySelectorAll("[data-idioma]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.idioma===l));
- try{localStorage.setItem("idioma",l);}catch(e){}
-}
-let guardado=null;try{guardado=localStorage.getItem("idioma");}catch(e){}
-ponerIdioma(guardado||((navigator.language||"es").toLowerCase().startsWith("es")?"es":"en"));
-document.querySelectorAll("[data-idioma]").forEach(b=>b.onclick=()=>ponerIdioma(b.dataset.idioma));
 fetch("version.txt",{cache:"no-store"}).then(r=>r.ok?r.text():"—").then(v=>document.getElementById("version").textContent=v.trim()).catch(()=>{});
 </script>
 </body></html>

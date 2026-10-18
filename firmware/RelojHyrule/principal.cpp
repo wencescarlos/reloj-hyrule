@@ -148,7 +148,7 @@ void iniciar() {
   Tiempo::iniciar();
 
   if (Red::conectado()) {
-    String aviso = String(tr("CONECTADO \x04 WEB: ", "CONNECTED \x04 WEB: ")) + Red::ip();
+    String aviso = String("CONECTADO \x04 WEB: ") + Red::ip();
     Pantalla::desplazar(aviso.c_str(), ajustes.velocidad);
   }
   programarAventura();

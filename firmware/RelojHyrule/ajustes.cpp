@@ -28,7 +28,6 @@ namespace {
 
   // Lista de todos los ajustes: nombre en el archivo / en la web
   const Campo CAMPOS[] = {
-    NUM("idioma", idioma, 0, 1),
     TXT("nombre", nombre),
     NUM("cumpleDia", cumpleDia, 0, 31),
     NUM("cumpleMes", cumpleMes, 0, 12),
@@ -89,7 +88,6 @@ namespace Config {
 
 void valoresPorDefecto() {
   memset(&ajustes, 0, sizeof(ajustes));
-  ajustes.idioma = IDIOMA_ES;
   strcpy(ajustes.nombre, "");
   ajustes.cumpleDia = 0;
   ajustes.cumpleMes = 0;

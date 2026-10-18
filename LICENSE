@@ -36,20 +36,16 @@ Resumen oficial:
 PARTES DE OTROS AUTORES
 -------------------------------------------------------------------------------
 
-Los modelos 3D de otros autores se usan con su licencia Creative Commons
-Reconocimiento-NoComercial 4.0 (CC BY-NC 4.0):
+La carcasa (modelos_3d/cuerpo_piedra.stl, tapa_trasera.stl, ventana_difusora.stl
+y las Trifuerzas doradas) es un diseño original de este proyecto.
 
-  - modelos_3d/base_reloj_zelda.stl y modelos_3d/tapa_trifuerza.stl son
-    remezclas de "ESP8266 Wemos Clock News Weather Scrolling Marquee",
-    de Qrome (David Payne):
-    https://www.printables.com/model/25374-esp8266-wemos-clock-news-weather-scrolling-marquee
-  - modelos_3d/logo_letras_geektoybox.stl es "Legend of Zelda Logo Text",
-    de geektoybox, sin cambios; modelos_3d/fondo_logo.stl y la cresta de la
-    base están hechos a partir de su contorno:
+modelos_3d/logo_letras_geektoybox.stl es "Legend of Zelda Logo Text", de
+geektoybox, sin cambios, con licencia Creative Commons
+Reconocimiento-NoComercial 4.0 (CC BY-NC 4.0). Su contorno se usa para
+modelos_3d/fondo_logo.stl y para la cresta de la carcasa:
     https://www.printables.com/model/499505-legend-of-zelda-logo-text
-
-Sus autores conservan sus derechos y debe citárseles siempre. Prohibido
-cualquier uso comercial de estos modelos y de sus remezclas.
+Su autor conserva sus derechos y debe citársele siempre. Prohibido cualquier
+uso comercial.
 
 Las marcas y logotipos de The Legend of Zelda pertenecen a Nintendo y no están
 cubiertos por esta licencia.

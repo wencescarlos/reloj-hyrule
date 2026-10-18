@@ -1,14 +1,12 @@
 # ▲ Reloj de Hyrule
 
-**Español** · [English](README.en.md)
-
 **Un reloj con aventuras para pequeños héroes.** Hecho con impresión 3D, un Wemos D1 mini y 4 matrices LED, como homenaje a *The Legend of Zelda*.
 
 > ## ⚠️ Proyecto de fans SIN ÁNIMO DE LUCRO
 > - Hecho en casa como regalo para un niño y compartido **gratis**.
 > - **No es oficial** ni tiene relación con **Nintendo**. *The Legend of Zelda* es una marca de Nintendo.
 > - **Prohibido venderlo**: ni el código, ni los modelos, ni relojes hechos con él (licencia [CC BY-NC-SA 4.0](LICENSE)).
-> - El código, la fuente de letras y los dibujos en píxeles son **originales**. Los modelos 3D de otros autores se usan **con su licencia CC BY-NC 4.0 y citándolos**.
+> - El código, la carcasa 3D, la fuente de letras y los dibujos en píxeles son **originales**. Las letras del logo son de geektoybox y se usan **con su licencia CC BY-NC 4.0, citándolo**.
 > - Más información en el [aviso legal](AVISO_LEGAL.md).
 
 <p align="center">
@@ -17,7 +15,7 @@
 </p>
 
 <p align="center">
-  <img src="imagenes/render_3d.png" alt="Reloj impreso en 3D" width="420">
+  <img src="imagenes/reloj_v2.png" alt="Reloj de Hyrule v2: bloques de piedra antigua" width="480">
 </p>
 
 ---
@@ -31,11 +29,10 @@
 | 📅 **Fecha** | "18/10" cada medio minuto o "DOMINGO 18 DE OCTUBRE" de vez en cuando |
 | 🧚 **El hada de los segundos** | Vuela por la fila de abajo, de lado a lado |
 | 🗡️ **11 aventuras al azar** | Cofre del tesoro, combate, Trifuerza, hada, bomba, espada... |
-| 🧒 **Con el nombre del niño** | "¡ALEJANDRO HA REUNIDO LA TRIFUERZA!" |
+| 🧒 **Con el nombre del niño** | "¡LUCAS HA REUNIDO LA TRIFUERZA!" |
 | 🎂 **Cumpleaños** | Cuenta atrás y fiesta con tarta y fuegos artificiales |
 | 🌙 **Buenos días y buenas noches** | Y modo noche: brillo mínimo o pantalla apagada |
 | 📱 **Configuración desde el móvil** | En http://reloj-hyrule.local, sin instalar ninguna app |
-| 🌍 **En español o en inglés** | Se elige en la página del reloj: cambia los textos del reloj y de la página |
 | 🔄 **Se actualiza solo** | Descarga las versiones nuevas desde este repositorio |
 
 <p align="center">
@@ -52,9 +49,11 @@
 |----------|----------|
 | Wemos D1 mini (ESP8266) | 1 |
 | Matriz LED MAX7219 4 en 1 (32 × 8, módulos de 32 × 32 mm) | 1 |
+| Tornillo M3 × 8 mm de cabeza avellanada (DIN 7991, allen) | 4 |
+| Inserto roscado térmico M3 (largo 5,7 mm, Ø exterior 4,6 mm) | 4 |
 | Cables dupont o cable fino | 5 |
 | Cargador USB de 5 V y cable micro-USB | 1 |
-| Filamento PLA: claro para la caja, verde y dorado para el logo y la Trifuerza | — |
+| Filamento PLA: gris piedra, blanco, verde y dorado | — |
 
 ### Conexiones
 
@@ -70,27 +69,30 @@
 
 ---
 
-## 🖨️ Impresión 3D
+## 🖨️ Impresión 3D: versión 2 "bloques de piedra antigua"
 
-Todas las piezas están listas para imprimir en [`modelos_3d/`](modelos_3d/):
+Carcasa **diseñada desde cero** como dos bloques de piedra de Hyrule: una losa con la pantalla y la cresta del logo, sobre un pedestal con una Trifuerza dorada incrustada, esquinas desgastadas, grietas talladas y dos patas que inclinan el reloj 8° hacia atrás. El Wemos va **dentro del pedestal**, con el **USB en el centro de la tapa trasera, justo debajo de la Trifuerza**. La tapa se cierra con **4 tornillos**.
 
-| Pieza | Archivo | Color | Autoría |
-|-------|---------|-------|---------|
-| Base con cresta | `base_reloj_zelda.stl` | **Claro** (blanco o marfil), para que se vea la pantalla | Remezcla de la caja de **Qrome** |
-| Tapa trasera con Trifuerza | `tapa_trifuerza.stl` | Como la base | Remezcla de la caja de **Qrome** |
-| Fondo del logo | `fondo_logo.stl` | Verde | Hecho a partir del logo de **geektoybox** |
-| Letras del logo | `logo_letras_geektoybox.stl` | Dorado silk | Original de **geektoybox** (sin cambios) |
-| Trifuerza dorada | `trifuerza_dorada.stl` | Dorado silk | Original de este proyecto |
+<p align="center">
+  <img src="imagenes/reloj_v2_trasera.png" alt="Tapa trasera con Trifuerza y USB" width="380">
+  <img src="imagenes/reloj_v2_interior.png" alt="Interior: matriz y Wemos" width="380">
+</p>
 
-Los modelos de otros autores se publican con su licencia **CC BY-NC 4.0** (Reconocimiento-NoComercial), que permite remezclas sin fines comerciales:
-- Caja *ESP8266 Wemos Clock News Weather Scrolling Marquee*, de **Qrome**: [Printables](https://www.printables.com/model/25374-esp8266-wemos-clock-news-weather-scrolling-marquee)
-- *Legend of Zelda Logo Text*, de **geektoybox**: [Printables](https://www.printables.com/model/499505-legend-of-zelda-logo-text)
+Todas las piezas están en [`modelos_3d/`](modelos_3d/):
 
-Si prefieres partir de los originales, [`modelos_3d/generar_modelos.py`](modelos_3d/generar_modelos.py) genera las mismas piezas a partir de ellos.
+| Pieza | Archivo | Color |
+|-------|---------|-------|
+| Carcasa de piedra (losa, pedestal, patas y cresta) | `cuerpo_piedra.stl` | Gris piedra |
+| Tapa trasera (Trifuerza, USB y 4 tornillos) | `tapa_trasera.stl` | Gris piedra |
+| Ventana difusora | `ventana_difusora.stl` | **Blanco** (deja pasar la luz) |
+| Trifuerza dorada de la tapa | `trifuerza_dorada_trasera.stl` | Dorado silk |
+| Trifuerza dorada del pedestal | `trifuerza_dorada_frontal.stl` | Dorado silk |
+| Fondo del logo | `fondo_logo.stl` | Verde |
+| Letras del logo | `logo_letras_geektoybox.stl` | Dorado silk |
 
-<p align="center"><img src="imagenes/render_trasera_trifuerza.png" alt="Tapa trasera con la Trifuerza" width="420"></p>
+Las letras del logo son de **geektoybox** ([Printables](https://www.printables.com/model/499505-legend-of-zelda-logo-text), CC BY-NC 4.0). Todo lo demás es diseño original de este proyecto. El script [`modelos_3d/generar_modelos.py`](modelos_3d/generar_modelos.py) genera todas las piezas a partir del logo original.
 
-Las instrucciones completas de impresión y montaje están en [`modelos_3d/LEEME.md`](modelos_3d/LEEME.md).
+Las instrucciones completas de impresión y montaje, con la lista de tornillería, están en [`modelos_3d/LEEME.md`](modelos_3d/LEEME.md).
 
 ---
 
@@ -120,7 +122,6 @@ Las instrucciones completas de impresión y montaje están en [`modelos_3d/LEEME
 2. Se abre la página del reloj (si no se abre, entra en http://192.168.4.1).
 3. Elige el WiFi de casa, escribe la clave y pulsa **Conectar**.
 4. Ya está: el reloj está en **http://reloj-hyrule.local**. Escribe ahí el nombre del niño y su cumpleaños.
-5. Arriba de la página puedes elegir el idioma: **Español** o **English**.
 
 > Si las letras salen giradas o desordenadas, ve a **Pantalla** en la página del reloj, cambia el giro o el orden de los módulos y pulsa **Probar pantalla**: debe verse 1 2 3 4.
 
@@ -150,12 +151,11 @@ Para publicar una versión nueva:
 reloj-hyrule/
 ├── firmware/
 │   ├── RelojHyrule/        ← programa del reloj (Arduino IDE)
-│   └── herramientas/       ← dibujar letras/sprites, simulador en PC y grabación de animaciones
-├── modelos_3d/             ← piezas STL listas para imprimir + instrucciones
+│   └── herramientas/       ← dibujar letras/sprites y simulador en PC
+├── modelos_3d/             ← carcasa v2 (STL), generador e instrucciones
 ├── docs/                   ← web del proyecto (GitHub Pages)
-├── imagenes/               ← capturas y animaciones (en/ = en inglés)
+├── imagenes/               ← capturas y animaciones
 ├── .github/workflows/      ← compilación y publicación automática
-├── README.en.md            ← este documento en inglés
 ├── AVISO_LEGAL.md          ← proyecto sin ánimo de lucro, marcas y créditos
 └── LICENSE                 ← CC BY-NC-SA 4.0
 ```
@@ -164,9 +164,9 @@ reloj-hyrule/
 
 ## 🙏 Créditos
 
-- **Caja *ESP8266 Wemos Clock News Weather Scrolling Marquee*:** **Qrome (David Payne)**, [Printables](https://www.printables.com/model/25374-esp8266-wemos-clock-news-weather-scrolling-marquee), licencia CC BY-NC 4.0. Remezclada: se ha añadido la cresta del logo a la base y la Trifuerza a la tapa.
-- ***Legend of Zelda Logo Text*:** **geektoybox**, [Printables](https://www.printables.com/model/499505-legend-of-zelda-logo-text), licencia CC BY-NC 4.0. Las letras se incluyen sin cambios y su contorno se usa para el fondo y la cresta.
-- **Firmware, fuente de letras, dibujos en píxeles, textos, página web, script de modelos y Trifuerza dorada:** originales de [wencescarlos](https://github.com/wencescarlos), hechos desde cero.
+- ***Legend of Zelda Logo Text*:** **geektoybox**, [Printables](https://www.printables.com/model/499505-legend-of-zelda-logo-text), licencia CC BY-NC 4.0. Las letras se incluyen sin cambios y su contorno da forma a la cresta y al fondo.
+- **Idea original del reloj con Wemos D1 mini y matriz MAX7219:** **Qrome (David Payne)**, [Marquee Scroller](https://github.com/Qrome/marquee-scroller). Este proyecto usa el mismo hardware, pero el firmware y la carcasa son nuevos.
+- **Carcasa v2, firmware, fuente de letras, dibujos en píxeles, textos, página web y Trifuerzas doradas:** originales de [wencescarlos](https://github.com/wencescarlos), hechos desde cero.
 - ***The Legend of Zelda*:** marca de **Nintendo**. Gracias por tantas aventuras. 💚
 
 ---

@@ -4,7 +4,6 @@
 //  CC BY-NC-SA 4.0 · https://github.com/wencescarlos/reloj-hyrule
 //  Una sola página (HTML + CSS + JavaScript) guardada en la memoria flash.
 //  Funciona sin internet: no usa nada de fuera.
-//  En español o en inglés: el idioma se elige arriba y se guarda en el reloj.
 // ===========================================================================
 #pragma once
 #include <Arduino.h>
@@ -51,10 +50,6 @@ button.peligro{background:#5a1d1b;color:#ffd7d4;border:1px solid var(--rojo)}
 #aviso.ver{opacity:1}
 #redes div{padding:8px;border-bottom:1px solid #2c4a37;cursor:pointer}#redes div:hover{color:var(--oro)}
 #portal{display:none;border-color:#ff6b4a}
-.idiomas{display:inline-flex;margin-top:10px;border:1px solid var(--borde);border-radius:30px;overflow:hidden}
-.idiomas button{margin:0;border-radius:0;background:#0d1d13;color:var(--suave);padding:6px 14px;font-weight:400}
-.idiomas button.activo{background:linear-gradient(#e8c04a,#b38a1b);color:#1d1606;font-weight:700}
-[data-l]{display:none}html[lang=es] [data-l=es],html[lang=en] [data-l=en]{display:inline}
 footer{text-align:center;color:var(--suave);font-size:.8em;margin:24px 0 40px}
 </style></head><body><main>
 
@@ -65,9 +60,6 @@ footer{text-align:center;color:var(--suave);font-size:.8em;margin:24px 0 40px}
  <div class="reloj" id="hora">--:--:--</div>
  <div class="sub" id="fecha">Buscando la hora...</div>
  <div class="sub" id="red"></div>
- <div class="idiomas" role="group" aria-label="Idioma / Language">
-  <button type="button" id="idioma-es" onclick="cambiarIdioma('es')">Español</button><button type="button" id="idioma-en" onclick="cambiarIdioma('en')">English</button>
- </div>
 </header>
 
 <section id="portal">
@@ -80,7 +72,7 @@ footer{text-align:center;color:var(--suave);font-size:.8em;margin:24px 0 40px}
 <section>
  <h2>Tu héroe</h2>
  <label>Nombre del niño o niña</label>
- <input type="text" name="nombre" maxlength="22" placeholder="Por ejemplo: ALEJANDRO">
+ <input type="text" name="nombre" maxlength="22" placeholder="Por ejemplo: LUCAS">
  <div class="fila">
   <div><label>Día del cumpleaños</label><select name="cumpleDia" id="cumpleDia"></select></div>
   <div><label>Mes del cumpleaños</label><select name="cumpleMes" id="cumpleMes"></select></div>
@@ -199,7 +191,7 @@ footer{text-align:center;color:var(--suave);font-size:.8em;margin:24px 0 40px}
 
 <section>
  <h2>Actualizaciones</h2>
- <p><span>Versión instalada:</span> <b id="version"></b></p>
+ <p>Versión instalada: <b id="version"></b></p>
  <p class="nota" id="estadoAct"></p>
  <form id="f2" onsubmit="return false">
   <label>Dirección de actualizaciones (donde están version.txt y firmware.bin)</label>
@@ -209,121 +201,36 @@ footer{text-align:center;color:var(--suave);font-size:.8em;margin:24px 0 40px}
   <input type="password" name="claveAdmin" placeholder="••••••">
   <button type="button" onclick="guardar('f2')">Guardar</button>
  </form>
- <button type="button" class="sec" onclick="post('/api/buscar-version',t('Buscando versión nueva...','Checking for a new version...'))">Buscar versión nueva ahora</button>
+ <button type="button" class="sec" onclick="post('/api/buscar-version','Buscando versión nueva...')">Buscar versión nueva ahora</button>
  <a class="boton" href="/actualizar">Subir archivo .bin</a>
  <p class="nota">Para subir un archivo: usuario <b>admin</b> y tu clave de administrador (de fábrica: hyrule).</p>
  <hr style="border-color:#2c4a37">
- <button type="button" class="sec" onclick="post('/api/reiniciar',t('Reiniciando...','Restarting...'))">Reiniciar el reloj</button>
- <button type="button" class="peligro" onclick="if(confirm(t('¿Borrar todos los ajustes?','Erase all settings?')))post('/api/fabrica',t('Volviendo a los ajustes de fábrica...','Restoring factory settings...'))">Ajustes de fábrica</button>
+ <button type="button" class="sec" onclick="post('/api/reiniciar','Reiniciando...')">Reiniciar el reloj</button>
+ <button type="button" class="peligro" onclick="if(confirm('¿Borrar todos los ajustes?'))post('/api/fabrica','Volviendo a los ajustes de fábrica...')">Ajustes de fábrica</button>
 </section>
 
-<footer><span data-l="es">Proyecto de fans <b>sin ánimo de lucro</b>, hecho con cariño como homenaje a <i>The Legend of Zelda</i>.<br>
+<footer>Proyecto de fans <b>sin ánimo de lucro</b>, hecho con cariño como homenaje a <i>The Legend of Zelda</i>.<br>
 No oficial y sin relación con Nintendo. The Legend of Zelda es una marca de Nintendo.<br>
 Prohibida su venta. Código y dibujos originales: github.com/wencescarlos/reloj-hyrule<br>
-Página del reloj: http://reloj-hyrule.local</span><span data-l="en"><b>Non-profit</b> fan project, made with love as a tribute to <i>The Legend of Zelda</i>.<br>
-Unofficial and not affiliated with Nintendo. The Legend of Zelda is a trademark of Nintendo.<br>
-Not for sale. Original code and pixel art: github.com/wencescarlos/reloj-hyrule<br>
-Clock page: http://reloj-hyrule.local</span></footer>
+Página del reloj: http://reloj-hyrule.local</footer>
 </main>
 <div id="aviso"></div>
 
 <script>
 const $=s=>document.querySelector(s);
-// ---------------------------------------------------------------- idioma
-// Textos en inglés de la página (la clave es el texto en español)
-const EN={
-"Reloj de Hyrule":"Hyrule Clock","RELOJ DE HYRULE":"HYRULE CLOCK","Buscando la hora...":"Looking for the time...",
-"¡Bienvenido, guardián del reloj!":"Welcome, keeper of the clock!",
-"El reloj todavía no está conectado al WiFi de casa. Elige tu red y escribe la clave para que aprenda la hora por internet.":"The clock is not connected to your home WiFi yet. Choose your network and type the password so it can learn the time from the internet.",
-"Tu héroe":"Your hero","Nombre del niño o niña":"Child's name","Día del cumpleaños":"Birthday (day)","Mes del cumpleaños":"Birthday (month)",
-"Mensaje secreto de papá y mamá (sale de vez en cuando)":"Secret message from mum and dad (shows up now and then)",
-"Escribe {N} y el reloj pondrá el nombre del héroe.":"Type {N} and the clock will put the hero's name there.",
-"Dar los buenos días y las buenas noches":"Say good morning and good night",
-"La hora":"The time","Formato":"Format","24 horas (17:30)":"24 hours (17:30)","12 horas (5:30 P)":"12 hours (5:30 P)",
-"En 12 horas sale una A (mañana, AM) o una P (tarde, PM) a la derecha.":"In 12-hour mode an A (morning, AM) or a P (afternoon, PM) shows on the right.",
-"Cero delante en 24 h (09:05)":"Leading zero in 24 h (09:05)","Fecha":"Date","No enseñar la fecha":"Don't show the date",
-"Enseñar \"18/10\" cada medio minuto":"Show \"18/10\" every half minute",
-"Decir \"DOMINGO 18 DE OCTUBRE\" de vez en cuando":"Scroll \"SUNDAY, OCTOBER 18\" now and then",
-"Cada cuántos minutos se dice la fecha":"How often the date scrolls (minutes)","Fila de abajo (los segundos)":"Bottom row (the seconds)",
-"Un hada que vuela de lado a lado":"A fairy flying from side to side","Una barra que se llena cada minuto":"A bar that fills up every minute","Nada":"Nothing",
-"Los dos puntos parpadean":"The colon blinks","Celebrar las horas en punto":"Celebrate every hour on the hour",
-"Aventuras":"Adventures","Cada cuánto aparece una aventura al azar":"How often a random adventure appears","Nunca":"Never",
-"Cada 3 minutos":"Every 3 minutes","Cada 5 minutos":"Every 5 minutes","Cada 10 minutos":"Every 10 minutes","Cada 15 minutos":"Every 15 minutes",
-"Cada 20 minutos":"Every 20 minutes","Cada 30 minutos":"Every 30 minutes","Cada hora":"Every hour",
-"Incluir frases de ánimo":"Include words of courage","¡Lánzala ahora!":"Launch one now!",
-"Escribir un mensaje en el reloj ahora mismo":"Write a message on the clock right now","Enviar":"Send","¡A cenar, héroe!":"Dinner time, hero!",
-"Modo noche":"Night mode","Activar modo noche (sin aventuras)":"Turn on night mode (no adventures)","Desde":"From","Hasta":"To",
-"Apagar la pantalla del todo por la noche":"Turn the display off completely at night",
-"Brillo por la noche (si no se apaga):":"Night brightness (if not off):",
-"Pantalla":"Display","Brillo de día:":"Daytime brightness:","Para que no canse la vista, mejor entre 1 y 4.":"To keep it easy on the eyes, 1 to 4 is best.",
-"Velocidad del texto:":"Text speed:","Más número = más despacio (ideal para quien está aprendiendo a leer).":"Higher number = slower (great for kids learning to read).",
-"Si las letras se ven giradas o desordenadas":"If the letters look rotated or jumbled","Giro de cada módulo":"Rotation of each module",
-"Invertir el orden de los módulos":"Reverse the order of the modules","Efecto espejo en cada módulo":"Mirror each module",
-"Guarda y pulsa \"Probar pantalla\": debe verse 1 2 3 4 de izquierda a derecha.":"Save and press \"Test display\": you should see 1 2 3 4 from left to right.",
-"Probar pantalla":"Test display","Hora por internet":"Internet time","Zona horaria":"Time zone",
-"España (península y Baleares)":"Spain (mainland and Balearic Islands)","España (Canarias)":"Spain (Canary Islands)","México (centro)":"Mexico (central)",
-"EE. UU. (este)":"USA (Eastern)","EE. UU. (oeste)":"USA (Pacific)","Otra (escribirla)":"Other (type it in)",
-"Servidor de la hora":"Time server","Guardar ajustes":"Save settings",
-"WiFi de casa":"Home WiFi","Buscar redes WiFi":"Search for WiFi networks","Nombre de la red":"Network name","Clave":"Password",
-"Conectar y reiniciar":"Connect and restart","Actualizaciones":"Updates","Versión instalada:":"Installed version:",
-"Dirección de actualizaciones (donde están version.txt y firmware.bin)":"Update address (where version.txt and firmware.bin are)",
-"Buscar e instalar versiones nuevas cada día":"Check for and install new versions every day",
-"Nueva clave de administrador (déjala vacía para no cambiarla)":"New admin password (leave it empty to keep the current one)",
-"Guardar":"Save","Buscar versión nueva ahora":"Check for a new version now","Subir archivo .bin":"Upload a .bin file",
-"Para subir un archivo: usuario":"To upload a file: user","y tu clave de administrador (de fábrica: hyrule).":"and your admin password (factory default: hyrule).",
-"Reiniciar el reloj":"Restart the clock","Ajustes de fábrica":"Factory reset"
-};
-const MESES={es:["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"],
- en:["January","February","March","April","May","June","July","August","September","October","November","December"]};
-let L="es",traducibles=null;
-function t(es,en){return L==="en"?en:es;}
-
-// Recoge una sola vez los textos, opciones y "placeholders" que tienen traducción
-function recoger(){
- traducibles=[];
- const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;
- while(n=w.nextNode()){const k=n.nodeValue.trim();if(k&&EN[k])traducibles.push({n,orig:n.nodeValue,k});}
- document.querySelectorAll("[placeholder]").forEach(e=>{const k=e.placeholder;if(EN[k])traducibles.push({n:e,orig:k,k,attr:"placeholder"});});
-}
-function aplicarIdioma(){
- if(!traducibles)recoger();
- document.documentElement.lang=L;
- traducibles.forEach(x=>{const v=L==="en"?(x.attr?EN[x.k]:x.orig.replace(x.k,EN[x.k])):x.orig;if(x.attr)x.n[x.attr]=v;else x.n.nodeValue=v;});
- document.title=t("Reloj de Hyrule","Hyrule Clock");
- $("[name=nombre]").placeholder=t("Por ejemplo: ALEJANDRO","For example: ALEJANDRO");
- $("[name=mensaje]").placeholder=t("¡Te queremos mucho, {N}!","We love you so much, {N}!");
- $("#idioma-es").classList.toggle("activo",L==="es");$("#idioma-en").classList.toggle("activo",L==="en");
- const m=$("#cumpleMes");MESES[L].forEach((n,i)=>m.options[i+1].text=n);
-}
-function cambiarIdioma(l){
- if(l===L)return;L=l;aplicarIdioma();
- post("/api/ajustes",t("Ahora el reloj habla español","The clock now speaks English"),new URLSearchParams({idioma:L==="en"?"1":"0"}))
-  .then(()=>{cargarAventuras();estado();});
-}
-
-// ---------------------------------------------------------------- utilidades
-function aviso(x){const a=$("#aviso");a.textContent=x;a.classList.add("ver");clearTimeout(a.t);a.t=setTimeout(()=>a.classList.remove("ver"),2500);}
-function post(u,x,datos){return fetch(u,{method:"POST",body:datos||new URLSearchParams()}).then(r=>{if(r.ok)aviso(x||t("¡Hecho!","Done!"));else aviso(t("Algo ha fallado","Something went wrong"));return r;}).catch(()=>aviso(t("Sin conexión con el reloj","No connection to the clock")));}
+const MESES=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+function aviso(t){const a=$("#aviso");a.textContent=t;a.classList.add("ver");clearTimeout(a.t);a.t=setTimeout(()=>a.classList.remove("ver"),2500);}
+function post(u,t,datos){return fetch(u,{method:"POST",body:datos||new URLSearchParams()}).then(r=>{if(r.ok)aviso(t||"¡Hecho!");else aviso("Algo ha fallado");return r;}).catch(()=>aviso("Sin conexión con el reloj"));}
 function dos(n){return String(n).padStart(2,"0");}
 
 // Rellenar los desplegables del cumpleaños
 let d=$("#cumpleDia");d.add(new Option("—","0"));for(let i=1;i<=31;i++)d.add(new Option(i,i));
-let m=$("#cumpleMes");m.add(new Option("—","0"));MESES.es.forEach((n,i)=>m.add(new Option(n,i+1)));
+let m=$("#cumpleMes");m.add(new Option("—","0"));MESES.forEach((n,i)=>m.add(new Option(n,i+1)));
 
 function rangos(){[["brillo","vBrillo"],["brilloNoche","vBrilloNoche"],["velocidad","vVelocidad"]].forEach(([n,v])=>{
  const e=document.querySelector("[name="+n+"]");$("#"+v).textContent=e.value;e.oninput=()=>$("#"+v).textContent=e.value;});}
 
 function zonaElegida(){const v=$("#zonaLista").value;if(v!=="otra")$("#zona").value=v;$("#zona").style.display=v==="otra"?"block":"none";}
-
-function cargarAventuras(){
- fetch("/api/aventuras").then(r=>r.json()).then(l=>{
-  const c=$("#aventuras");c.innerHTML="";
-  const s=document.createElement("button");s.type="button";s.textContent=t("✨ ¡Sorpresa!","✨ Surprise!");
-  s.onclick=()=>post("/api/animacion",t("¡Allá va una sorpresa!","Here comes a surprise!"));c.appendChild(s);
-  l.forEach((n,i)=>{const b=document.createElement("button");b.type="button";b.className="sec";b.textContent=n;
-   b.onclick=()=>post("/api/animacion?n="+i,t("¡Allá va: "+n+"!","Here it comes: "+n+"!"));c.appendChild(b);});
- });
-}
 
 function cargar(){
  fetch("/api/ajustes").then(r=>r.json()).then(a=>{
@@ -334,8 +241,12 @@ function cargar(){
   $("#nocheFin").value=dos(a.nocheFinH)+":"+dos(a.nocheFinM);
   const zl=$("#zonaLista");zl.value=[...zl.options].some(o=>o.value===a.zona)?a.zona:"otra";zonaElegida();
   rangos();
-  L=a.idioma==1?"en":"es";aplicarIdioma();
-  cargarAventuras();
+ });
+ fetch("/api/aventuras").then(r=>r.json()).then(l=>{
+  const c=$("#aventuras");c.innerHTML="";
+  const s=document.createElement("button");s.type="button";s.textContent="✨ ¡Sorpresa!";s.onclick=()=>post("/api/animacion","¡Allá va una sorpresa!");c.appendChild(s);
+  l.forEach((n,i)=>{const b=document.createElement("button");b.type="button";b.className="sec";b.textContent=n;
+   b.onclick=()=>post("/api/animacion?n="+i,"¡Allá va: "+n+"!");c.appendChild(b);});
  });
 }
 
@@ -347,35 +258,32 @@ function guardar(id){
   else p.append(e.name,e.value);});
  if(!id){const [ih,im]=$("#nocheIni").value.split(":"),[fh,fm]=$("#nocheFin").value.split(":");
   p.append("nocheIniH",+ih);p.append("nocheIniM",+im);p.append("nocheFinH",+fh);p.append("nocheFinM",+fm);}
- post("/api/ajustes",t("¡Ajustes guardados!","Settings saved!"),p);
+ post("/api/ajustes","¡Ajustes guardados!",p);
 }
 
-function mensajeYa(){const x=$("#mensajeYa").value.trim();if(!x)return;
- post("/api/mensaje",t("¡Mensaje enviado!","Message sent!"),new URLSearchParams({texto:x}));$("#mensajeYa").value="";}
+function mensajeYa(){const t=$("#mensajeYa").value.trim();if(!t)return;
+ post("/api/mensaje","¡Mensaje enviado!",new URLSearchParams({texto:t}));$("#mensajeYa").value="";}
 
-function buscarRedes(){$("#redes").textContent=t("Buscando...","Searching...");
+function buscarRedes(){$("#redes").textContent="Buscando...";
  fetch("/api/redes").then(r=>r.json()).then(l=>{const c=$("#redes");c.innerHTML="";
-  if(!l.length)c.textContent=t("No se ha encontrado ninguna red.","No networks found.");
+  if(!l.length)c.textContent="No se ha encontrado ninguna red.";
   l.sort((a,b)=>b.senal-a.senal).forEach(r=>{const e=document.createElement("div");
    e.textContent=(r.abierta?"🔓 ":"🔒 ")+r.nombre+"  ("+r.senal+" dBm)";e.onclick=()=>{$("#wNombre").value=r.nombre;$("#wClave").focus();};c.appendChild(e);});});}
 
-function conectarWifi(){const n=$("#wNombre").value.trim();if(!n){aviso(t("Escribe el nombre de la red","Type the network name"));return;}
- post("/api/wifi",t("Conectando... busca el reloj en http://reloj-hyrule.local","Connecting... find the clock at http://reloj-hyrule.local"),new URLSearchParams({nombre:n,clave:$("#wClave").value}));}
-
-function fechaBonita(f){f=f.toLowerCase();return L==="en"?f.replace(/\b[a-z]/g,c=>c.toUpperCase()):f;}
+function conectarWifi(){const n=$("#wNombre").value.trim();if(!n){aviso("Escribe el nombre de la red");return;}
+ post("/api/wifi","Conectando... busca el reloj en http://reloj-hyrule.local",new URLSearchParams({nombre:n,clave:$("#wClave").value}));}
 
 function estado(){
  fetch("/api/estado").then(r=>r.json()).then(e=>{
   $("#hora").textContent=e.hora;
-  $("#fecha").textContent=e.sincronizado?fechaBonita(e.fecha):t("Buscando la hora en internet...","Getting the time from the internet...");
-  $("#red").textContent=e.conectado?("WiFi: "+e.wifi+" · "+e.ip):t("Sin WiFi de casa","No home WiFi");
+  $("#fecha").textContent=e.sincronizado?e.fecha.toLowerCase():"Buscando la hora en internet...";
+  $("#red").textContent=e.conectado?("WiFi: "+e.wifi+" · "+e.ip):"Sin WiFi de casa";
   $("#portal").style.display=e.portal?"block":"none";
-  $("#wifiActual").textContent=e.conectado?t("Conectado a «"+e.wifi+"» (señal "+e.senal+" dBm)","Connected to “"+e.wifi+"” (signal "+e.senal+" dBm)"):t("No conectado.","Not connected.");
+  $("#wifiActual").textContent=e.conectado?("Conectado a «"+e.wifi+"» (señal "+e.senal+" dBm)"):"No conectado.";
   $("#version").textContent=e.version;$("#estadoAct").textContent=e.actualizacion;
-  $("#faltan").textContent=e.diasCumple>0?t("¡Faltan "+e.diasCumple+" días para el cumpleaños!",(e.diasCumple==1?"Only 1 day":"Only "+e.diasCumple+" days")+" until the birthday!")
-   :(e.diasCumple==0?t("¡HOY ES EL CUMPLEAÑOS! 🎂","IT'S BIRTHDAY TODAY! 🎂"):"");
+  $("#faltan").textContent=e.diasCumple>0?("¡Faltan "+e.diasCumple+" días para el cumpleaños!"):(e.diasCumple==0?"¡HOY ES EL CUMPLEAÑOS! 🎂":"");
  }).catch(()=>{});
 }
-aplicarIdioma();cargar();estado();setInterval(estado,1000);
+cargar();estado();setInterval(estado,1000);
 </script>
 </body></html>)PAGINA";
