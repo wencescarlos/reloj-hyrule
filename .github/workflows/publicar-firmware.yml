@@ -1,0 +1,76 @@
+# Compila el firmware del Reloj de Hyrule y lo publica en GitHub Pages.
+# Los relojes consultan https://wencescarlos.github.io/reloj-hyrule/version.txt
+# una vez al día y descargan firmware.bin si hay una versión nueva.
+#
+# Requisito (una sola vez): Settings -> Pages -> Source: "GitHub Actions".
+
+name: Compilar y publicar el firmware
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "firmware/RelojHyrule/**"
+      - "docs/**"
+      - ".github/workflows/publicar-firmware.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+env:
+  URL_ESP8266: https://arduino.esp8266.com/stable/package_esp8266com_index.json
+  PLACA: esp8266:esp8266:d1_mini:eesz=4M1M
+
+jobs:
+  compilar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v4
+
+      - name: Instalar Arduino CLI
+        uses: arduino/setup-arduino-cli@v2
+
+      - name: Instalar el núcleo ESP8266
+        run: |
+          arduino-cli core update-index --additional-urls "$URL_ESP8266"
+          arduino-cli core install esp8266:esp8266@3.1.2 --additional-urls "$URL_ESP8266"
+
+      - name: Compilar
+        run: |
+          arduino-cli compile --fqbn "$PLACA" --additional-urls "$URL_ESP8266" \
+            --warnings default --output-dir build firmware/RelojHyrule
+
+      - name: Preparar la web con el firmware
+        run: |
+          mkdir -p sitio
+          cp -r docs/. sitio/
+          cp build/RelojHyrule.ino.bin sitio/firmware.bin
+          VERSION=$(sed -n 's/^#define VERSION_RELOJ[[:space:]]*"\([^"]*\)".*/\1/p' firmware/RelojHyrule/configuracion.h)
+          if [ -z "$VERSION" ]; then echo "No se encontró VERSION_RELOJ"; exit 1; fi
+          echo "$VERSION" > sitio/version.txt
+          echo "Versión publicada: $VERSION"
+          ls -la sitio
+
+      - name: Subir la web
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: sitio
+
+  publicar:
+    needs: compilar
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.despliegue.outputs.page_url }}
+    steps:
+      - name: Publicar en GitHub Pages
+        id: despliegue
+        uses: actions/deploy-pages@v4

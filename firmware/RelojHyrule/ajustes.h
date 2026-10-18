@@ -1,0 +1,82 @@
+// ===========================================================================
+//  ajustes.h  -  Ajustes del reloj guardados en la memoria interna
+//  Reloj de Hyrule · Proyecto de fans SIN ÁNIMO DE LUCRO · No oficial
+//  CC BY-NC-SA 4.0 · https://github.com/wencescarlos/reloj-hyrule
+// ===========================================================================
+#pragma once
+#include <Arduino.h>
+
+// Formas de enseñar la fecha
+enum ModoFecha : uint8_t {
+  FECHA_NUNCA      = 0,   // solo la hora
+  FECHA_DESPLAZAR  = 1,   // "DOMINGO 18 DE OCTUBRE" cada X minutos
+  FECHA_ALTERNAR   = 2,   // "18/10" unos segundos cada medio minuto
+};
+
+// Indicador de los segundos en la fila de abajo
+enum ModoSegundos : uint8_t {
+  SEG_NADA  = 0,
+  SEG_BARRA = 1,          // barra que se llena durante el minuto
+  SEG_HADA  = 2,          // un hada (un punto) que va y viene
+};
+
+struct Ajustes {
+  // --- Héroe ---
+  char    nombre[24];          // nombre del niño o niña
+  uint8_t cumpleDia;           // 0 = sin cumpleaños
+  uint8_t cumpleMes;
+  char    mensaje[96];         // mensaje personalizado (vacío = ninguno)
+  uint8_t saludos;             // buenos días / buenas noches
+
+  // --- Reloj ---
+  uint8_t formato24;           // 1 = 24 horas, 0 = 12 horas con AM / PM
+  uint8_t ceroIzquierda;       // 09:05 en lugar de 9:05 (modo 24 h)
+  uint8_t modoFecha;           // ModoFecha
+  uint8_t fechaCadaMin;        // para FECHA_DESPLAZAR
+  uint8_t modoSegundos;        // ModoSegundos
+  uint8_t parpadeo;            // los dos puntos parpadean
+  uint8_t horaEnPunto;         // animación especial en las horas en punto
+
+  // --- Aventuras (animaciones) ---
+  uint8_t animCadaMin;         // 0 = desactivadas
+  uint8_t frases;              // mezclar frases de ánimo entre animaciones
+
+  // --- Noche ---
+  uint8_t nocheActiva;
+  uint8_t nocheIniH, nocheIniM;
+  uint8_t nocheFinH, nocheFinM;
+  uint8_t nocheApagar;         // 1 = pantalla apagada, 0 = muy tenue
+  uint8_t brilloNoche;
+
+  // --- Pantalla ---
+  uint8_t brillo;              // 0..15
+  uint8_t velocidad;           // ms por columna al desplazar texto
+  uint8_t rotacion;            // 0..3
+  uint8_t invertirModulos;
+  uint8_t espejo;
+
+  // --- Hora por internet ---
+  char    zona[56];            // zona horaria en formato POSIX
+  char    servidorHora[48];
+
+  // --- Red y seguridad ---
+  char    wifiNombre[33];
+  char    wifiClave[65];
+  char    claveAdmin[33];      // para actualizar el programa
+
+  // --- Actualizaciones por internet ---
+  char    urlActualizacion[128];
+  uint8_t autoActualizar;
+};
+
+extern Ajustes ajustes;
+
+namespace Config {
+  void valoresPorDefecto();
+  bool cargar();
+  bool guardar();
+  // Cambia un ajuste a partir de su nombre y su valor en texto
+  bool asignar(const String& clave, const String& valor);
+  // Devuelve los ajustes en formato JSON (sin contraseñas)
+  String json();
+}

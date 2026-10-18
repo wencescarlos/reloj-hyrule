@@ -1,0 +1,22 @@
+# Compilaciones
+build/
+*.bin
+*.elf
+*.o
+# Simulador
+firmware/herramientas/simulador/sim
+firmware/herramientas/simulador/out/
+firmware/herramientas/simulador/*.png
+firmware/herramientas/simulador/*.gif
+__pycache__/
+# Sistema
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+# PlatformIO
+.pio/
+
+# Piezas generadas en tu ordenador (derivadas de modelos de otros autores: no se publican)
+modelos_3d/piezas/
+modelos_3d/originales/

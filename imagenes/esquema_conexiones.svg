@@ -1,0 +1,162 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 620" width="960" height="620" font-family="Helvetica, Arial, sans-serif">
+<rect width="960" height="620" rx="16" fill="#fbf8ef"/>
+<text x="480" y="42" text-anchor="middle" font-size="24" font-weight="700" fill="#1d3b2a">▲ Reloj de Hyrule · Esquema de conexiones</text>
+<text x="480" y="66" text-anchor="middle" font-size="13" fill="#5b6b5f">Wemos D1 mini (visto desde arriba) → matriz MAX7219 4 en 1 (entrada IN)</text>
+<rect x="150" y="110" width="230" height="330" rx="14" fill="#1f4e8c" stroke="#123058" stroke-width="2"/>
+<rect x="205" y="128" width="120" height="70" rx="4" fill="#c9ccd2" stroke="#888"/>
+<text x="265" y="168" text-anchor="middle" font-size="13" fill="#333">ESP8266</text>
+<text x="265" y="300" text-anchor="middle" font-size="18" font-weight="700" fill="#fff">WEMOS</text>
+<text x="265" y="322" text-anchor="middle" font-size="18" font-weight="700" fill="#fff">D1 mini</text>
+<rect x="240" y="418" width="50" height="30" rx="4" fill="#b9bcc2" stroke="#777"/>
+<text x="265" y="468" text-anchor="middle" font-size="12" fill="#5b6b5f">USB → cargador 5 V (1 A o más)</text>
+<circle cx="168" cy="170" r="7" fill="#d9dce1" stroke="#333" stroke-width="1.2"/>
+<text x="182" y="174" text-anchor="start" font-size="12" font-weight="400" fill="#fff">RST</text>
+<circle cx="362" cy="170" r="7" fill="#d9dce1" stroke="#333" stroke-width="1.2"/>
+<text x="348" y="174" text-anchor="end" font-size="12" font-weight="400" fill="#fff">TX</text>
+<circle cx="168" cy="204" r="7" fill="#d9dce1" stroke="#333" stroke-width="1.2"/>
+<text x="182" y="208" text-anchor="start" font-size="12" font-weight="400" fill="#fff">A0</text>
+<circle cx="362" cy="204" r="7" fill="#d9dce1" stroke="#333" stroke-width="1.2"/>
+<text x="348" y="208" text-anchor="end" font-size="12" font-weight="400" fill="#fff">RX</text>
+<circle cx="168" cy="238" r="7" fill="#d9dce1" stroke="#333" stroke-width="1.2"/>
+<text x="182" y="242" text-anchor="start" font-size="12" font-weight="400" fill="#fff">D0</text>
+<circle cx="362" cy="238" r="7" fill="#d9dce1" stroke="#333" stroke-width="1.2"/>
+<text x="348" y="242" text-anchor="end" font-size="12" font-weight="400" fill="#fff">D1</text>
+<circle cx="168" cy="272" r="7" fill="#f2c94c" stroke="#333" stroke-width="1.2"/>
+<text x="182" y="276" text-anchor="start" font-size="12" font-weight="700" fill="#fff">D5</text>
+<circle cx="362" cy="272" r="7" fill="#d9dce1" stroke="#333" stroke-width="1.2"/>
+<text x="348" y="276" text-anchor="end" font-size="12" font-weight="400" fill="#fff">D2</text>
+<circle cx="168" cy="306" r="7" fill="#f2c94c" stroke="#333" stroke-width="1.2"/>
+<text x="182" y="310" text-anchor="start" font-size="12" font-weight="700" fill="#fff">D6</text>
+<circle cx="362" cy="306" r="7" fill="#d9dce1" stroke="#333" stroke-width="1.2"/>
+<text x="348" y="310" text-anchor="end" font-size="12" font-weight="400" fill="#fff">D3</text>
+<circle cx="168" cy="340" r="7" fill="#f2c94c" stroke="#333" stroke-width="1.2"/>
+<text x="182" y="344" text-anchor="start" font-size="12" font-weight="700" fill="#fff">D7</text>
+<circle cx="362" cy="340" r="7" fill="#d9dce1" stroke="#333" stroke-width="1.2"/>
+<text x="348" y="344" text-anchor="end" font-size="12" font-weight="400" fill="#fff">D4</text>
+<circle cx="168" cy="374" r="7" fill="#d9dce1" stroke="#333" stroke-width="1.2"/>
+<text x="182" y="378" text-anchor="start" font-size="12" font-weight="400" fill="#fff">D8</text>
+<circle cx="362" cy="374" r="7" fill="#f2c94c" stroke="#333" stroke-width="1.2"/>
+<text x="348" y="378" text-anchor="end" font-size="12" font-weight="700" fill="#fff">G</text>
+<circle cx="168" cy="408" r="7" fill="#d9dce1" stroke="#333" stroke-width="1.2"/>
+<text x="182" y="412" text-anchor="start" font-size="12" font-weight="400" fill="#fff">3V3</text>
+<circle cx="362" cy="408" r="7" fill="#f2c94c" stroke="#333" stroke-width="1.2"/>
+<text x="348" y="412" text-anchor="end" font-size="12" font-weight="700" fill="#fff">5V</text>
+<rect x="600" y="150" width="300" height="210" rx="8" fill="#2a6f97" stroke="#174560" stroke-width="2"/>
+<rect x="670" y="170" width="48" height="48" fill="#111" stroke="#444"/>
+<circle cx="676" cy="176" r="3.2" fill="#ff5a36"/>
+<circle cx="676" cy="188" r="3.2" fill="#ff5a36"/>
+<circle cx="676" cy="200" r="3.2" fill="#ff5a36"/>
+<circle cx="676" cy="212" r="3.2" fill="#ff5a36"/>
+<circle cx="688" cy="176" r="3.2" fill="#ff5a36"/>
+<circle cx="688" cy="188" r="3.2" fill="#ff5a36"/>
+<circle cx="688" cy="200" r="3.2" fill="#ff5a36"/>
+<circle cx="688" cy="212" r="3.2" fill="#ff5a36"/>
+<circle cx="700" cy="176" r="3.2" fill="#ff5a36"/>
+<circle cx="700" cy="188" r="3.2" fill="#ff5a36"/>
+<circle cx="700" cy="200" r="3.2" fill="#ff5a36"/>
+<circle cx="700" cy="212" r="3.2" fill="#ff5a36"/>
+<circle cx="712" cy="176" r="3.2" fill="#ff5a36"/>
+<circle cx="712" cy="188" r="3.2" fill="#ff5a36"/>
+<circle cx="712" cy="200" r="3.2" fill="#ff5a36"/>
+<circle cx="712" cy="212" r="3.2" fill="#ff5a36"/>
+<rect x="725" y="170" width="48" height="48" fill="#111" stroke="#444"/>
+<circle cx="731" cy="176" r="3.2" fill="#ff5a36"/>
+<circle cx="731" cy="188" r="3.2" fill="#ff5a36"/>
+<circle cx="731" cy="200" r="3.2" fill="#ff5a36"/>
+<circle cx="731" cy="212" r="3.2" fill="#ff5a36"/>
+<circle cx="743" cy="176" r="3.2" fill="#ff5a36"/>
+<circle cx="743" cy="188" r="3.2" fill="#ff5a36"/>
+<circle cx="743" cy="200" r="3.2" fill="#ff5a36"/>
+<circle cx="743" cy="212" r="3.2" fill="#ff5a36"/>
+<circle cx="755" cy="176" r="3.2" fill="#ff5a36"/>
+<circle cx="755" cy="188" r="3.2" fill="#ff5a36"/>
+<circle cx="755" cy="200" r="3.2" fill="#ff5a36"/>
+<circle cx="755" cy="212" r="3.2" fill="#ff5a36"/>
+<circle cx="767" cy="176" r="3.2" fill="#ff5a36"/>
+<circle cx="767" cy="188" r="3.2" fill="#ff5a36"/>
+<circle cx="767" cy="200" r="3.2" fill="#ff5a36"/>
+<circle cx="767" cy="212" r="3.2" fill="#ff5a36"/>
+<rect x="780" y="170" width="48" height="48" fill="#111" stroke="#444"/>
+<circle cx="786" cy="176" r="3.2" fill="#ff5a36"/>
+<circle cx="786" cy="188" r="3.2" fill="#ff5a36"/>
+<circle cx="786" cy="200" r="3.2" fill="#ff5a36"/>
+<circle cx="786" cy="212" r="3.2" fill="#ff5a36"/>
+<circle cx="798" cy="176" r="3.2" fill="#ff5a36"/>
+<circle cx="798" cy="188" r="3.2" fill="#ff5a36"/>
+<circle cx="798" cy="200" r="3.2" fill="#ff5a36"/>
+<circle cx="798" cy="212" r="3.2" fill="#ff5a36"/>
+<circle cx="810" cy="176" r="3.2" fill="#ff5a36"/>
+<circle cx="810" cy="188" r="3.2" fill="#ff5a36"/>
+<circle cx="810" cy="200" r="3.2" fill="#ff5a36"/>
+<circle cx="810" cy="212" r="3.2" fill="#ff5a36"/>
+<circle cx="822" cy="176" r="3.2" fill="#ff5a36"/>
+<circle cx="822" cy="188" r="3.2" fill="#ff5a36"/>
+<circle cx="822" cy="200" r="3.2" fill="#ff5a36"/>
+<circle cx="822" cy="212" r="3.2" fill="#ff5a36"/>
+<rect x="835" y="170" width="48" height="48" fill="#111" stroke="#444"/>
+<circle cx="841" cy="176" r="3.2" fill="#ff5a36"/>
+<circle cx="841" cy="188" r="3.2" fill="#ff5a36"/>
+<circle cx="841" cy="200" r="3.2" fill="#ff5a36"/>
+<circle cx="841" cy="212" r="3.2" fill="#ff5a36"/>
+<circle cx="853" cy="176" r="3.2" fill="#ff5a36"/>
+<circle cx="853" cy="188" r="3.2" fill="#ff5a36"/>
+<circle cx="853" cy="200" r="3.2" fill="#ff5a36"/>
+<circle cx="853" cy="212" r="3.2" fill="#ff5a36"/>
+<circle cx="865" cy="176" r="3.2" fill="#ff5a36"/>
+<circle cx="865" cy="188" r="3.2" fill="#ff5a36"/>
+<circle cx="865" cy="200" r="3.2" fill="#ff5a36"/>
+<circle cx="865" cy="212" r="3.2" fill="#ff5a36"/>
+<circle cx="877" cy="176" r="3.2" fill="#ff5a36"/>
+<circle cx="877" cy="188" r="3.2" fill="#ff5a36"/>
+<circle cx="877" cy="200" r="3.2" fill="#ff5a36"/>
+<circle cx="877" cy="212" r="3.2" fill="#ff5a36"/>
+<text x="780" y="250" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">MAX7219 · 4 módulos 8×8</text>
+<text x="780" y="270" text-anchor="middle" font-size="12" fill="#d8ecf7">32 × 8 LED · conecta la entrada (IN)</text>
+<circle cx="622" cy="230" r="7" fill="#f2c94c" stroke="#333" stroke-width="1.2"/>
+<text x="636" y="234" font-size="12" font-weight="700" fill="#fff">VCC</text>
+<circle cx="622" cy="256" r="7" fill="#f2c94c" stroke="#333" stroke-width="1.2"/>
+<text x="636" y="260" font-size="12" font-weight="700" fill="#fff">GND</text>
+<circle cx="622" cy="282" r="7" fill="#f2c94c" stroke="#333" stroke-width="1.2"/>
+<text x="636" y="286" font-size="12" font-weight="700" fill="#fff">DIN</text>
+<circle cx="622" cy="308" r="7" fill="#f2c94c" stroke="#333" stroke-width="1.2"/>
+<text x="636" y="312" font-size="12" font-weight="700" fill="#fff">CS</text>
+<circle cx="622" cy="334" r="7" fill="#f2c94c" stroke="#333" stroke-width="1.2"/>
+<text x="636" y="338" font-size="12" font-weight="700" fill="#fff">CLK</text>
+<text x="622" y="352" font-size="11" fill="#d8ecf7">IN ←</text>
+<path d="M362,408 H486 V263 A7 7 0 0 1 486 249 V230 H622" fill="none" stroke="#d62828" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M362,374 H470 V256 H622" fill="none" stroke="#222" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M168,340 H122 V488 H522 V282 H622" fill="none" stroke="#f77f00" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M168,306 H107 V502 H538 V308 H622" fill="none" stroke="#e9c46a" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M168,272 H92 V516 H554 V334 H622" fill="none" stroke="#2a9d55" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="362" cy="408" r="3.5" fill="#d62828"/>
+<circle cx="622" cy="230" r="3.5" fill="#d62828"/>
+<circle cx="362" cy="374" r="3.5" fill="#222"/>
+<circle cx="622" cy="256" r="3.5" fill="#222"/>
+<circle cx="168" cy="340" r="3.5" fill="#f77f00"/>
+<circle cx="622" cy="282" r="3.5" fill="#f77f00"/>
+<circle cx="168" cy="306" r="3.5" fill="#e9c46a"/>
+<circle cx="622" cy="308" r="3.5" fill="#e9c46a"/>
+<circle cx="168" cy="272" r="3.5" fill="#2a9d55"/>
+<circle cx="622" cy="334" r="3.5" fill="#2a9d55"/>
+<rect x="600" y="392" width="300" height="150" rx="10" fill="#fff" stroke="#c9a227" stroke-width="2"/>
+<text x="750" y="416" text-anchor="middle" font-size="14" font-weight="700" fill="#1d3b2a">D1 mini  →  MAX7219</text>
+<rect x="616" y="432" width="26" height="8" rx="3" fill="#d62828"/>
+<text x="652" y="442" font-size="13" fill="#222">5V</text>
+<text x="780" y="442" font-size="13" fill="#222">→  VCC</text>
+<rect x="616" y="454" width="26" height="8" rx="3" fill="#222"/>
+<text x="652" y="464" font-size="13" fill="#222">G</text>
+<text x="780" y="464" font-size="13" fill="#222">→  GND</text>
+<rect x="616" y="476" width="26" height="8" rx="3" fill="#f77f00"/>
+<text x="652" y="486" font-size="13" fill="#222">D7 (GPIO13)</text>
+<text x="780" y="486" font-size="13" fill="#222">→  DIN</text>
+<rect x="616" y="498" width="26" height="8" rx="3" fill="#e9c46a"/>
+<text x="652" y="508" font-size="13" fill="#222">D6 (GPIO12)</text>
+<text x="780" y="508" font-size="13" fill="#222">→  CS</text>
+<rect x="616" y="520" width="26" height="8" rx="3" fill="#2a9d55"/>
+<text x="652" y="530" font-size="13" fill="#222">D5 (GPIO14)</text>
+<text x="780" y="530" font-size="13" fill="#222">→  CLK</text>
+<text x="40" y="558" font-size="12.5" fill="#33443a">• Todo se alimenta por el USB del D1 mini (5 V). Con brillo bajo consume poco.</text>
+<text x="40" y="576" font-size="12.5" fill="#33443a">• Conecta la ENTRADA de la matriz (IN), no la salida (OUT).</text>
+<text x="40" y="594" font-size="12.5" fill="#33443a">• Si las letras salen giradas: página del reloj → Pantalla → giro / orden.</text>
+<text x="940" y="606" text-anchor="end" font-size="10" fill="#8a9a8e">Proyecto de fans sin ánimo de lucro · No oficial · CC BY-NC-SA 4.0 · github.com/wencescarlos/reloj-hyrule</text>
+</svg>
