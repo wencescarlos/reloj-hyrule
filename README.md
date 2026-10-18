@@ -1,5 +1,7 @@
 # ▲ Reloj de Hyrule
 
+**Español** · [English](README.en.md)
+
 **Un reloj con aventuras para pequeños héroes.** Hecho con impresión 3D, un Wemos D1 mini y 4 matrices LED, como homenaje a *The Legend of Zelda*.
 
 > ## ⚠️ Proyecto de fans SIN ÁNIMO DE LUCRO
@@ -29,10 +31,11 @@
 | 📅 **Fecha** | "18/10" cada medio minuto o "DOMINGO 18 DE OCTUBRE" de vez en cuando |
 | 🧚 **El hada de los segundos** | Vuela por la fila de abajo, de lado a lado |
 | 🗡️ **11 aventuras al azar** | Cofre del tesoro, combate, Trifuerza, hada, bomba, espada... |
-| 🧒 **Con el nombre del niño** | "¡LUCAS HA REUNIDO LA TRIFUERZA!" |
+| 🧒 **Con el nombre del niño** | "¡ALEJANDRO HA REUNIDO LA TRIFUERZA!" |
 | 🎂 **Cumpleaños** | Cuenta atrás y fiesta con tarta y fuegos artificiales |
 | 🌙 **Buenos días y buenas noches** | Y modo noche: brillo mínimo o pantalla apagada |
 | 📱 **Configuración desde el móvil** | En http://reloj-hyrule.local, sin instalar ninguna app |
+| 🌍 **En español o en inglés** | Se elige en la página del reloj: cambia los textos del reloj y de la página |
 | 🔄 **Se actualiza solo** | Descarga las versiones nuevas desde este repositorio |
 
 <p align="center">
@@ -117,6 +120,7 @@ Las instrucciones completas de impresión y montaje están en [`modelos_3d/LEEME
 2. Se abre la página del reloj (si no se abre, entra en http://192.168.4.1).
 3. Elige el WiFi de casa, escribe la clave y pulsa **Conectar**.
 4. Ya está: el reloj está en **http://reloj-hyrule.local**. Escribe ahí el nombre del niño y su cumpleaños.
+5. Arriba de la página puedes elegir el idioma: **Español** o **English**.
 
 > Si las letras salen giradas o desordenadas, ve a **Pantalla** en la página del reloj, cambia el giro o el orden de los módulos y pulsa **Probar pantalla**: debe verse 1 2 3 4.
 
@@ -146,11 +150,12 @@ Para publicar una versión nueva:
 reloj-hyrule/
 ├── firmware/
 │   ├── RelojHyrule/        ← programa del reloj (Arduino IDE)
-│   └── herramientas/       ← dibujar letras/sprites y simulador en PC
+│   └── herramientas/       ← dibujar letras/sprites, simulador en PC y grabación de animaciones
 ├── modelos_3d/             ← piezas STL listas para imprimir + instrucciones
 ├── docs/                   ← web del proyecto (GitHub Pages)
-├── imagenes/               ← capturas y animaciones
+├── imagenes/               ← capturas y animaciones (en/ = en inglés)
 ├── .github/workflows/      ← compilación y publicación automática
+├── README.en.md            ← este documento en inglés
 ├── AVISO_LEGAL.md          ← proyecto sin ánimo de lucro, marcas y créditos
 └── LICENSE                 ← CC BY-NC-SA 4.0
 ```
