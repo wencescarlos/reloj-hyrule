@@ -20,7 +20,16 @@ enum ModoSegundos : uint8_t {
   SEG_HADA  = 2,          // un hada (un punto) que va y viene
 };
 
+// Idioma de los textos del reloj y de su página web
+enum Idioma : uint8_t {
+  IDIOMA_ES = 0,          // español
+  IDIOMA_EN = 1,          // inglés
+};
+
 struct Ajustes {
+  // --- Idioma ---
+  uint8_t idioma;              // Idioma
+
   // --- Héroe ---
   char    nombre[24];          // nombre del niño o niña
   uint8_t cumpleDia;           // 0 = sin cumpleaños
@@ -70,6 +79,10 @@ struct Ajustes {
 };
 
 extern Ajustes ajustes;
+
+// Elige el texto según el idioma: tr("HOLA", "HELLO")
+inline bool enIngles() { return ajustes.idioma == IDIOMA_EN; }
+inline const char* tr(const char* es, const char* en) { return enIngles() ? en : es; }
 
 namespace Config {
   void valoresPorDefecto();

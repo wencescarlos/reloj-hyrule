@@ -1,5 +1,7 @@
 # ▲ Reloj de Hyrule
 
+**Español** · [English](README.en.md)
+
 **Un reloj con aventuras para pequeños héroes.** Hecho con impresión 3D, un Wemos D1 mini y 4 matrices LED, como homenaje a *The Legend of Zelda*.
 
 > ## ⚠️ Proyecto de fans SIN ÁNIMO DE LUCRO
@@ -33,6 +35,7 @@
 | 🎂 **Cumpleaños** | Cuenta atrás y fiesta con tarta y fuegos artificiales |
 | 🌙 **Buenos días y buenas noches** | Y modo noche: brillo mínimo o pantalla apagada |
 | 📱 **Configuración desde el móvil** | En http://reloj-hyrule.local, sin instalar ninguna app |
+| 🌍 **En español o en inglés** | Se elige en la página del reloj: cambia los textos del reloj y de la página |
 | 🔄 **Se actualiza solo** | Descarga las versiones nuevas desde este repositorio |
 
 <p align="center">
@@ -49,8 +52,7 @@
 |----------|----------|
 | Wemos D1 mini (ESP8266) | 1 |
 | Matriz LED MAX7219 4 en 1 (32 × 8, módulos de 32 × 32 mm) | 1 |
-| Tornillo M3 × 8 allen de cabeza cilíndrica (DIN 912), todos iguales | 8 |
-| Inserto roscado térmico M3 (largo 5,7 mm, Ø exterior 4,6 mm) | 8 |
+| Tornillo M3 × 6 autorroscante de cabeza avellanada allen, inox (todos iguales, sin insertos) | 10 |
 | Cables dupont o cable fino | 5 |
 | Cargador USB de 5 V y cable micro-USB | 1 |
 | Filamento PLA: gris piedra, blanco, verde y dorado | — |
@@ -71,7 +73,7 @@
 
 ## 🖨️ Impresión 3D: versión 2 "bloques de piedra antigua"
 
-Carcasa **diseñada desde cero** como dos bloques de piedra de Hyrule: una losa con la pantalla y la cresta del logo, sobre un pedestal con una Trifuerza dorada incrustada, esquinas desgastadas, grietas talladas y dos patas que inclinan el reloj 8° hacia atrás. El Wemos va **dentro del pedestal**, con el **USB en el centro de la tapa trasera, justo debajo de la Trifuerza**. La matriz queda sujeta con **dos barras con lengüetas elásticas** y la tapa se cierra con **tornillos allen** encajados a ras. Todos los tornillos son iguales: **M3 × 8 DIN 912** ([esquema de tornillería](imagenes/esquema_tornilleria.svg)).
+Carcasa **diseñada desde cero** como dos bloques de piedra de Hyrule: una losa con la pantalla y la cresta del logo, sobre un pedestal con una Trifuerza dorada incrustada, esquinas desgastadas, grietas talladas y dos patas que inclinan el reloj 8° hacia atrás. El Wemos va **dentro del pedestal**, con el **USB en el centro de la tapa trasera, justo debajo de la Trifuerza**. El Wemos se sujeta con un **soporte atornillado, sin pegamentos**. La matriz queda sujeta con **dos barras con lengüetas elásticas** y la tapa se cierra con **tornillos avellanados** que quedan hundidos. Todos los tornillos son iguales, **M3 × 6 autorroscantes de cabeza avellanada allen**, sin insertos, y **todos se atornillan desde atrás** ([esquema de tornillería](imagenes/esquema_tornilleria.svg)).
 
 <p align="center">
   <img src="imagenes/reloj_v2_trasera.png" alt="Tapa trasera con Trifuerza y USB" width="380">
@@ -88,6 +90,7 @@ Todas las piezas están en [`modelos_3d/`](modelos_3d/):
 | Trifuerza dorada de la tapa | `trifuerza_dorada_trasera.stl` | Dorado silk |
 | Trifuerza dorada del pedestal | `trifuerza_dorada_frontal.stl` | Dorado silk |
 | Barras de sujeción de la matriz | `barras_sujecion_matriz.stl` | Cualquiera |
+| Soporte del Wemos | `soporte_wemos.stl` | Cualquiera |
 | Fondo del logo | `fondo_logo.stl` | Verde |
 | Letras del logo | `logo_letras_geektoybox.stl` | Dorado silk |
 
@@ -123,6 +126,7 @@ Las instrucciones completas de impresión y montaje, con la lista de tornillerí
 2. Se abre la página del reloj (si no se abre, entra en http://192.168.4.1).
 3. Elige el WiFi de casa, escribe la clave y pulsa **Conectar**.
 4. Ya está: el reloj está en **http://reloj-hyrule.local**. Escribe ahí el nombre del niño y su cumpleaños.
+5. Arriba de la página puedes elegir el idioma: **Español** o **English**.
 
 > Si las letras salen giradas o desordenadas, ve a **Pantalla** en la página del reloj, cambia el giro o el orden de los módulos y pulsa **Probar pantalla**: debe verse 1 2 3 4.
 
@@ -152,11 +156,12 @@ Para publicar una versión nueva:
 reloj-hyrule/
 ├── firmware/
 │   ├── RelojHyrule/        ← programa del reloj (Arduino IDE)
-│   └── herramientas/       ← dibujar letras/sprites y simulador en PC
+│   └── herramientas/       ← dibujar letras/sprites, simulador en PC y grabación de animaciones
 ├── modelos_3d/             ← carcasa v2 (STL), generador e instrucciones
 ├── docs/                   ← web del proyecto (GitHub Pages)
-├── imagenes/               ← capturas y animaciones
+├── imagenes/               ← capturas y animaciones (en/ = en inglés)
 ├── .github/workflows/      ← compilación y publicación automática
+├── README.en.md            ← este documento en inglés
 ├── AVISO_LEGAL.md          ← proyecto sin ánimo de lucro, marcas y créditos
 └── LICENSE                 ← CC BY-NC-SA 4.0
 ```

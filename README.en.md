@@ -8,7 +8,7 @@
 > - Made at home as a gift for a child and shared **for free**.
 > - **Unofficial** and not affiliated with **Nintendo**. *The Legend of Zelda* is a trademark of Nintendo.
 > - **Not for sale**: neither the code, nor the models, nor clocks built with them ([CC BY-NC-SA 4.0](LICENSE) license).
-> - The code, the font and the pixel art are **original**. 3D models by other authors are used **under their CC BY-NC 4.0 license, with credit**.
+> - The code, the 3D case, the font and the pixel art are **original**. The logo letters are by geektoybox and are used **under their CC BY-NC 4.0 license, with credit**.
 > - More information in the [legal notice](AVISO_LEGAL.md) (in Spanish).
 
 <p align="center">
@@ -17,7 +17,7 @@
 </p>
 
 <p align="center">
-  <img src="imagenes/render_3d.png" alt="3D printed clock" width="420">
+  <img src="imagenes/reloj_v2.png" alt="Hyrule Clock v2: ancient stone blocks" width="480">
 </p>
 
 ---
@@ -52,9 +52,10 @@
 |------|----------|
 | Wemos D1 mini (ESP8266) | 1 |
 | MAX7219 4-in-1 LED matrix (32 × 8, 32 × 32 mm modules) | 1 |
+| M3 × 6 self-tapping countersunk hex socket screw, stainless (all the same, no inserts) | 10 |
 | Dupont wires or thin wire | 5 |
 | 5 V USB charger and micro-USB cable | 1 |
-| PLA filament: light color for the case, green and gold for the logo and the Triforce | — |
+| PLA filament: stone grey, white, green and gold | — |
 
 ### Wiring
 
@@ -70,27 +71,32 @@
 
 ---
 
-## 🖨️ 3D printing
+## 🖨️ 3D printing: version 2 "ancient stone blocks"
 
-All parts are ready to print in [`modelos_3d/`](modelos_3d/):
+A case **designed from scratch** as two Hyrule stone blocks: a slab holding the display and the logo crest, on top of a pedestal with an inlaid gold Triforce, worn corners, carved cracks and two feet that tilt the clock 8° backwards. The Wemos sits **inside the pedestal**, held by a **screwed-in holder, no glue**, with the **USB port in the middle of the back cover, right under the Triforce**. The matrix is held by **two bars with spring tongues**. All screws are the same, **M3 × 6 self-tapping countersunk hex socket**, with no inserts, and **all of them go in from the back** ([screw diagram](imagenes/esquema_tornilleria.svg), in Spanish).
 
-| Part | File | Color | Author |
-|------|------|-------|--------|
-| Base with crest | `base_reloj_zelda.stl` | **Light** (white or ivory), so the display shows through | Remix of **Qrome**'s case |
-| Back cover with Triforce | `tapa_trifuerza.stl` | Same as the base | Remix of **Qrome**'s case |
-| Logo background | `fondo_logo.stl` | Green | Made from **geektoybox**'s logo |
-| Logo letters | `logo_letras_geektoybox.stl` | Silk gold | Original by **geektoybox** (unchanged) |
-| Gold Triforce | `trifuerza_dorada.stl` | Silk gold | Original from this project |
+<p align="center">
+  <img src="imagenes/reloj_v2_trasera.png" alt="Back cover with the Triforce and the USB port" width="380">
+  <img src="imagenes/reloj_v2_interior.png" alt="Inside: matrix and Wemos" width="380">
+</p>
 
-The models by other authors are published under their **CC BY-NC 4.0** license (Attribution-NonCommercial), which allows non-commercial remixes:
-- *ESP8266 Wemos Clock News Weather Scrolling Marquee* case, by **Qrome**: [Printables](https://www.printables.com/model/25374-esp8266-wemos-clock-news-weather-scrolling-marquee)
-- *Legend of Zelda Logo Text*, by **geektoybox**: [Printables](https://www.printables.com/model/499505-legend-of-zelda-logo-text)
+All parts are in [`modelos_3d/`](modelos_3d/):
 
-If you'd rather start from the originals, [`modelos_3d/generar_modelos.py`](modelos_3d/generar_modelos.py) builds the same parts from them.
+| Part | File | Color |
+|------|------|-------|
+| Stone case (slab, pedestal, feet and crest) | `cuerpo_piedra.stl` | Stone grey |
+| Back cover (Triforce, USB and 4 screws) | `tapa_trasera.stl` | Stone grey |
+| Diffuser window | `ventana_difusora.stl` | **White** (lets the light through) |
+| Gold Triforce for the cover | `trifuerza_dorada_trasera.stl` | Silk gold |
+| Gold Triforce for the pedestal | `trifuerza_dorada_frontal.stl` | Silk gold |
+| Matrix holding bars | `barras_sujecion_matriz.stl` | Any |
+| Wemos holder | `soporte_wemos.stl` | Any |
+| Logo background | `fondo_logo.stl` | Green |
+| Logo letters | `logo_letras_geektoybox.stl` | Silk gold |
 
-<p align="center"><img src="imagenes/render_trasera_trifuerza.png" alt="Back cover with the Triforce" width="420"></p>
+The logo letters are by **geektoybox** ([Printables](https://www.printables.com/model/499505-legend-of-zelda-logo-text), CC BY-NC 4.0). Everything else is an original design from this project. The [`modelos_3d/generar_modelos.py`](modelos_3d/generar_modelos.py) script builds every part from the original logo.
 
-**Quick print notes:** PLA 1.75 mm, no supports and no multicolor printer needed. Print the base **face down** with 0.2 mm layers: the display shows through a 0.6 mm front skin (3 layers), so the base **must be a light color**. The logo is glued onto the crest using two 3.5 mm pieces of 1.75 mm filament as alignment pins. The full print and assembly guide is in [`modelos_3d/LEEME.md`](modelos_3d/LEEME.md) (in Spanish).
+**Quick print notes:** PLA 1.75 mm, no supports and no multicolor printer needed. Print the case **face down** (as the STL comes) with 0.2 mm layers and 4 perimeters. The screws cut their own thread in 2.5 mm pilot holes: tighten gently. The full print and assembly guide is in [`modelos_3d/LEEME.md`](modelos_3d/LEEME.md) (in Spanish).
 
 ---
 
@@ -151,7 +157,7 @@ reloj-hyrule/
 ├── firmware/
 │   ├── RelojHyrule/        ← clock firmware (Arduino IDE)
 │   └── herramientas/       ← font/sprite drawing, PC simulator and animation recording
-├── modelos_3d/             ← ready-to-print STL parts + instructions
+├── modelos_3d/             ← v2 case (STL), generator script and instructions
 ├── docs/                   ← project website (GitHub Pages)
 ├── imagenes/               ← screenshots and animations (en/ = in English)
 ├── .github/workflows/      ← automatic build and publishing
@@ -166,9 +172,9 @@ The code and file names are in Spanish, as the project was born as a gift for a 
 
 ## 🙏 Credits
 
-- ***ESP8266 Wemos Clock News Weather Scrolling Marquee* case:** **Qrome (David Payne)**, [Printables](https://www.printables.com/model/25374-esp8266-wemos-clock-news-weather-scrolling-marquee), CC BY-NC 4.0 license. Remixed: the logo crest was added to the base and the Triforce to the back cover.
-- ***Legend of Zelda Logo Text*:** **geektoybox**, [Printables](https://www.printables.com/model/499505-legend-of-zelda-logo-text), CC BY-NC 4.0 license. The letters are included unchanged and their outline is used for the background and the crest.
-- **Firmware, font, pixel art, texts, web page, model script and gold Triforce:** original work by [wencescarlos](https://github.com/wencescarlos), made from scratch.
+- ***Legend of Zelda Logo Text*:** **geektoybox**, [Printables](https://www.printables.com/model/499505-legend-of-zelda-logo-text), CC BY-NC 4.0 license. The letters are included unchanged and their outline shapes the background and the crest.
+- **Original idea of a clock with a Wemos D1 mini and a MAX7219 matrix:** **Qrome (David Payne)**, [Marquee Scroller](https://github.com/Qrome/marquee-scroller). This project uses the same hardware, but the firmware and the case are new.
+- **v2 case, firmware, font, pixel art, texts, web page and gold Triforces:** original work by [wencescarlos](https://github.com/wencescarlos), made from scratch.
 - ***The Legend of Zelda*:** trademark of **Nintendo**. Thanks for so many adventures. 💚
 
 ---
