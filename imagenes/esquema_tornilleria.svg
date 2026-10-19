@@ -1,99 +1,136 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 820" width="980" height="820" font-family="Helvetica, Arial, sans-serif">
-<rect width="980" height="820" rx="16" fill="#fbf8ef"/>
-<defs><pattern id="pl" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#b9b5a8"/><line x1="0" y1="0" x2="0" y2="6" stroke="#8f8a7c" stroke-width="2"/></pattern><pattern id="lat" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="4" height="4" fill="#d9b25a"/><line x1="0" y1="0" x2="0" y2="4" stroke="#a9832d" stroke-width="1.5"/></pattern><marker id="fl" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#333"/></marker></defs>
-<text x="490" y="40" text-anchor="middle" font-size="24" font-weight="700" fill="#1d3b2a">▲ Reloj de Hyrule · Esquema de tornillería</text>
-<text x="490" y="64" text-anchor="middle" font-size="14" fill="#5b6b5f">Todos los tornillos son iguales: <tspan font-weight="700">8 × M3 × 8 DIN 912</tspan> (allen, cabeza cilíndrica) + <tspan font-weight="700">8 insertos térmicos M3</tspan> (5,7 mm, Ø4,6)</text>
-<text x="60" y="98" font-size="16" font-weight="700" fill="#1d3b2a">① Tapa trasera (4 tornillos)</text>
-<path d="M60,130 H154.25 V166.3 H171.3 V185.0 H60 Z" fill="url(#pl)" stroke="#333"/>
-<path d="M225.75,130 H320 V185.0 H208.7 V166.3 H225.75 Z" fill="url(#pl)" stroke="#333"/>
-<text x="322" y="161.5" font-size="12" fill="#333">tapa (5 mm)</text>
-<rect x="137.2" y="187.0" width="105.6" height="143" fill="url(#pl)" stroke="#333"/>
-<rect x="168" y="187.0" width="44" height="88.0" fill="#fbf8ef" stroke="#333"/>
-<rect x="164.7" y="187.0" width="50.599999999999994" height="62.7" fill="url(#lat)" stroke="#7a5b16"/>
-<text x="247.2" y="324.0" font-size="12" fill="#333">torreta del cuerpo</text>
-<rect x="159.75" y="133.3" width="60.5" height="33" rx="5.5" fill="#4a4f57" stroke="#222"/>
-<rect x="180.1" y="133.3" width="19.8" height="13.2" fill="#22262b"/>
-<rect x="173.5" y="166.3" width="33" height="88" fill="#7b828c" stroke="#222"/>
-<line x1="173.5" y1="166.3" x2="206.5" y2="169.05" stroke="#5a6068" stroke-width="1"/>
-<line x1="173.5" y1="171.8" x2="206.5" y2="174.55" stroke="#5a6068" stroke-width="1"/>
-<line x1="173.5" y1="177.3" x2="206.5" y2="180.05" stroke="#5a6068" stroke-width="1"/>
-<line x1="173.5" y1="182.8" x2="206.5" y2="185.55" stroke="#5a6068" stroke-width="1"/>
-<line x1="173.5" y1="188.3" x2="206.5" y2="191.05" stroke="#5a6068" stroke-width="1"/>
-<line x1="173.5" y1="193.8" x2="206.5" y2="196.55" stroke="#5a6068" stroke-width="1"/>
-<line x1="173.5" y1="199.3" x2="206.5" y2="202.05" stroke="#5a6068" stroke-width="1"/>
-<line x1="173.5" y1="204.8" x2="206.5" y2="207.55" stroke="#5a6068" stroke-width="1"/>
-<line x1="173.5" y1="210.3" x2="206.5" y2="213.05" stroke="#5a6068" stroke-width="1"/>
-<line x1="173.5" y1="215.8" x2="206.5" y2="218.55" stroke="#5a6068" stroke-width="1"/>
-<line x1="173.5" y1="221.3" x2="206.5" y2="224.05" stroke="#5a6068" stroke-width="1"/>
-<line x1="173.5" y1="226.8" x2="206.5" y2="229.55" stroke="#5a6068" stroke-width="1"/>
-<line x1="173.5" y1="232.3" x2="206.5" y2="235.05" stroke="#5a6068" stroke-width="1"/>
-<line x1="173.5" y1="237.8" x2="206.5" y2="240.55" stroke="#5a6068" stroke-width="1"/>
-<line x1="173.5" y1="243.3" x2="206.5" y2="246.05" stroke="#5a6068" stroke-width="1"/>
-<line x1="173.5" y1="248.8" x2="206.5" y2="251.55" stroke="#5a6068" stroke-width="1"/>
-<line x1="124" y1="130" x2="124" y2="185.0" stroke="#333" stroke-width="1.2" marker-start="url(#fl)" marker-end="url(#fl)"/>
-<text x="114.0" y="161.5" text-anchor="end" font-size="12" fill="#222">5</text>
-<line x1="242.3" y1="130" x2="242.3" y2="166.3" stroke="#333" stroke-width="1.2" marker-start="url(#fl)" marker-end="url(#fl)"/>
-<text x="250.3" y="152.15" text-anchor="start" font-size="12" fill="#222">3,3 cajeado</text>
-<line x1="261.5" y1="187.0" x2="261.5" y2="249.7" stroke="#333" stroke-width="1.2" marker-start="url(#fl)" marker-end="url(#fl)"/>
-<text x="269.5" y="222.35" text-anchor="start" font-size="12" fill="#222">inserto 5,7</text>
-<text x="159.75" y="122" font-size="12" fill="#222">cabeza a ras · Ø6,5</text>
-<text x="60" y="358.0" font-size="12.5" fill="#33443a">El tornillo M3 × 8 atraviesa 1,7 mm de tapa y rosca</text>
-<text x="60" y="376.0" font-size="12.5" fill="#33443a">los 5,7 mm del inserto. La cabeza queda encajada.</text>
-<text x="420" y="98" font-size="16" font-weight="700" fill="#1d3b2a">② Barras de la matriz (4 tornillos), corte lateral</text>
-<rect x="440" y="130" width="20" height="330" fill="url(#pl)" stroke="#333"/>
-<rect x="460" y="144" width="10" height="202" fill="#f4f1ea" stroke="#999"/>
-<rect x="460" y="346" width="10" height="114" fill="url(#pl)" stroke="#333"/>
-<text x="440" y="478" font-size="11" fill="#333">frente + ventana</text>
-<rect x="470" y="150" width="70" height="190" fill="#222"/>
-<circle cx="474" cy="162" r="4" fill="#ff5a36"/>
-<circle cx="474" cy="185" r="4" fill="#ff5a36"/>
-<circle cx="474" cy="208" r="4" fill="#ff5a36"/>
-<circle cx="474" cy="231" r="4" fill="#ff5a36"/>
-<circle cx="474" cy="254" r="4" fill="#ff5a36"/>
-<circle cx="474" cy="277" r="4" fill="#ff5a36"/>
-<circle cx="474" cy="300" r="4" fill="#ff5a36"/>
-<circle cx="474" cy="323" r="4" fill="#ff5a36"/>
-<rect x="574.0" y="146" width="16.0" height="198" fill="#2a6f97"/>
-<rect x="540" y="170" width="34.0" height="150" fill="#555"/>
-<text x="484" y="249.0" font-size="11" fill="#fff">matriz</text>
-<line x1="470" y1="132" x2="590.0" y2="132" stroke="#333" stroke-width="1.2" marker-start="url(#fl)" marker-end="url(#fl)"/>
-<text x="530.0" y="126.0" text-anchor="middle" font-size="12" fill="#222">h = 9 … 14,5 mm</text>
-<rect x="470" y="360" width="165.0" height="80" fill="url(#pl)" stroke="#333"/>
-<rect x="555.0" y="380.0" width="80.0" height="40" fill="#fbf8ef" stroke="#333"/>
-<rect x="578.0" y="377.0" width="57.0" height="46.0" fill="url(#lat)" stroke="#7a5b16"/>
-<text x="480" y="456" font-size="11" fill="#333">torreta (a los lados de la matriz)</text>
-<rect x="635.0" y="170" width="30.0" height="270" fill="#8d8a80" stroke="#333"/>
-<rect x="651.0" y="170" width="14.0" height="60" fill="#a8a59b" stroke="#333"/>
-<rect x="590.0" y="170" width="61.000000000000014" height="50" fill="#a8a59b" stroke="#333"/>
-<text x="673.0" y="190" font-size="11.5" fill="#333">lengüeta elástica: empuja</text>
-<text x="673.0" y="205" font-size="11.5" fill="#333">la matriz contra la ventana</text>
-<line x1="620.0" y1="238" x2="594.0" y2="238" stroke="#d62828" stroke-width="3" marker-end="url(#fl)"/>
-<rect x="665.0" y="372.5" width="30" height="55.0" rx="4" fill="#4a4f57" stroke="#222"/>
-<rect x="585.0" y="385.0" width="80" height="30" fill="#7b828c" stroke="#222"/>
-<text x="701.0" y="404.0" font-size="12" font-weight="700" fill="#222">M3 × 8</text>
-<line x1="635.0" y1="158" x2="665.0" y2="158" stroke="#333" stroke-width="1.2" marker-start="url(#fl)" marker-end="url(#fl)"/>
-<text x="650.0" y="152.0" text-anchor="middle" font-size="12" fill="#222">barra 3</text>
-<text x="420" y="505" font-size="12.5" fill="#33443a">La barra se atornilla firme sobre la torreta, siempre a la misma altura.</text>
-<text x="420" y="523" font-size="12.5" fill="#33443a">Las lengüetas se doblan lo necesario: valen para matrices de 9 a 14,5 mm.</text>
-<text x="420" y="541" font-size="12.5" fill="#33443a">Aprieta los tornillos hasta el fondo: no hay que medir ni ajustar nada.</text>
-<text x="60" y="590" font-size="16" font-weight="700" fill="#1d3b2a">③ Dónde va cada tornillo (vista trasera)</text>
-<rect x="79.1" y="626.7" width="241.79999999999998" height="89.89999999999998" rx="4" fill="#d9d5c8" stroke="#555"/>
-<rect x="69.79999999999998" y="716.6" width="260.4000000000001" height="43.39999999999998" rx="4" fill="#d9d5c8" stroke="#555"/>
-<rect x="86.85" y="683.275" width="226.29999999999998" height="10.85" fill="none" stroke="#6d6a62" stroke-dasharray="5,3"/>
-<rect x="86.85" y="649.175" width="226.29999999999998" height="10.85" fill="none" stroke="#6d6a62" stroke-dasharray="5,3"/>
-<circle cx="93.05" cy="640.65" r="7" fill="#d62828"/><text x="93.05" y="644.65" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">A</text>
-<circle cx="306.95" cy="640.65" r="7" fill="#d62828"/><text x="306.95" y="644.65" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">A</text>
-<circle cx="83.75" cy="746.05" r="7" fill="#d62828"/><text x="83.75" y="750.05" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">A</text>
-<circle cx="316.25" cy="746.05" r="7" fill="#d62828"/><text x="316.25" y="750.05" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">A</text>
-<circle cx="310.05" cy="688.7" r="7" fill="#2a6f97"/><text x="310.05" y="692.7" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">B</text>
-<circle cx="89.95" cy="688.7" r="7" fill="#2a6f97"/><text x="89.95" y="692.7" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">B</text>
-<circle cx="310.05" cy="654.6" r="7" fill="#2a6f97"/><text x="310.05" y="658.6" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">B</text>
-<circle cx="89.95" cy="654.6" r="7" fill="#2a6f97"/><text x="89.95" y="658.6" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">B</text>
-<text x="200.0" y="703.0" text-anchor="middle" font-size="18" fill="#b38a1b">▲</text>
-<rect x="192.0" y="736.95" width="16" height="12" rx="3" fill="#555"/><text x="214.0" y="746.95" font-size="10" fill="#333">USB</text>
-<circle cx="480" cy="650" r="7" fill="#d62828"/><text x="496" y="655" font-size="13" fill="#222"><tspan font-weight="700">A</tspan> · 4 × M3 × 8 DIN 912: cierran la tapa (cabeza encajada a ras)</text>
-<circle cx="480" cy="680" r="7" fill="#2a6f97"/><text x="496" y="685" font-size="13" fill="#222"><tspan font-weight="700">B</tspan> · 4 × M3 × 8 DIN 912: fijan las 2 barras de la matriz (por dentro)</text>
-<text x="480" y="715" font-size="13" fill="#222">Insertos térmicos: 8 (uno en cada torreta), con el soldador a 200–220 °C</text>
-<text x="480" y="740" font-size="13" fill="#222">Llave allen: 2,5 mm</text>
-<text x="960" y="806" text-anchor="end" font-size="10" fill="#8a9a8e">Proyecto de fans sin ánimo de lucro · No oficial · CC BY-NC-SA 4.0 · github.com/wencescarlos/reloj-hyrule</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 800" width="1000" height="800" font-family="Helvetica, Arial, sans-serif">
+<rect width="1000" height="800" rx="16" fill="#fbf8ef"/>
+<defs><pattern id="pl" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#c4c0b3"/><line x1="0" y1="0" x2="0" y2="6" stroke="#9a9586" stroke-width="2"/></pattern><pattern id="pl2" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><rect width="6" height="6" fill="#aaa598"/><line x1="0" y1="0" x2="0" y2="6" stroke="#868173" stroke-width="2"/></pattern><marker id="fl" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#333"/></marker></defs>
+<text x="500.0" y="42.0" font-size="24" fill="#1d3b2a" text-anchor="middle" font-weight="700">▲ Reloj de Hyrule · Esquema de tornillería (carcasa v2.4)</text>
+<text x="500.0" y="68.0" font-size="14" fill="#5b6b5f" text-anchor="middle" font-weight="400">Los 10 tornillos son iguales: <tspan font-weight="700">M3 × 6 autorroscante, cabeza avellanada allen</tspan> (dk 6,5 · k 2,1 · llave de 2 mm), acero inoxidable</text>
+<text x="500.0" y="88.0" font-size="14" fill="#5b6b5f" text-anchor="middle" font-weight="400">Sin insertos y sin pegamento. Todos se atornillan desde atrás, en la misma dirección, hacia el frente del reloj.</text>
+<text x="130.0" y="130.0" font-size="16" fill="#1d3b2a" text-anchor="middle" font-weight="700">A · Tapa trasera (4)</text>
+<circle cx="32.0" cy="125.0" r="7" fill="#d62828"/>
+<polygon points="110.2,200.0 110.2,225.2 88.6,203.6 88.6,200.0 46.0,200.0 46.0,260.0 78.4,260.0 78.4,236.0 110.2,236.0" fill="url(#pl)" stroke="#333" stroke-width="1.2"/>
+<polygon points="149.8,200.0 149.8,225.2 171.4,203.6 171.4,200.0 214.0,200.0 214.0,260.0 181.6,260.0 181.6,236.0 149.8,236.0" fill="url(#pl)" stroke="#333" stroke-width="1.2"/>
+<polygon points="115.0,237.8 82.0,237.8 82.0,260.0 46.0,260.0 46.0,322.4 115.0,322.4" fill="url(#pl2)" stroke="#333" stroke-width="1.2"/>
+<polygon points="145.0,237.8 178.0,237.8 178.0,260.0 214.0,260.0 214.0,322.4 145.0,322.4" fill="url(#pl2)" stroke="#333" stroke-width="1.2"/>
+<text x="50.0" y="218.0" font-size="11" font-weight="700" fill="#222" stroke="#fbf8ef" stroke-width="3" paint-order="stroke">tapa</text>
+<text x="50.0" y="290.0" font-size="11" font-weight="700" fill="#222" stroke="#fbf8ef" stroke-width="3" paint-order="stroke">torreta</text>
+<polygon points="115.0,309.8 145.0,309.8 145.0,314.6 115.0,314.6" fill="#fbf8ef" stroke="#fbf8ef" stroke-width="1.2"/>
+<line x1="115.0" y1="309.8" x2="145.0" y2="309.8" stroke="#333" stroke-width="1.2"/>
+<polygon points="91.0,206.0 169.0,206.0 148.0,227.0 148.0,268.4 140.8,278.0 119.2,278.0 112.0,268.4 112.0,227.0" fill="#7b828c" stroke="#222" stroke-width="1.2"/>
+<rect x="118.0" y="206.0" width="24.0" height="13.2" fill="#22262b"/>
+<line x1="112.0" y1="230.0" x2="148.0" y2="235.4" stroke="#565c64" stroke-width="1"/>
+<line x1="112.0" y1="242.7" x2="148.0" y2="248.1" stroke="#565c64" stroke-width="1"/>
+<line x1="112.0" y1="255.4" x2="148.0" y2="260.8" stroke="#565c64" stroke-width="1"/>
+<line x1="112.0" y1="268.2" x2="148.0" y2="273.6" stroke="#565c64" stroke-width="1"/>
+<line x1="226.0" y1="200.0" x2="226.0" y2="206.0" stroke="#333" stroke-width="1" marker-start="url(#fl)" marker-end="url(#fl)"/>
+<text x="0.0" y="0.0" font-size="11.5" fill="#222" text-anchor="start" font-weight="400"></text>
+<text x="233.0" y="207.0" font-size="11" fill="#222" text-anchor="start" font-weight="400">0,5 hundida</text>
+<line x1="226.0" y1="206.0" x2="226.0" y2="236.0" stroke="#333" stroke-width="1" marker-start="url(#fl)" marker-end="url(#fl)"/>
+<text x="0.0" y="0.0" font-size="11.5" fill="#222" text-anchor="start" font-weight="400"></text>
+<text x="233.0" y="226.8" font-size="11" fill="#222" text-anchor="start" font-weight="400">3,0 pieza</text>
+<line x1="226.0" y1="237.8" x2="226.0" y2="278.0" stroke="#333" stroke-width="1" marker-start="url(#fl)" marker-end="url(#fl)"/>
+<text x="0.0" y="0.0" font-size="11.5" fill="#222" text-anchor="start" font-weight="400"></text>
+<text x="233.0" y="261.9" font-size="11" fill="#222" text-anchor="start" font-weight="700">≈3,3 rosca</text>
+<text x="130.0" y="329.8" font-size="11.5" fill="#222" text-anchor="middle" font-weight="400">agujero guía Ø2,5 · 6 mm de fondo</text>
+<text x="130.0" y="190.0" font-size="11.5" fill="#222" text-anchor="middle" font-weight="400">avellanado 90° · boca Ø6,9 · paso Ø3,3</text>
+<text x="130.0" y="353.8" font-size="12.5" fill="#33443a" text-anchor="middle" font-weight="400">La torreta entra 1,85 mm en un bolsillo</text>
+<text x="130.0" y="371.8" font-size="12.5" fill="#33443a" text-anchor="middle" font-weight="400">de la tapa: la centra y deja 3 mm de rosca.</text>
+<text x="460.0" y="130.0" font-size="16" fill="#1d3b2a" text-anchor="middle" font-weight="700">B · Barras de la matriz (4)</text>
+<circle cx="332.6" cy="125.0" r="7" fill="#2a6f97"/>
+<polygon points="440.2,200.0 440.2,225.2 418.6,203.6 418.6,200.0 376.0,200.0 376.0,236.0 440.2,236.0" fill="url(#pl)" stroke="#333" stroke-width="1.2"/>
+<polygon points="445.0,236.0 376.0,236.0 376.0,320.0 445.0,320.0" fill="url(#pl2)" stroke="#333" stroke-width="1.2"/>
+<polygon points="479.8,200.0 479.8,225.2 501.4,203.6 501.4,200.0 544.0,200.0 544.0,236.0 479.8,236.0" fill="url(#pl)" stroke="#333" stroke-width="1.2"/>
+<polygon points="475.0,236.0 544.0,236.0 544.0,320.0 475.0,320.0" fill="url(#pl2)" stroke="#333" stroke-width="1.2"/>
+<text x="380.0" y="222.0" font-size="11" font-weight="700" fill="#222" stroke="#fbf8ef" stroke-width="3" paint-order="stroke">barra</text>
+<text x="380.0" y="302.0" font-size="11" font-weight="700" fill="#222" stroke="#fbf8ef" stroke-width="3" paint-order="stroke">torreta</text>
+<polygon points="445.0,308.0 475.0,308.0 475.0,312.8 445.0,312.8" fill="#fbf8ef" stroke="#fbf8ef" stroke-width="1.2"/>
+<line x1="445.0" y1="308.0" x2="475.0" y2="308.0" stroke="#333" stroke-width="1.2"/>
+<polygon points="421.0,206.0 499.0,206.0 478.0,227.0 478.0,268.4 470.8,278.0 449.2,278.0 442.0,268.4 442.0,227.0" fill="#7b828c" stroke="#222" stroke-width="1.2"/>
+<rect x="448.0" y="206.0" width="24.0" height="13.2" fill="#22262b"/>
+<line x1="442.0" y1="230.0" x2="478.0" y2="235.4" stroke="#565c64" stroke-width="1"/>
+<line x1="442.0" y1="242.7" x2="478.0" y2="248.1" stroke="#565c64" stroke-width="1"/>
+<line x1="442.0" y1="255.4" x2="478.0" y2="260.8" stroke="#565c64" stroke-width="1"/>
+<line x1="442.0" y1="268.2" x2="478.0" y2="273.6" stroke="#565c64" stroke-width="1"/>
+<line x1="556.0" y1="200.0" x2="556.0" y2="206.0" stroke="#333" stroke-width="1" marker-start="url(#fl)" marker-end="url(#fl)"/>
+<text x="0.0" y="0.0" font-size="11.5" fill="#222" text-anchor="start" font-weight="400"></text>
+<text x="563.0" y="207.0" font-size="11" fill="#222" text-anchor="start" font-weight="400">0,5 hundida</text>
+<line x1="556.0" y1="206.0" x2="556.0" y2="236.0" stroke="#333" stroke-width="1" marker-start="url(#fl)" marker-end="url(#fl)"/>
+<text x="0.0" y="0.0" font-size="11.5" fill="#222" text-anchor="start" font-weight="400"></text>
+<text x="563.0" y="226.8" font-size="11" fill="#222" text-anchor="start" font-weight="400">3,0 pieza</text>
+<line x1="556.0" y1="236.0" x2="556.0" y2="278.0" stroke="#333" stroke-width="1" marker-start="url(#fl)" marker-end="url(#fl)"/>
+<text x="0.0" y="0.0" font-size="11.5" fill="#222" text-anchor="start" font-weight="400"></text>
+<text x="563.0" y="261.0" font-size="11" fill="#222" text-anchor="start" font-weight="700">≈3,3 rosca</text>
+<text x="460.0" y="328.0" font-size="11.5" fill="#222" text-anchor="middle" font-weight="400">agujero guía Ø2,5 · 6 mm de fondo</text>
+<text x="460.0" y="190.0" font-size="11.5" fill="#222" text-anchor="middle" font-weight="400">avellanado 90° · boca Ø6,9 · paso Ø3,3</text>
+<text x="460.0" y="352.0" font-size="12.5" fill="#33443a" text-anchor="middle" font-weight="400">La barra apoya firme sobre su torreta.</text>
+<text x="460.0" y="370.0" font-size="12.5" fill="#33443a" text-anchor="middle" font-weight="400">Las lengüetas elásticas aprietan la matriz.</text>
+<text x="790.0" y="130.0" font-size="16" fill="#1d3b2a" text-anchor="middle" font-weight="700">C · Soporte del Wemos (2)</text>
+<circle cx="671.0" cy="125.0" r="7" fill="#e09f3e"/>
+<polygon points="770.2,200.0 770.2,225.2 748.6,203.6 748.6,200.0 706.0,200.0 706.0,236.0 770.2,236.0" fill="url(#pl)" stroke="#333" stroke-width="1.2"/>
+<polygon points="775.0,236.0 706.0,236.0 706.0,320.0 775.0,320.0" fill="url(#pl2)" stroke="#333" stroke-width="1.2"/>
+<polygon points="809.8,200.0 809.8,225.2 831.4,203.6 831.4,200.0 874.0,200.0 874.0,236.0 809.8,236.0" fill="url(#pl)" stroke="#333" stroke-width="1.2"/>
+<polygon points="805.0,236.0 874.0,236.0 874.0,320.0 805.0,320.0" fill="url(#pl2)" stroke="#333" stroke-width="1.2"/>
+<text x="710.0" y="222.0" font-size="11" font-weight="700" fill="#222" stroke="#fbf8ef" stroke-width="3" paint-order="stroke">soporte</text>
+<text x="710.0" y="302.0" font-size="11" font-weight="700" fill="#222" stroke="#fbf8ef" stroke-width="3" paint-order="stroke">torreta</text>
+<polygon points="775.0,308.0 805.0,308.0 805.0,312.8 775.0,312.8" fill="#fbf8ef" stroke="#fbf8ef" stroke-width="1.2"/>
+<line x1="775.0" y1="308.0" x2="805.0" y2="308.0" stroke="#333" stroke-width="1.2"/>
+<polygon points="751.0,206.0 829.0,206.0 808.0,227.0 808.0,268.4 800.8,278.0 779.2,278.0 772.0,268.4 772.0,227.0" fill="#7b828c" stroke="#222" stroke-width="1.2"/>
+<rect x="778.0" y="206.0" width="24.0" height="13.2" fill="#22262b"/>
+<line x1="772.0" y1="230.0" x2="808.0" y2="235.4" stroke="#565c64" stroke-width="1"/>
+<line x1="772.0" y1="242.7" x2="808.0" y2="248.1" stroke="#565c64" stroke-width="1"/>
+<line x1="772.0" y1="255.4" x2="808.0" y2="260.8" stroke="#565c64" stroke-width="1"/>
+<line x1="772.0" y1="268.2" x2="808.0" y2="273.6" stroke="#565c64" stroke-width="1"/>
+<line x1="886.0" y1="200.0" x2="886.0" y2="206.0" stroke="#333" stroke-width="1" marker-start="url(#fl)" marker-end="url(#fl)"/>
+<text x="0.0" y="0.0" font-size="11.5" fill="#222" text-anchor="start" font-weight="400"></text>
+<text x="893.0" y="207.0" font-size="11" fill="#222" text-anchor="start" font-weight="400">0,5 hundida</text>
+<line x1="886.0" y1="206.0" x2="886.0" y2="236.0" stroke="#333" stroke-width="1" marker-start="url(#fl)" marker-end="url(#fl)"/>
+<text x="0.0" y="0.0" font-size="11.5" fill="#222" text-anchor="start" font-weight="400"></text>
+<text x="893.0" y="226.8" font-size="11" fill="#222" text-anchor="start" font-weight="400">3,0 pieza</text>
+<line x1="886.0" y1="236.0" x2="886.0" y2="278.0" stroke="#333" stroke-width="1" marker-start="url(#fl)" marker-end="url(#fl)"/>
+<text x="0.0" y="0.0" font-size="11.5" fill="#222" text-anchor="start" font-weight="400"></text>
+<text x="893.0" y="261.0" font-size="11" fill="#222" text-anchor="start" font-weight="700">≈3,3 rosca</text>
+<text x="790.0" y="328.0" font-size="11.5" fill="#222" text-anchor="middle" font-weight="400">agujero guía Ø2,5 · 6 mm de fondo</text>
+<text x="790.0" y="190.0" font-size="11.5" fill="#222" text-anchor="middle" font-weight="400">avellanado 90° · boca Ø6,9 · paso Ø3,3</text>
+<text x="790.0" y="352.0" font-size="12.5" fill="#33443a" text-anchor="middle" font-weight="400">Al atornillar, la viga elástica se curva</text>
+<text x="790.0" y="370.0" font-size="12.5" fill="#33443a" text-anchor="middle" font-weight="400">0,4 mm y la zapata aprieta el ESP.</text>
+<text x="500.0" y="450.0" font-size="15" fill="#1d3b2a" text-anchor="middle" font-weight="700">Soporte del Wemos visto desde atrás (todos los tornillos entran hacia el frente)</text>
+<rect x="259.2" y="611.4" width="421.6" height="9.3" rx="0" fill="url(#pl2)" stroke="#333" stroke-width="1.2"/>
+<rect x="378.9" y="549.4" width="16.7" height="62.0" rx="0" fill="url(#pl2)" stroke="#333" stroke-width="1.2"/>
+<rect x="324.3" y="533.9" width="55.8" height="77.5" rx="0" fill="url(#pl2)" stroke="#333" stroke-width="1.2"/>
+<circle cx="352.2" cy="533.9" r="27.9" fill="url(#pl2)" stroke="#333" stroke-width="1.2"/>
+<rect x="544.4" y="549.4" width="16.7" height="62.0" rx="0" fill="url(#pl2)" stroke="#333" stroke-width="1.2"/>
+<rect x="559.9" y="533.9" width="55.8" height="77.5" rx="0" fill="url(#pl2)" stroke="#333" stroke-width="1.2"/>
+<circle cx="587.8" cy="533.9" r="27.9" fill="url(#pl2)" stroke="#333" stroke-width="1.2"/>
+<rect x="390.6" y="566.8" width="158.7" height="7.4" rx="0" fill="#1f4e8c" stroke="#333" stroke-width="1.2"/>
+<rect x="432.8" y="546.9" width="74.4" height="19.8" rx="0" fill="#c9ccd2" stroke="#333" stroke-width="1.2"/>
+<circle cx="352.2" cy="533.9" r="27.9" fill="#8a877e" stroke="#333" stroke-width="1.2"/>
+<rect x="333.6" y="496.7" width="37.2" height="37.2" rx="0" fill="#8a877e" stroke="#8a877e" stroke-width="1.2"/>
+<circle cx="352.2" cy="533.9" r="20.2" fill="#3a3d42"/>
+<polygon points="359.3,533.9 355.8,540.1 348.6,540.1 345.1,533.9 348.6,527.7 355.8,527.7" fill="#111"/>
+<circle cx="587.8" cy="533.9" r="27.9" fill="#8a877e" stroke="#333" stroke-width="1.2"/>
+<rect x="569.2" y="496.7" width="37.2" height="37.2" rx="0" fill="#8a877e" stroke="#8a877e" stroke-width="1.2"/>
+<circle cx="587.8" cy="533.9" r="20.2" fill="#3a3d42"/>
+<polygon points="594.9,533.9 591.4,540.1 584.2,540.1 580.7,533.9 584.2,527.7 591.4,527.7" fill="#111"/>
+<rect x="339.8" y="481.2" width="260.4" height="31.0" rx="8" fill="#8a877e" stroke="#333" stroke-width="1.2"/>
+<rect x="352.2" y="533.9" width="235.6" height="7.4" rx="0" fill="#8a877e" stroke="#333" stroke-width="1.2"/>
+<rect x="442.1" y="537.6" width="55.8" height="11.8" rx="3" fill="#8a877e" stroke="#333" stroke-width="1.2"/>
+<polygon points="470.0,485.5 455.1,511.0 484.9,511.0" fill="#d4a53a"/>
+<text x="693.2" y="499.8" font-size="12" fill="#222" text-anchor="start" font-weight="400">larguero rígido</text>
+<line x1="690.1" y1="497.3" x2="603.3" y2="497.3" stroke="#333"/>
+<text x="693.2" y="540.7" font-size="12" fill="#222" text-anchor="start" font-weight="400">viga elástica (1,2 mm)</text>
+<line x1="690.1" y1="538.2" x2="544.4" y2="538.2" stroke="#333"/>
+<text x="693.2" y="564.9" font-size="12" fill="#222" text-anchor="start" font-weight="400">zapata sobre el blindaje del ESP</text>
+<line x1="690.1" y1="562.4" x2="488.6" y2="547.5" stroke="#333"/>
+<text x="693.2" y="599.0" font-size="12" fill="#222" text-anchor="start" font-weight="400">Wemos D1 mini en su cuna</text>
+<line x1="690.1" y1="596.5" x2="532.0" y2="570.5" stroke="#333"/>
+<text x="246.8" y="537.0" font-size="12" fill="#222" text-anchor="end" font-weight="700">2 × M3 × 6</text>
+<line x1="249.9" y1="534.5" x2="330.5" y2="533.9" stroke="#333"/>
+<text x="246.8" y="592.8" font-size="12" fill="#222" text-anchor="end" font-weight="400">torretas del cuerpo</text>
+<line x1="249.9" y1="590.3" x2="324.3" y2="590.3" stroke="#333"/>
+<circle cx="60" cy="680" r="7" fill="#d62828"/>
+<text x="74.0" y="685.0" font-size="13" fill="#222" text-anchor="start" font-weight="400"><tspan font-weight="700">A</tspan> · 4 × M3 × 6: cierran la tapa trasera</text>
+<circle cx="370" cy="680" r="7" fill="#2a6f97"/>
+<text x="384.0" y="685.0" font-size="13" fill="#222" text-anchor="start" font-weight="400"><tspan font-weight="700">B</tspan> · 4 × M3 × 6: fijan las 2 barras de la matriz</text>
+<circle cx="680" cy="680" r="7" fill="#e09f3e"/>
+<text x="694.0" y="685.0" font-size="13" fill="#222" text-anchor="start" font-weight="400"><tspan font-weight="700">C</tspan> · 2 × M3 × 6: fijan el soporte del Wemos</text>
+<text x="500.0" y="720.0" font-size="13.5" fill="#1d3b2a" text-anchor="middle" font-weight="700">Compra: 10 tornillos M3 × 6 autorroscantes de cabeza avellanada allen, inox (mejor 12 por si se pierde alguno). Llave allen de 2 mm.</text>
+<text x="500.0" y="742.0" font-size="12.5" fill="#5b6b5f" text-anchor="middle" font-weight="400">Aprieta con suavidad: el tornillo talla su propia rosca en el plástico. Si lo quitas y lo vuelves a poner, gíralo primero hacia atrás hasta notar el «clic» de la rosca.</text>
 </svg>

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # ===========================================================================
-#  generar_modelos.py  -  Reloj de Hyrule v2 · "Bloques de piedra antigua"
+#  generar_modelos.py  -  Reloj de Hyrule v2.4 · "Bloques de piedra antigua"
 #  Reloj de Hyrule · Proyecto de fans SIN ÁNIMO DE LUCRO · No oficial
 #  CC BY-NC-SA 4.0 · https://github.com/wencescarlos/reloj-hyrule
 #
@@ -18,14 +18,18 @@
 #
 #  Genera, en la carpeta "piezas/":
 #     cuerpo_piedra.stl              carcasa (losa + pedestal + patas + cresta)
-#     tapa_trasera.stl               tapa con Trifuerza, puerto USB y 4 tornillos allen
+#     tapa_trasera.stl               tapa con Trifuerza, puerto USB y 4 tornillos avellanados
 #     barras_sujecion_matriz.stl     2 barras que aprietan la matriz contra la ventana
 #     ventana_difusora.stl           placa blanca delante de los LED
 #     trifuerza_dorada_trasera.stl   Trifuerza dorada de la tapa (30 mm)
 #     trifuerza_dorada_frontal.stl   Trifuerza dorada del pedestal (15 mm)
+#     soporte_wemos.stl              pinza que sujeta el Wemos (sin pegamento)
 #     fondo_logo.stl                 fondo verde con el rebaje de las letras
 #
-#  Tornillería: 8 x M3 x 8 DIN 912 (allen) + 8 insertos térmicos M3 (agujero Ø4,0).
+#  Tornillería: 10 tornillos iguales M3 x 6 autorroscantes, cabeza AVELLANADA
+#  allen (hexágono de 2 mm), acero inoxidable. Sin insertos: roscan directamente
+#  en agujeros guía de Ø2,5 mm. TODOS se atornillan desde atrás, en la misma
+#  dirección (hacia el frente del reloj).
 # ===========================================================================
 import argparse, os, sys
 import numpy as np
@@ -40,7 +44,7 @@ D        = 46.0      # fondo de la carcasa
 PARED    = 3.0       # grosor de paredes
 FRENTE   = 3.0       # grosor de la pared frontal
 REBAJE   = 1.5       # escalón donde apoya la tapa trasera
-TAPA     = 5.0       # grosor de la tapa trasera (cabezas allen cajeadas)
+TAPA     = 5.0       # grosor de la tapa trasera
 
 LOSA_X, LOSA_Y0, LOSA_Y1 = 78.0, 28.0, 86.0      # bloque superior (±x)
 PED_X,  PED_Y0,  PED_Y1  = 84.0, 0.0, 28.0       # pedestal (±x)
@@ -60,14 +64,22 @@ D1_PCB_GROSOR = 1.2
 USB_SOBRESALE = 1.0
 Z_TAPA_INT = D - TAPA         # cara interior de la tapa (41)
 
-# Tapa: 4 x M3 x 8 DIN 912 (allen, cabeza cilíndrica) + insertos térmicos M3 (agujero 4,0)
+# ---- Tornillería: M3 x 6 autorroscante, cabeza avellanada allen (dk 6,5 · k 2,1 · llave 2)
+# Regla común para los 10 tornillos:
+#   0,3 mm de rebaje + 3,0 mm de pieza atravesada + ~3,3 mm de rosca en la torreta
+TORN_L      = 6.0     # largo total (en los avellanados se mide con la cabeza)
+AVELL_D     = 6.9     # boca del avellanado (cabeza Ø6,5 + holgura)
+AVELL_REB   = 0.3     # la cabeza queda 0,3 mm hundida: nunca sobresale
+PASO_D      = 3.3     # agujero de paso en la pieza que se atornilla
+PIEZA_T     = 3.0     # grosor de pieza en cada tornillo
+PILOTO_D    = 2.5     # agujero guía en la torreta: el tornillo talla su rosca
+PILOTO_PROF = 6.0     # rosca 3,3 + 2,7 de margen para la punta
 TORNILLOS = [(-69.0, 77.0), (69.0, 77.0), (-75.0, 9.0), (75.0, 9.0)]
-INSERTO_D, INSERTO_PROF = 4.0, 8.0
-CABEZA_D, CABEZA_H = 6.5, 3.3            # cajeado para la cabeza DIN 912 (Ø5,5 x 3)
+BOSS_D, BOSS_H = 8.0, 1.85                # la torreta entra 1,85 mm en un bolsillo de la tapa
+BOLSILLO_D, BOLSILLO_H = 8.6, TAPA - PIEZA_T   # bolsillo de Ø8,6 x 2 en la cara interior de la tapa
 # Barras de sujeción de la matriz: se atornillan FIRMES sobre torretas altas y
 # llevan lengüetas elásticas que empujan la matriz contra la ventana.
 # Valen para matrices de 9 a 14,5 mm (cara de los LED -> trasera de la placa).
-# Todos los tornillos del reloj son iguales: M3 x 8 DIN 912.
 BARRAS_Y = (46.0, 68.0)                   # alturas de las dos barras
 BARRA_X = 71.0                            # tornillos de las barras (±x)
 MARCO_Z = 10.0                            # altura del marco que centra la matriz
@@ -76,6 +88,14 @@ ASIENTO_Z = FRENTE + H_MAX + 2.0          # las barras se apoyan aquí (19,5): n
 BARRA_GROSOR = 3.0
 LENGUETA_GROSOR = 1.4                     # lengüeta elástica
 PUNTA_Z = FRENTE + H_MIN - 0.5            # hasta dónde llega la punta en reposo (11,5)
+
+# Soporte del Wemos: pinza atornillada DESDE ATRÁS (igual que la tapa y las barras)
+# a dos torretas a los lados de la cuna. Una viga elástica con una zapata aprieta
+# el blindaje metálico del módulo ESP (zona plana, sin pines ni componentes).
+SOP_X, SOP_Y = 19.0, 15.5                 # tornillos del soporte (±x, altura)
+SOP_Z = 15.0                              # cara trasera de las torretas = apoyo del soporte
+ESP_ARRIBA = 9.0 + 1.2 + 3.2              # cara de arriba del blindaje del ESP (13,4)
+SOP_PRECARGA = 0.4                        # la zapata baja 0,4 mm más: aprieta al atornillar
 
 def ext(poly, h, z0=0.0):
     geoms = [g for g in getattr(poly, "geoms", [poly]) if g.area > 1e-6]
@@ -115,6 +135,22 @@ def prisma_yz(pts_yz, x0, x1):
     v = m.vertices.copy(); m.vertices = np.c_[v[:, 2] + x0, v[:, 0], v[:, 1]]; m.fix_normals()
     return m
 
+def avellanado(x, y, z0=0.0, largo=PIEZA_T):
+    """Agujero para tornillo de cabeza avellanada (90°). z0 = cara por la que entra la cabeza;
+    el agujero avanza hacia +z."""
+    r0, r1 = AVELL_D / 2, PASO_D / 2
+    perfil = [(0, -1), (r0, -1), (r0, AVELL_REB), (r1, AVELL_REB + (r0 - r1)), (r1, largo + 1), (0, largo + 1)]
+    m = trimesh.creation.revolve(perfil, sections=48)
+    m.apply_translation([x, y, z0]); return m
+
+def piloto(x, y, z_boca):
+    """Agujero guía de Ø2,5 que entra en la torreta desde z_boca hacia el frente (-z),
+    con un pequeño chaflán de entrada para que el tornillo arranque recto."""
+    r = PILOTO_D / 2
+    perfil = [(0, -PILOTO_PROF), (r, -PILOTO_PROF), (r, -0.4), (r + 0.4, 0), (r + 0.4, 1), (0, 1)]
+    m = trimesh.creation.revolve(perfil, sections=32)
+    m.apply_translation([x, y, z_boca]); return m
+
 def triforce(cx, cy, alto, hueco):
     """Tres triángulos (punta hacia +y) separados por 'hueco'."""
     m = alto / np.sqrt(3)
@@ -141,7 +177,6 @@ PED = piedra(-PED_X, PED_Y0, PED_X, PED_Y1, [
     [(-84.1, -0.1), (-81, -0.1), (-84.1, 2.5)],
     [(84.1, -0.1), (79.5, -0.1), (84.1, 4.0)],
     [(40, -0.1), (43, 1.6), (46, -0.1)],
-    [(-56, 28.1), (-52.5, 26.6), (-49, 28.1)],
     [(84.1, 14), (82.6, 12), (84.1, 9.5)],
     [(-84.1, 17), (-82.8, 14.5), (-84.1, 12)],
 ])
@@ -241,6 +276,7 @@ def cuerpo(L0):
         torre = unary_union([Point(x, y).buffer(4.8, resolution=24),
                              box(min(x, lado_x), min(y, lado_y), max(x, lado_x), max(y, lado_y))]).intersection(CONTORNO)
         piezas.append(ext(torre, Z_TAPA_INT - FRENTE, FRENTE))     # desde el frente: se imprime sin soportes
+        piezas.append(ext(Point(x, y).buffer(BOSS_D / 2, resolution=32), BOSS_H, Z_TAPA_INT))   # centra la tapa
     # Torretas para las barras que sujetan la matriz
     for yb_ in BARRAS_Y:
         for sx in (1, -1):
@@ -260,15 +296,19 @@ def cuerpo(L0):
     for s_ in (1, -1):   # tope delantero: dos postes en las esquinas de la placa
         piezas.append(ext(box(min(s_*10.6, s_*(a2+0.3)), yb, max(s_*10.6, s_*(a2+0.3)), D1_PCB_Y + D1_PCB_GROSOR + 1.0),
                           z_ini - 0.6 - FRENTE + 0.01, FRENTE))
+    for s_ in (1, -1):   # torretas del soporte del Wemos
+        t3 = unary_union([Point(s_ * SOP_X, SOP_Y).buffer(4.5, resolution=32),
+                          box(s_ * SOP_X - 4.5, PED_Y0 + 1, s_ * SOP_X + 4.5, SOP_Y)])
+        piezas.append(ext(t3, SOP_Z - FRENTE + 0.5, FRENTE - 0.5))
     c = U(piezas)
     if L0 is not None:
         for (u, v) in guias:   # agujeros para las guías de filamento del fondo del logo
             c = R(c, ext(Point(-u, LOSA_Y1 + 6.0 + v).buffer(0.95, resolution=24), 2.6 + 1, -1))
-    for yb_ in BARRAS_Y:       # insertos de las barras de la matriz
-        for sx in (1, -1):
-            c = R(c, ext(Point(sx * BARRA_X, yb_).buffer(INSERTO_D / 2, resolution=32), INSERTO_PROF + 1, ASIENTO_Z - INSERTO_PROF))
-    for (x, y) in TORNILLOS:   # agujeros para los insertos térmicos M3
-        c = R(c, ext(Point(x, y).buffer(INSERTO_D / 2, resolution=32), INSERTO_PROF + 1, Z_TAPA_INT - INSERTO_PROF))
+    # Agujeros guía de Ø2,5 para los tornillos autorroscantes (todos en la misma dirección)
+    guias_t = [(sx * BARRA_X, yb_, ASIENTO_Z) for yb_ in BARRAS_Y for sx in (1, -1)]
+    guias_t += [(x, y, Z_TAPA_INT + BOSS_H) for (x, y) in TORNILLOS]
+    guias_t += [(sx * SOP_X, SOP_Y, SOP_Z) for sx in (1, -1)]
+    c = R(c, [piloto(x, y, z) for (x, y, z) in guias_t])
     # Trifuerza dorada del frente (en el pedestal)
     hueco, _ = triforce(0, 14.0, 15.0, 0.9)
     c = R(c, ext(hueco, FRENTE + 2, -1))
@@ -294,11 +334,9 @@ def tapa():
     p = con_chaflan(espejo(TAPA_2D), TAPA, 0.0, chaflan=0.6, pasos=2)        # z=0: cara exterior
     agujeros = []
     for (x, y) in TORNILLOS:
-        # agujero con cajeado para tornillo allen M3 DIN 912 (la cabeza queda a ras)
-        perfil = [(0, -1), (CABEZA_D / 2 + 0.4, -1), (CABEZA_D / 2 + 0.4, 0), (CABEZA_D / 2, 0.4),
-                  (CABEZA_D / 2, CABEZA_H), (1.7, CABEZA_H), (1.7, TAPA + 1), (0, TAPA + 1)]
-        av = trimesh.creation.revolve(perfil, sections=48)
-        av.apply_translation([x, y, 0]); agujeros.append(av)
+        xm = -x   # coordenadas en espejo (la tapa se imprime boca abajo)
+        agujeros.append(avellanado(xm, y, 0.0, TAPA))                        # cabeza avellanada a ras
+        agujeros.append(ext(Point(xm, y).buffer(BOLSILLO_D / 2, resolution=48), BOLSILLO_H + 1, PIEZA_T))  # bolsillo de la torreta
     # Puerto USB (rebaje exterior + hueco) justo debajo de la Trifuerza
     yusb = D1_PCB_Y + D1_PCB_GROSOR / 2 + 1.5
     agujeros.append(ext(rrect(0, yusb, 12.0, 10.0, 2.0), TAPA + 2, -1))
@@ -345,13 +383,33 @@ def barras():
         b = ext(cuerpo2d, T)
         b = R(b, [ext(unary_union(hueco2d), T + 2, -1), ext(unary_union(lengs), T, t)])   # ranuras y lengüeta fina
         b = U([b, ext(unary_union(cols), alto_col, t)])
-        for sx in (1, -1):
-            b = R(b, ext(Point(sx * BARRA_X, 0).buffer(1.7, resolution=24), T + 2, -1))
+        b = R(b, [avellanado(sx * BARRA_X, 0, 0.0, T) for sx in (1, -1)])   # cabeza avellanada por detrás
         if k == 1:   # la barra de arriba: girada 180° (las lengüetas miran hacia abajo, al centro)
             b.apply_transform(np.array([[-1, 0, 0, 0], [0, -1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1.]]))
         b.apply_translation([0, k * 26.0, 0])
         piezas.append(b)
     return trimesh.util.concatenate(piezas)
+
+def soporte_wemos():
+    """Pinza del Wemos. Se apoya en la cara trasera de sus dos torretas y se atornilla
+    desde atrás con 2 tornillos M3 x 6 (igual que la tapa). Una viga fina de borde a borde
+    lleva en el centro una zapata que aprieta el blindaje del ESP: al atornillar, la viga
+    se curva 0,4 mm y deja la placa inmovilizada sin pegamento.
+    Coordenadas: x, y como el cuerpo; z=0 es la cara trasera (la de las cabezas) y se
+    imprime sobre la cama."""
+    T = PIEZA_T
+    orejas = unary_union([Point(s * SOP_X, SOP_Y).buffer(4.5, resolution=48) for s in (1, -1)])
+    larguero = rrect(0, SOP_Y + 6.0, 2 * SOP_X + 4.0, 5.0, 1.5)                  # arriba, rígido
+    viga = box(-SOP_X, SOP_Y - 1.2, SOP_X, SOP_Y)                                 # viga elástica (1,2 mm)
+    y_zapata = ESP_ARRIBA - SOP_PRECARGA
+    zapata = rrect(0, (y_zapata + SOP_Y - 0.6) / 2, 9.0, (SOP_Y - 0.6) - y_zapata, 0.5)   # zapata de 9 mm
+    montantes = unary_union([box(s * SOP_X - 3.0, SOP_Y, s * SOP_X + 3.0, SOP_Y + 6.0) for s in (1, -1)])
+    plano = unary_union([orejas, larguero, viga, zapata, montantes])
+    # ventana con la Trifuerza en el larguero (detalle)
+    tri, _ = triforce(0, SOP_Y + 6.2, 4.2, 0.5)
+    p = ext(plano, T)
+    p = R(p, [ext(tri, T + 2, -1)] + [avellanado(s * SOP_X, SOP_Y, 0.0, T) for s in (1, -1)])
+    return p
 
 def difusor():
     return ext(rrect(0, 0, *DIFUSOR[:2], 1.0), DIFUSOR[2])
@@ -379,6 +437,7 @@ def main():
     out(trifuerza_dorada(15.0, 0.9, grosor=FRENTE), "trifuerza_dorada_frontal.stl")
     out(difusor(), "ventana_difusora.stl")
     out(barras(), "barras_sujecion_matriz.stl")
+    out(soporte_wemos(), "soporte_wemos.stl")
     out(fondo_logo(L0), "fondo_logo.stl")
 
 if __name__ == "__main__":
