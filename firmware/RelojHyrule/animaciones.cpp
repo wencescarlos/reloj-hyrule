@@ -80,7 +80,7 @@ namespace {
       destellos(14, 0, 27, 7, 3);
       cuadro(110);
     }
-    decir(TESOROS[random(NUM_TESOROS)]);
+    decir(tesoroAlAzar());
   }
 
   // ------------------------------------------------------------------
@@ -140,7 +140,8 @@ namespace {
       sprite(((x / 2) % 2) ? SPR_HEROE_A : SPR_HEROE_B, x, 0);
       cuadro(80);
     }
-    decir(personalizar("¡MONSTRUO DERROTADO! {N} RECUPERA UN \x01"));
+    decir(personalizar(tr("¡MONSTRUO DERROTADO! {N} RECUPERA UN \x01",
+                           "MONSTER DEFEATED! {N} GETS A \x01 BACK")));
   }
 
   // ------------------------------------------------------------------
@@ -175,7 +176,8 @@ namespace {
       destellos(25, 0, 31, 7, 2);
       cuadro(100);
     }
-    decir(personalizar("¡{N} HA REUNIDO LA TRIFUERZA! \x03"));
+    decir(personalizar(tr("¡{N} HA REUNIDO LA TRIFUERZA! \x03",
+                           "{N} HAS ASSEMBLED THE TRIFORCE! \x03")));
   }
 
   // ------------------------------------------------------------------
@@ -195,8 +197,8 @@ namespace {
       sprite((x % 2) ? SPR_HADA_A : SPR_HADA_B, x, y);
       cuadro(75);
     }
-    decir(personalizar("¡ESCUCHA! ¡ESCUCHA! "));
-    decir(personalizar(FRASES[random(NUM_FRASES)]));
+    decir(tr("¡ESCUCHA! ¡ESCUCHA! ", "HEY! LISTEN! "));
+    decir(personalizar(fraseAlAzar()));
   }
 
   // ------------------------------------------------------------------
@@ -222,7 +224,8 @@ namespace {
       pintar(); if (i % 2) invertir();
       cuadro(180);
     }
-    decir(personalizar("¡VIDA LLENA! {N} ESTÁ LISTO PARA LA AVENTURA \x01"));
+    decir(personalizar(tr("¡VIDA LLENA! {N} ESTÁ LISTO PARA LA AVENTURA \x01",
+                           "FULL HEALTH! {N} IS READY FOR ADVENTURE \x01")));
   }
 
   // ------------------------------------------------------------------
@@ -254,7 +257,8 @@ namespace {
       cuadro(70);
     }
     limpiar();
-    texto("¡BUM!", (ANCHO_PANTALLA - anchoTexto("¡BUM!")) / 2, 0);
+    const char* bum = tr("¡BUM!", "BOOM!");
+    texto(bum, (ANCHO_PANTALLA - anchoTexto(bum)) / 2, 0);
     cuadro(900);
   }
 
@@ -274,7 +278,8 @@ namespace {
       }
       cuadro(70);
     }
-    decir(personalizar("¡LLUVIA DE RUPIAS! {N} ES EL HÉROE MÁS RICO DE HYRULE \x02"));
+    decir(personalizar(tr("¡LLUVIA DE RUPIAS! {N} ES EL HÉROE MÁS RICO DE HYRULE \x02",
+                           "IT'S RAINING RUPEES! {N} IS THE RICHEST HERO IN HYRULE \x02")));
   }
 
   // ------------------------------------------------------------------
@@ -295,7 +300,8 @@ namespace {
       if (i == 2 || i == 4) invertir();
       cuadro(110);
     }
-    decir(personalizar("¡{N} HA CONSEGUIDO LA ESPADA LEGENDARIA!"));
+    decir(personalizar(tr("¡{N} HA CONSEGUIDO LA ESPADA LEGENDARIA!",
+                           "{N} GOT THE LEGENDARY SWORD!")));
   }
 
   // ------------------------------------------------------------------
@@ -317,7 +323,7 @@ namespace {
       sprite((x % 4 < 2) ? SPR_HEROE_ATAQUE : SPR_HEROE_A, x + 11, 0, true);
       cuadro(55);
     }
-    decir(personalizar("¡QUÉ VALIENTE ES {N}!"));
+    decir(personalizar(tr("¡QUÉ VALIENTE ES {N}!", "{N} IS SO BRAVE!")));
   }
 
   // ------------------------------------------------------------------
@@ -326,23 +332,23 @@ namespace {
   void frase() {
     caminar(-8, 2, 70);
     esperar(300);
-    decir(personalizar(FRASES[random(NUM_FRASES)]));
+    decir(personalizar(fraseAlAzar()));
   }
 
   // ------------------------------------------------------------------
-  struct Aventura { const char* nombre; void (*funcion)(); };
+  struct Aventura { const char* nombre; const char* nombreEn; void (*funcion)(); };
   const Aventura AVENTURAS[] = {
-    { "Paseo por Hyrule",       paseo },
-    { "El cofre del tesoro",    cofre },
-    { "Combate contra monstruo",combate },
-    { "La Trifuerza",           trifuerza },
-    { "El hada",                hada },
-    { "Contenedores de corazón",corazones },
-    { "¡Bomba!",                bomba },
-    { "Lluvia de rupias",       lluviaRupias },
-    { "La espada legendaria",   espada },
-    { "Persecución",            persecucion },
-    { "Frase de ánimo",         frase },
+    { "Paseo por Hyrule",        "A walk in Hyrule",      paseo },
+    { "El cofre del tesoro",     "The treasure chest",    cofre },
+    { "Combate contra monstruo", "Monster battle",        combate },
+    { "La Trifuerza",            "The Triforce",          trifuerza },
+    { "El hada",                 "The fairy",             hada },
+    { "Contenedores de corazón", "Heart containers",      corazones },
+    { "¡Bomba!",                 "Bomb!",                 bomba },
+    { "Lluvia de rupias",        "Rupee rain",            lluviaRupias },
+    { "La espada legendaria",    "The legendary sword",   espada },
+    { "Persecución",             "The chase",             persecucion },
+    { "Frase de ánimo",          "Words of courage",      frase },
   };
   const uint8_t NUM_AVENTURAS = sizeof(AVENTURAS) / sizeof(AVENTURAS[0]);
   int8_t ultima = -1;
@@ -352,14 +358,17 @@ namespace Anim {
 
 String personalizar(const char* t) {
   String r = t;
-  String nombre = ajustes.nombre[0] ? String(ajustes.nombre) : String("HÉROE");
+  String nombre = ajustes.nombre[0] ? String(ajustes.nombre) : String(tr("HÉROE", "HERO"));
   r.replace("{N}", nombre);
   return r;
 }
 
 uint8_t total() { return NUM_AVENTURAS; }
 
-const char* nombre(uint8_t n) { return n < NUM_AVENTURAS ? AVENTURAS[n].nombre : ""; }
+const char* nombre(uint8_t n) {
+  if (n >= NUM_AVENTURAS) return "";
+  return tr(AVENTURAS[n].nombre, AVENTURAS[n].nombreEn);
+}
 
 void lanzar(uint8_t n) {
   if (n >= NUM_AVENTURAS) return;
@@ -372,8 +381,13 @@ void alAzar(const struct tm& t) {
   int dias = Tiempo::diasParaCumple(t);
   if (dias > 0 && dias <= 30 && random(5) == 0) {
     caminar(-8, 2, 70);
-    String s = dias == 1 ? String("¡MAÑANA ES TU CUMPLEAÑOS, {N}! \x01")
-                         : String("¡FALTAN ") + dias + " DÍAS PARA TU CUMPLEAÑOS, {N}! \x01";
+    String s;
+    if (enIngles())
+      s = dias == 1 ? String("TOMORROW IS YOUR BIRTHDAY, {N}! \x01")
+                    : String("ONLY ") + dias + " DAYS UNTIL YOUR BIRTHDAY, {N}! \x01";
+    else
+      s = dias == 1 ? String("¡MAÑANA ES TU CUMPLEAÑOS, {N}! \x01")
+                    : String("¡FALTAN ") + dias + " DÍAS PARA TU CUMPLEAÑOS, {N}! \x01";
     decir(personalizar(s.c_str()));
     return;
   }
@@ -395,7 +409,7 @@ void arranque() {
     limpiar(); dibujarTrifuerza(0, -7 + i, 32 - (i * 16) / 15); cuadro(45);
   }
   for (uint8_t i = 0; i < 4; i++) { limpiar(); dibujarTrifuerza(0, 8, 16); if (i % 2) invertir(); cuadro(150); }
-  decir("RELOJ DE HYRULE \x03 v" VERSION_RELOJ);
+  decir(tr("RELOJ DE HYRULE \x03 v" VERSION_RELOJ, "HYRULE CLOCK \x03 v" VERSION_RELOJ));
 }
 
 void conectando(uint8_t paso) {
@@ -407,13 +421,15 @@ void conectando(uint8_t paso) {
 }
 
 void instruccionesWifi() {
-  decir("¡HOLA! CONECTA EL MÓVIL AL WIFI \"" WIFI_PROPIO_NOMBRE "\" "
-        "CON LA CLAVE \"" WIFI_PROPIO_CLAVE "\" Y ABRE 192.168.4.1");
+  decir(tr("¡HOLA! CONECTA EL MÓVIL AL WIFI \"" WIFI_PROPIO_NOMBRE "\" "
+           "CON LA CLAVE \"" WIFI_PROPIO_CLAVE "\" Y ABRE 192.168.4.1",
+           "HI! CONNECT YOUR PHONE TO THE WIFI \"" WIFI_PROPIO_NOMBRE "\" "
+           "WITH THE PASSWORD \"" WIFI_PROPIO_CLAVE "\" AND OPEN 192.168.4.1"));
 }
 
 void buscandoHora() {
   caminar(-8, ANCHO_PANTALLA, 60);
-  decir("BUSCANDO LA HORA EN INTERNET...");
+  decir(tr("BUSCANDO LA HORA EN INTERNET...", "GETTING THE TIME FROM THE INTERNET..."));
 }
 
 void horaEnPunto(const struct tm& t) {
@@ -428,7 +444,9 @@ void horaEnPunto(const struct tm& t) {
 
 void buenosDias(const struct tm& t) {
   caminar(-8, 2, 70);
-  String s = String("¡BUENOS DÍAS, {N}! HOY ES ") + Tiempo::fechaLarga(t) + ". ¡A POR LA AVENTURA! \x04";
+  String s = enIngles()
+    ? String("GOOD MORNING, {N}! TODAY IS ") + Tiempo::fechaLarga(t) + ". LET'S GO ON AN ADVENTURE! \x04"
+    : String("¡BUENOS DÍAS, {N}! HOY ES ") + Tiempo::fechaLarga(t) + ". ¡A POR LA AVENTURA! \x04";
   decir(personalizar(s.c_str()));
 }
 
@@ -439,7 +457,8 @@ void buenasNoches() {
     destellos(10, 0, 31, 5, 3);
     cuadro(140);
   }
-  decir(personalizar("¡BUENAS NOCHES, {N}! A DESCANSAR, QUE MAÑANA HAY MÁS AVENTURAS. ZZZ..."));
+  decir(personalizar(tr("¡BUENAS NOCHES, {N}! A DESCANSAR, QUE MAÑANA HAY MÁS AVENTURAS. ZZZ...",
+                        "GOOD NIGHT, {N}! TIME TO REST: MORE ADVENTURES TOMORROW. ZZZ...")));
 }
 
 void cumple() {
@@ -461,7 +480,8 @@ void cumple() {
       cuadro(110);
     }
   }
-  decir(personalizar("¡FELIZ CUMPLEAÑOS, {N}! \x01 ¡TODO HYRULE LO CELEBRA CONTIGO! \x03"));
+  decir(personalizar(tr("¡FELIZ CUMPLEAÑOS, {N}! \x01 ¡TODO HYRULE LO CELEBRA CONTIGO! \x03",
+                        "HAPPY BIRTHDAY, {N}! \x01 ALL OF HYRULE IS CELEBRATING WITH YOU! \x03")));
 }
 
 void fecha(const struct tm& t) {
@@ -489,12 +509,12 @@ void patronPrueba() {
     pixel(x + 1, 2); pixel(x + 1, 5); pixel(x + 2, 3); pixel(x + 2, 4);
     cuadro(40);
   }
-  decir("PRUEBA DE PANTALLA OK");
+  decir(tr("PRUEBA DE PANTALLA OK", "DISPLAY TEST OK"));
 }
 
 void progreso(uint8_t porcentaje) {
   limpiar();
-  texto("ACT", 0, 0);
+  texto(tr("ACT", "UPD"), 0, 0);
   int largo = (porcentaje * 12) / 100;
   rectangulo(18, 1, 14, 6);
   if (largo > 0) rectangulo(19, 2, largo, 4, true);

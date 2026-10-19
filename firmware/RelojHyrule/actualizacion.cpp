@@ -17,7 +17,13 @@
 #include "red.h"
 
 namespace {
-  String   ultimoEstado = "Todavía no se ha comprobado.";
+  // Último resultado de la comprobación (el texto se da en el idioma del reloj)
+  enum Estado : uint8_t {
+    SIN_COMPROBAR, FALTA_URL, SIN_INTERNET, NO_ABRE, SIN_VERSION_TXT,
+    AL_DIA, ERROR_ACTUALIZAR, SIN_CAMBIOS, ACTUALIZADO
+  };
+  Estado   ultimoEstado = SIN_COMPROBAR;
+  String   detalleEstado;                              // código o error
   uint32_t proximaRevision = 60UL * 1000UL;          // 1 minuto tras encender
   const uint32_t UN_DIA = 24UL * 60UL * 60UL * 1000UL;
 
@@ -54,7 +60,22 @@ void iniciarOTA() {
   ArduinoOTA.begin();
 }
 
-String estado() { return ultimoEstado; }
+String estado() {
+  switch (ultimoEstado) {
+    case SIN_COMPROBAR:    return tr("Todavía no se ha comprobado.", "Not checked yet.");
+    case FALTA_URL:        return tr("Falta la dirección de actualizaciones.", "The update address is missing.");
+    case SIN_INTERNET:     return tr("Sin conexión a internet.", "No internet connection.");
+    case NO_ABRE:          return tr("No se pudo abrir la dirección.", "Could not open the address.");
+    case SIN_VERSION_TXT:  return String(tr("No se encontró version.txt (código ", "version.txt not found (code "))
+                                  + detalleEstado + ").";
+    case AL_DIA:           return tr("Tienes la última versión (" VERSION_RELOJ ").",
+                                     "You have the latest version (" VERSION_RELOJ ").");
+    case ERROR_ACTUALIZAR: return String(tr("Error al actualizar: ", "Update error: ")) + detalleEstado;
+    case SIN_CAMBIOS:      return tr("El servidor dice que no hay cambios.", "The server says there are no changes.");
+    case ACTUALIZADO:      return tr("Actualizado. Reiniciando...", "Updated. Restarting...");
+  }
+  return "";
+}
 
 void servicio() {
   if (!ajustes.autoActualizar || !ajustes.urlActualizacion[0]) return;
@@ -65,8 +86,8 @@ void servicio() {
 }
 
 void comprobar() {
-  if (!ajustes.urlActualizacion[0]) { ultimoEstado = "Falta la dirección de actualizaciones."; return; }
-  if (!Red::conectado())            { ultimoEstado = "Sin conexión a internet."; return; }
+  if (!ajustes.urlActualizacion[0]) { ultimoEstado = FALTA_URL; return; }
+  if (!Red::conectado())            { ultimoEstado = SIN_INTERNET; return; }
 
   String base = ajustes.urlActualizacion;
   bool segura = base.startsWith("https");
@@ -92,11 +113,11 @@ void comprobar() {
   http.setFollowRedirects(HTTPC_STRICT_FOLLOW_REDIRECTS);
   http.setTimeout(10000);
   if (!http.begin(*cliente, unirUrl(ajustes.urlActualizacion, "version.txt"))) {
-    ultimoEstado = "No se pudo abrir la dirección."; return;
+    ultimoEstado = NO_ABRE; return;
   }
   int codigo = http.GET();
   if (codigo != HTTP_CODE_OK) {
-    ultimoEstado = String("No se encontró version.txt (código ") + codigo + ").";
+    ultimoEstado = SIN_VERSION_TXT; detalleEstado = String(codigo);
     http.end(); return;
   }
   String publicada = http.getString();
@@ -104,7 +125,7 @@ void comprobar() {
   publicada.trim();
 
   if (numeroVersion(publicada) <= numeroVersion(VERSION_RELOJ)) {
-    ultimoEstado = "Tienes la última versión (" VERSION_RELOJ ").";
+    ultimoEstado = AL_DIA;
     return;
   }
 
@@ -112,7 +133,7 @@ void comprobar() {
   Serial.printf("[actualizacion] Nueva versión %s\n", publicada.c_str());
   Pantalla::encender(true);
   Pantalla::brillo(ajustes.brillo);
-  Anim::mensaje("¡NUEVA VERSIÓN! ACTUALIZANDO...");
+  Anim::mensaje(tr("¡NUEVA VERSIÓN! ACTUALIZANDO...", "NEW VERSION! UPDATING..."));
   ESPhttpUpdate.setFollowRedirects(HTTPC_STRICT_FOLLOW_REDIRECTS);
   ESPhttpUpdate.rebootOnUpdate(true);
   ESPhttpUpdate.onProgress([](int hecho, int total) {
@@ -123,13 +144,13 @@ void comprobar() {
                             VERSION_RELOJ);
   switch (r) {
     case HTTP_UPDATE_FAILED:
-      ultimoEstado = String("Error al actualizar: ") + ESPhttpUpdate.getLastErrorString();
+      ultimoEstado = ERROR_ACTUALIZAR; detalleEstado = ESPhttpUpdate.getLastErrorString();
       break;
     case HTTP_UPDATE_NO_UPDATES:
-      ultimoEstado = "El servidor dice que no hay cambios.";
+      ultimoEstado = SIN_CAMBIOS;
       break;
     case HTTP_UPDATE_OK:
-      ultimoEstado = "Actualizado. Reiniciando...";   // normalmente ya se ha reiniciado
+      ultimoEstado = ACTUALIZADO;   // normalmente ya se ha reiniciado
       break;
   }
 }
