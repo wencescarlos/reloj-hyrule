@@ -25,6 +25,8 @@
 #     trifuerza_dorada_frontal.stl   Trifuerza dorada del pedestal (15 mm)
 #     soporte_wemos.stl              pinza que sujeta el Wemos (sin pegamento)
 #     fondo_logo.stl                 fondo verde con el rebaje de las letras
+#     logo_dos_colores.stl           opción B: fondo y letras en una sola pieza, para
+#                                    imprimir en dos colores con una pausa a 2,0 mm
 #
 #  Tornillería: 10 tornillos iguales M3 x 6 autorroscantes, cabeza AVELLANADA
 #  allen (hexágono de 2 mm), acero inoxidable. Sin insertos: roscan directamente
@@ -422,6 +424,22 @@ def fondo_logo(L0):
         p = R(p, ext(Point(u, v).buffer(0.95, resolution=24), 1.1 + 1, -1))
     return p
 
+LOGO_PAUSA_Z = 2.0     # altura del fondo: aquí se cambia del verde al dorado
+LOGO_ALTO    = 3.5     # altura total (las letras sobresalen 1,5 mm)
+
+def logo_dos_colores(L0, logo):
+    """Opción B del logo: una sola pieza para imprimir en dos colores con una pausa.
+    De 0 a 2,0 mm es el fondo verde (el mismo de fondo_logo.stl, más alto, con sus dos
+    agujeros guía); de 2,0 a 3,5 mm sobresalen las letras de geektoybox, que se imprimen
+    en dorado tras cambiar el filamento."""
+    fondo = fondo_logo(L0)
+    fondo.apply_transform(np.diag([1, 1, LOGO_PAUSA_Z / fondo.bounds[1][2], 1]))
+    mn, mx = logo.bounds
+    letras = logo.copy()
+    letras.apply_translation([-(mn[0] + mx[0]) / 2, -mn[1], -mn[2]])
+    letras.apply_transform(np.diag([1, 1, LOGO_ALTO / (mx[2] - mn[2]), 1]))
+    return U([fondo, letras])
+
 def main():
     a = argparse.ArgumentParser()
     a.add_argument("--logo", required=True, help="LoZ_Logo_Text.stl de geektoybox")
@@ -439,6 +457,7 @@ def main():
     out(barras(), "barras_sujecion_matriz.stl")
     out(soporte_wemos(), "soporte_wemos.stl")
     out(fondo_logo(L0), "fondo_logo.stl")
+    out(logo_dos_colores(L0, logo), "logo_dos_colores.stl")
 
 if __name__ == "__main__":
     main()

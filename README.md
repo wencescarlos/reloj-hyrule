@@ -93,6 +93,7 @@ Todas las piezas están en [`modelos_3d/`](modelos_3d/):
 | Soporte del Wemos | `soporte_wemos.stl` | Cualquiera |
 | Fondo del logo | `fondo_logo.stl` | Verde |
 | Letras del logo | `logo_letras_geektoybox.stl` | Dorado silk |
+| **O bien:** logo en una sola pieza | `logo_dos_colores.stl` | Verde y dorado, con una pausa a 2,0 mm para cambiar el filamento |
 
 Las letras del logo son de **geektoybox** ([Printables](https://www.printables.com/model/499505-legend-of-zelda-logo-text), CC BY-NC 4.0). Todo lo demás es diseño original de este proyecto. El script [`modelos_3d/generar_modelos.py`](modelos_3d/generar_modelos.py) genera todas las piezas a partir del logo original.
 

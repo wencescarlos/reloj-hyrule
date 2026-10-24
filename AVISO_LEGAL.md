@@ -31,7 +31,7 @@ Para evitar cualquier confusión o acusación de plagio, aquí se detalla qué e
 
 | Obra | Autor original | Licencia | Cómo se usa |
 |------|----------------|----------|-------------|
-| *Legend of Zelda Logo Text* | **geektoybox**: [Printables](https://www.printables.com/model/499505-legend-of-zelda-logo-text) | CC BY-NC 4.0 | Se incluye **sin cambios** (`logo_letras_geektoybox.stl`). Su contorno se usa para el fondo (`fondo_logo.stl`) y la cresta de la carcasa. |
+| *Legend of Zelda Logo Text* | **geektoybox**: [Printables](https://www.printables.com/model/499505-legend-of-zelda-logo-text) | CC BY-NC 4.0 | Se incluye **sin cambios** (`logo_letras_geektoybox.stl`). Su contorno se usa para el fondo (`fondo_logo.stl`) y la cresta de la carcasa, y las letras forman parte del logo en una pieza (`logo_dos_colores.stl`). |
 | Idea del reloj con Wemos D1 mini + MAX7219 | **Qrome (David Payne)**: [Marquee Scroller](https://github.com/Qrome/marquee-scroller) | MIT (código) | Solo como inspiración del hardware. **No se usa su código ni su caja**: el firmware y la carcasa v2 son nuevos. |
 
 Se respeta la licencia CC BY-NC 4.0 del logo: se cita al autor y no hay ningún uso comercial. Las piezas derivadas del logo se comparten con la licencia **CC BY-NC-SA 4.0**, que mantiene ambas condiciones.

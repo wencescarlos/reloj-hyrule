@@ -30,6 +30,18 @@ Carcasa **diseñada desde cero** como dos bloques de piedra antigua de Hyrule:
 | 7 | Soporte del Wemos | `soporte_wemos.stl` | Cualquiera (no se ve) | 1 |
 | 8 | Fondo del logo | `fondo_logo.stl` | Verde | 1 |
 | 9 | Letras del logo | `logo_letras_geektoybox.stl` | Dorado silk | 1 (14 piezas) |
+| 8 + 9 | **O bien:** logo en una sola pieza (opción B) | `logo_dos_colores.stl` | Verde y dorado, con una pausa | 1 |
+
+### Dos formas de hacer el logo
+
+| | Opción A: piezas sueltas | Opción B: una pieza con pausa |
+|---|---|---|
+| Archivos | `fondo_logo.stl` + `logo_letras_geektoybox.stl` | `logo_dos_colores.stl` |
+| Cómo se hace | Fondo verde y 14 letras doradas por separado; las letras se pegan una a una | Se imprime de una vez: a 2,0 mm la impresora se para, cambias el verde por el dorado y sigue |
+| Ventajas | Las letras se imprimen con capas muy finas (0,12 mm) y el dorado sale sin ningún resto de verde | Sin pegar letras, sin piezas pequeñas que se pierdan, letras más marcadas (sobresalen 1,5 mm) |
+| Necesita | Pegamento y paciencia | Una impresora que pueda pausar (casi todas) |
+
+![Logo en una sola pieza, en dos colores](../imagenes/logo_dos_colores.png)
 
 Ya no hace falta que la carcasa sea de color claro: la luz sale por la ventana difusora blanca, así que la piedra puede ser gris u oscura.
 
@@ -39,7 +51,7 @@ Ya no hace falta que la carcasa sea de color claro: la luz sale por la ventana d
 |---------|-------|----------|
 | `cuerpo_piedra.stl`, `tapa_trasera.stl`, `ventana_difusora.stl`, `barras_sujecion_matriz.stl`, `soporte_wemos.stl`, Trifuerzas | **Diseño original** de este proyecto | CC BY-NC-SA 4.0 |
 | `logo_letras_geektoybox.stl` | **geektoybox** ([Printables](https://www.printables.com/model/499505-legend-of-zelda-logo-text)), sin cambios | CC BY-NC 4.0 |
-| `fondo_logo.stl` y la cresta | Hechos a partir del contorno del logo de geektoybox | CC BY-NC 4.0 |
+| `fondo_logo.stl`, `logo_dos_colores.stl` y la cresta | Hechos a partir del logo de geektoybox | CC BY-NC 4.0 |
 
 Si compartes tu impresión (por ejemplo, un *make* en Printables), cita a geektoybox y este repositorio. **Prohibido el uso comercial.**
 
@@ -82,6 +94,21 @@ Material: PLA, 1,75 mm. Ninguna pieza necesita soportes.
 | Trifuerzas doradas | Con la pestaña plana sobre la cama y los triángulos hacia arriba | 0,12–0,16 mm | 100 % | La cara de arriba de los triángulos es la que se ve. |
 | Fondo del logo | Plano, con el rebaje de las letras hacia arriba | 0,2 mm | 100 % | |
 | Letras del logo | Planas, tal como vienen | 0,12–0,16 mm | 100 % | 14 piezas sueltas; usa un *brim* fino si alguna se despega. |
+| Logo en una pieza (opción B) | Plano, tal como viene: agujeros guía abajo y letras arriba | **0,2 mm** (también 0,1 o 0,25) | 100 % | **Pausa / cambio de filamento a 2,0 mm.** Verde hasta 2,0 mm y dorado desde ahí hasta 3,5 mm. Ver la sección siguiente. |
+
+### Logo en dos colores con pausa (opción B)
+
+`logo_dos_colores.stl` mide 3,5 mm: los primeros **2,0 mm son el fondo** y los últimos 1,5 mm son **las letras**. Se imprime con un solo extrusor cambiando el filamento a mitad:
+
+1. Carga el filamento **verde** y abre el archivo en el laminador, plano, tal como viene.
+2. Usa una altura de capa que divida exacto los 2,0 mm: **0,2 mm** (con primera capa de 0,2), o 0,1 o 0,25. Con 0,12 o 0,16 el cambio no caería justo en el borde de las letras.
+3. Añade el cambio de color **en la capa que empieza a 2,0 mm**, es decir, la primera capa que solo tiene letras (con capas de 0,2 mm es la capa que termina a **2,2 mm**):
+   - **PrusaSlicer / OrcaSlicer / Bambu Studio:** en la vista previa por capas, sube el deslizador hasta **2,20** y pulsa el **+** que aparece junto a él (cambio de color, M600). En Bambu sin AMS, elige "Añadir pausa".
+   - **Cura:** *Extensiones → Post-procesamiento → Modificar G-Code → Añadir script → Pause at height* (o *Filament Change*), con **altura de pausa 2,2 mm**.
+4. Imprime. Cuando la impresora se pare, saca el verde, carga el **dorado**, purga hasta que salga dorado limpio, quita el hilo sobrante de la boquilla y continúa.
+5. Si tu impresora no admite M600, usa la orden de pausa (M601 o la de tu firmware) y cambia el filamento a mano desde el menú.
+
+El logo se monta igual que el de la opción A: con los 2 trozos de filamento en los agujeros de atrás y pegado a la cresta.
 
 **Toque mágico opcional:** pasa un pincel seco con pintura gris clara o blanca sobre la piedra. Resaltará las grietas, las juntas y los bordes, y parecerá piedra de verdad.
 
@@ -93,7 +120,7 @@ Material: PLA, 1,75 mm. Ninguna pieza necesita soportes.
 
 1. **Roscas:** pasa una vez cada tornillo por su agujero guía, sin piezas, y sácalo. Así el plástico queda roscado y el montaje es más fácil. Son 10 agujeros: 4 en las esquinas de atrás (tapa), 4 a los lados de la ventana (barras) y 2 junto a la cuna del Wemos (soporte).
 2. **Trifuerzas:** mete la Trifuerza dorada pequeña por dentro del frente del pedestal y la grande por dentro de la tapa. La pestaña queda apoyada por dentro y los triángulos a ras por fuera. Fíjalas con unas gotas de pegamento. Hazlo antes de colocar el Wemos.
-3. **Logo:** coloca las 14 letras en el rebaje del fondo verde y pégalas. Pon los 2 trozos de filamento en los agujeros de detrás del fondo, encájalos en los agujeros de la cresta y pega el fondo.
+3. **Logo:** con la opción A, coloca las 14 letras en el rebaje del fondo verde y pégalas. Con la opción B, el logo ya sale entero de la impresora. En los dos casos, pon los 2 trozos de filamento en los agujeros de detrás, encájalos en los agujeros de la cresta y pega el logo.
 4. **Ventana:** coloca la ventana difusora por dentro, en el rebaje del frente.
 5. **Matriz:** métela en su marco, con los LED hacia la ventana y el conector de entrada hacia cualquiera de los dos lados. Los cortes laterales del marco dejan paso a los pines y los cables.
 6. **Barras:** pon las dos barras por detrás de la matriz, con las columnas de las lengüetas hacia la placa, y atorníllalas **hasta el fondo** sobre sus torretas con 4 tornillos M3 × 6. Las lengüetas se doblan solas y dejan la matriz firme contra la ventana.
@@ -125,7 +152,7 @@ Al principio del archivo están todas las medidas (fondo, tamaño de la ventana,
 
 - [ ] 10 agujeros guía roscados una vez con el tornillo
 - [ ] Trifuerzas doradas pegadas (frente y tapa)
-- [ ] Logo pegado en el fondo verde y el fondo en la cresta
+- [ ] Logo listo (letras pegadas en el fondo, o impreso en dos colores) y pegado en la cresta
 - [ ] Ventana difusora en su rebaje
 - [ ] Matriz en su marco, LED hacia delante, sujeta con las 2 barras (4 × M3 × 6)
 - [ ] Wemos en la cuna, USB hacia atrás, sujeto con el soporte (2 × M3 × 6), cables a la entrada (IN) de la matriz

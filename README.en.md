@@ -93,10 +93,11 @@ All parts are in [`modelos_3d/`](modelos_3d/):
 | Wemos holder | `soporte_wemos.stl` | Any |
 | Logo background | `fondo_logo.stl` | Green |
 | Logo letters | `logo_letras_geektoybox.stl` | Silk gold |
+| **Or:** one-piece logo | `logo_dos_colores.stl` | Green and gold, with a pause at 2.0 mm to swap filament |
 
 The logo letters are by **geektoybox** ([Printables](https://www.printables.com/model/499505-legend-of-zelda-logo-text), CC BY-NC 4.0). Everything else is an original design from this project. The [`modelos_3d/generar_modelos.py`](modelos_3d/generar_modelos.py) script builds every part from the original logo.
 
-**Quick print notes:** PLA 1.75 mm, no supports and no multicolor printer needed. Print the case **face down** (as the STL comes) with 0.2 mm layers and 4 perimeters. The screws cut their own thread in 2.5 mm pilot holes: tighten gently. The full print and assembly guide is in [`modelos_3d/LEEME.md`](modelos_3d/LEEME.md) (in Spanish).
+**Quick print notes:** PLA 1.75 mm, no supports and no multicolor printer needed. Print the case **face down** (as the STL comes) with 0.2 mm layers and 4 perimeters. The screws cut their own thread in 2.5 mm pilot holes: tighten gently. For the one-piece logo, print with 0.2 mm layers and add a filament change (M600) or pause at the layer that ends at **2.2 mm**: green below, gold above. The full print and assembly guide is in [`modelos_3d/LEEME.md`](modelos_3d/LEEME.md) (in Spanish).
 
 ---
 
