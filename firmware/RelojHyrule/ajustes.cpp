@@ -62,6 +62,10 @@ namespace {
     SEC("claveAdmin", claveAdmin),
     TXT("urlActualizacion", urlActualizacion),
     NUM("autoActualizar", autoActualizar, 0, 1),
+    NUM("pinDin", pinDin, 0, 8),
+    NUM("pinClk", pinClk, 0, 8),
+    NUM("pinCs", pinCs, 0, 8),
+    NUM("spiLento", spiLento, 0, 1),
   };
   const size_t NUM_CAMPOS = sizeof(CAMPOS) / sizeof(CAMPOS[0]);
 
@@ -127,6 +131,11 @@ void valoresPorDefecto() {
   // Las versiones nuevas se publican en GitHub Pages (ver README del proyecto)
   strcpy(ajustes.urlActualizacion, URL_ACTUALIZACIONES);
   ajustes.autoActualizar = 1;
+
+  ajustes.pinDin = PIN_DIN_FABRICA;
+  ajustes.pinClk = PIN_CLK_FABRICA;
+  ajustes.pinCs  = PIN_CS_FABRICA;
+  ajustes.spiLento = 0;
 }
 
 bool asignar(const String& clave, const String& valor) {

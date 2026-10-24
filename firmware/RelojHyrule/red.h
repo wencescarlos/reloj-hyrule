@@ -13,6 +13,7 @@ struct Peticiones {
   String  mensaje;                 // texto para enseñar ya
   bool    prueba = false;          // patrón de prueba de pantalla
   bool    ajustesCambiados = false;
+  int8_t  diagnostico = -1;        // orden de diagnóstico pendiente (ver principal.cpp)
   bool    buscarActualizacion = false;
   uint32_t reiniciarEn = 0;        // millis() en que hay que reiniciar
 };
@@ -26,3 +27,6 @@ namespace Red {
   bool modoPortal();       // con la red propia "Reloj-Hyrule" activa
   String ip();
 }
+
+// Estado del diagnóstico de pantalla (lo pone principal.cpp, lo lee la web)
+extern String estadoDiagnostico;

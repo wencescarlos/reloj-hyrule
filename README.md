@@ -66,6 +66,8 @@
 | VCC | 5V |
 | GND | G |
 | CLK | D5 |
+
+> ⚠️ **Suelda los cables en la ENTRADA de la matriz**, el lado donde pone **DIN** (o IN). Si los pones en la salida (OUT o DOUT), la pantalla se queda apagada o enciende puntos sin sentido.
 | CS | D6 |
 | DIN | D7 |
 
@@ -130,6 +132,11 @@ Las instrucciones completas de impresión y montaje, con la lista de tornillerí
 5. Arriba de la página puedes elegir el idioma: **Español** o **English**.
 
 > Si las letras salen giradas o desordenadas, ve a **Pantalla** en la página del reloj, cambia el giro o el orden de los módulos y pulsa **Probar pantalla**: debe verse 1 2 3 4.
+>
+> Si la pantalla no se enciende o hace cosas raras, usa el **Diagnóstico de pantalla** de la misma página. Tiene tres pasos:
+> - **Encender LED:** enciende todos los LED, o un módulo cada vez, con el modo de prueba de la propia matriz.
+> - **Medir patas:** deja cada pata a 3,3 V para medirla con el polímetro.
+> - **Cambiar patas:** si una pata del Wemos se ha estropeado, puedes pasar ese cable a otra.
 
 <p align="center"><img src="imagenes/portal_configuracion.png" alt="Portal de configuración" width="700"></p>
 

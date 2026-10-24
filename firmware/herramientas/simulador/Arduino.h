@@ -23,7 +23,7 @@ inline uint32_t millis(){return sim_ms;}
 inline void delay(uint32_t ms){sim_ms+=ms;}
 inline long random(long a){return a>0? rand()%a:0;}
 inline long random(long a,long b){return b>a? a+rand()%(b-a):a;}
-void pinMode(int,int); void digitalWrite(int,int);
+void pinMode(int,int); void digitalWrite(int,int); inline void delayMicroseconds(unsigned){}
 template<class T> T max(T a,T b){return a>b?a:b;}
 class String {
  public: std::string s;

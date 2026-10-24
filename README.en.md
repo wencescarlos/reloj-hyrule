@@ -66,6 +66,8 @@
 | VCC | 5V |
 | GND | G |
 | CLK | D5 |
+
+> ⚠️ **Solder the wires to the matrix INPUT**, the side marked **DIN** (or IN). If you use the output (OUT or DOUT), the display stays dark or shows random dots.
 | CS | D6 |
 | DIN | D7 |
 
@@ -130,6 +132,11 @@ The logo letters are by **geektoybox** ([Printables](https://www.printables.com/
 5. Done: the clock is at **http://reloj-hyrule.local**. Type the child's name and birthday there.
 
 > If the letters look rotated or jumbled, go to **Display** on the clock's page, change the rotation or the order of the modules and press **Test display**: you should see 1 2 3 4.
+>
+> If the display stays dark or does odd things, use **Display diagnostics** on the same page. It has three steps:
+> - **Light the LEDs:** lights every LED, or one module at a time, using the matrix's own test mode.
+> - **Measure the pins:** holds each pin at 3.3 V so you can check it with a multimeter.
+> - **Change pins:** if a Wemos pin is damaged, you can move that wire to another pin.
 
 <p align="center"><img src="imagenes/en/portal_configuracion.png" alt="Settings page" width="700"></p>
 

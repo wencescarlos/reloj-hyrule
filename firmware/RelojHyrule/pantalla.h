@@ -13,6 +13,18 @@ namespace Pantalla {
 
   // Puesta en marcha y orientación de los módulos
   void iniciar();
+  // Patas del Wemos (número de D: 7 = D7). Con DIN=D7 y CLK=D5 se usa el SPI
+  // del chip; con otras patas (o en modo lento) las señales se generan a mano.
+  void pines(uint8_t din, uint8_t clk, uint8_t cs, bool lento);
+  String descripcionPines();           // "DIN=D7 CLK=D5 CS=D6 · SPI"
+
+  // --- Diagnóstico ---
+  // Modo de prueba del propio MAX7219: enciende todos los LED sin usar la imagen.
+  // modulo: 0 = todos, 1..4 = solo ese (1 = el más cercano a los cables), -1 = fin
+  void pruebaLeds(int modulo);
+  // Deja una pata a 3,3 V y las otras dos a 0 V para medirlas con el polímetro.
+  // cual: 0 = DIN, 1 = CLK, 2 = CS
+  void pataFija(uint8_t cual);
   void orientar(uint8_t rotacion, bool invertirModulos, bool espejo);
 
   // Brillo (0..15) y apagado total

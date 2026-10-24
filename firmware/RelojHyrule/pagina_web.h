@@ -188,6 +188,41 @@ footer{text-align:center;color:var(--suave);font-size:.8em;margin:24px 0 40px}
 </form>
 
 <section>
+ <h2>Diagnóstico de pantalla</h2>
+ <p class="nota">Para encontrar averías en los cables o en la matriz. Mientras dura, el reloj no enseña la hora; se cierra solo a los 10 minutos.</p>
+ <p class="nota"><b id="diagEstado"></b></p>
+ <label>1. Encender los LED (con el modo de prueba de la propia matriz)</label>
+ <div>
+  <button type="button" onclick="diag('todos')">Encender todos los LED</button>
+  <button type="button" class="sec" onclick="diag('modulo',1)">Módulo 1</button><button type="button" class="sec" onclick="diag('modulo',2)">Módulo 2</button><button type="button" class="sec" onclick="diag('modulo',3)">Módulo 3</button><button type="button" class="sec" onclick="diag('modulo',4)">Módulo 4</button>
+ </div>
+ <details><summary class="nota">¿Qué significa lo que veo?</summary>
+  <p class="nota">Todos los LED encendidos: los cables y la matriz están bien. Si la hora se ve rara, es la orientación (apartado Pantalla).</p>
+  <p class="nota">Solo se encienden los primeros módulos: la señal se corta al pasar al siguiente. Repasa las soldaduras entre ese módulo y el siguiente.</p>
+  <p class="nota">No se enciende nada: la señal no llega. Mide las patas con el paso 2.</p>
+  <p class="nota">El módulo 1 es el más cercano a los cables del Wemos.</p>
+ </details>
+ <label>2. Medir con el polímetro (entre GND y cada pata de la entrada de la matriz)</label>
+ <div>
+  <button type="button" class="sec" onclick="diag('pata',0)">DIN a 3,3 V</button><button type="button" class="sec" onclick="diag('pata',1)">CLK a 3,3 V</button><button type="button" class="sec" onclick="diag('pata',2)">CS a 3,3 V</button>
+ </div>
+ <p class="nota">La pata elegida debe marcar unos 3,3 V y las otras dos, 0 V. Si marca 0 V, falla el cable, la soldadura o esa pata del Wemos.</p>
+ <button type="button" onclick="diag('fin')">Terminar diagnóstico</button>
+ <form id="fPines" onsubmit="return false">
+  <label>3. Patas del Wemos que usa la pantalla</label>
+  <p class="nota">Si una pata del Wemos se ha estropeado, pasa ese cable a otra libre (D1 o D2) y elígela aquí. De fábrica: DIN = D7, CLK = D5, CS = D6.</p>
+  <div class="fila">
+   <div><label>DIN</label><select name="pinDin"><option value="0">D0</option><option value="1">D1</option><option value="2">D2</option><option value="3">D3</option><option value="4">D4</option><option value="5">D5</option><option value="6">D6</option><option value="7">D7</option></select></div>
+   <div><label>CLK</label><select name="pinClk"><option value="0">D0</option><option value="1">D1</option><option value="2">D2</option><option value="3">D3</option><option value="4">D4</option><option value="5">D5</option><option value="6">D6</option><option value="7">D7</option></select></div>
+   <div><label>CS</label><select name="pinCs"><option value="0">D0</option><option value="1">D1</option><option value="2">D2</option><option value="3">D3</option><option value="4">D4</option><option value="5">D5</option><option value="6">D6</option><option value="7">D7</option></select></div>
+  </div>
+  <label class="check"><input type="checkbox" name="spiLento"> Señales lentas (para cables largos o soldaduras dudosas)</label>
+  <p class="nota">Ahora: <b id="pinesActual"></b></p>
+  <button type="button" onclick="guardar('fPines')">Guardar</button>
+ </form>
+</section>
+
+<section>
  <h2>WiFi de casa</h2>
  <p class="nota" id="wifiActual"></p>
  <button type="button" class="sec" onclick="buscarRedes()">Buscar redes WiFi</button>
@@ -271,7 +306,22 @@ const EN={
 "Nueva clave de administrador (déjala vacía para no cambiarla)":"New admin password (leave it empty to keep the current one)",
 "Guardar":"Save","Buscar versión nueva ahora":"Check for a new version now","Subir archivo .bin":"Upload a .bin file",
 "Para subir un archivo: usuario":"To upload a file: user","y tu clave de administrador (de fábrica: hyrule).":"and your admin password (factory default: hyrule).",
-"Reiniciar el reloj":"Restart the clock","Ajustes de fábrica":"Factory reset"
+"Reiniciar el reloj":"Restart the clock","Ajustes de fábrica":"Factory reset",
+"Diagnóstico de pantalla":"Display diagnostics",
+"Para encontrar averías en los cables o en la matriz. Mientras dura, el reloj no enseña la hora; se cierra solo a los 10 minutos.":"To find faults in the wires or the matrix. While it runs, the clock doesn't show the time; it ends by itself after 10 minutes.",
+"1. Encender los LED (con el modo de prueba de la propia matriz)":"1. Light up the LEDs (using the matrix's own test mode)",
+"Encender todos los LED":"Light all LEDs","Módulo 1":"Module 1","Módulo 2":"Module 2","Módulo 3":"Module 3","Módulo 4":"Module 4",
+"¿Qué significa lo que veo?":"What does it mean?",
+"Todos los LED encendidos: los cables y la matriz están bien. Si la hora se ve rara, es la orientación (apartado Pantalla).":"All LEDs on: the wires and the matrix are fine. If the time looks odd, it's the orientation (Display section).",
+"Solo se encienden los primeros módulos: la señal se corta al pasar al siguiente. Repasa las soldaduras entre ese módulo y el siguiente.":"Only the first modules light up: the signal stops at the next one. Check the solder joints between that module and the next.",
+"No se enciende nada: la señal no llega. Mide las patas con el paso 2.":"Nothing lights up: the signal isn't getting through. Measure the pins in step 2.",
+"El módulo 1 es el más cercano a los cables del Wemos.":"Module 1 is the one nearest the Wemos wires.",
+"2. Medir con el polímetro (entre GND y cada pata de la entrada de la matriz)":"2. Measure with a multimeter (between GND and each pin of the matrix input)",
+"DIN a 3,3 V":"DIN at 3.3 V","CLK a 3,3 V":"CLK at 3.3 V","CS a 3,3 V":"CS at 3.3 V",
+"La pata elegida debe marcar unos 3,3 V y las otras dos, 0 V. Si marca 0 V, falla el cable, la soldadura o esa pata del Wemos.":"The chosen pin should read about 3.3 V and the other two 0 V. If it reads 0 V, the wire, the solder joint or that Wemos pin is faulty.",
+"Terminar diagnóstico":"End diagnostics","3. Patas del Wemos que usa la pantalla":"3. Wemos pins used by the display",
+"Si una pata del Wemos se ha estropeado, pasa ese cable a otra libre (D1 o D2) y elígela aquí. De fábrica: DIN = D7, CLK = D5, CS = D6.":"If a Wemos pin is damaged, move that wire to a free one (D1 or D2) and choose it here. Factory setting: DIN = D7, CLK = D5, CS = D6.",
+"Señales lentas (para cables largos o soldaduras dudosas)":"Slow signals (for long wires or doubtful solder joints)","Ahora:":"Now:"
 };
 const MESES={es:["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"],
  en:["January","February","March","April","May","June","July","August","September","October","November","December"]};
@@ -350,6 +400,8 @@ function guardar(id){
  post("/api/ajustes",t("¡Ajustes guardados!","Settings saved!"),p);
 }
 
+function diag(a,n){post("/api/diagnostico?accion="+a+(n!==undefined?"&n="+n:""),a==="fin"?t("Diagnóstico terminado","Diagnostics ended"):t("¡Hecho! Mira la pantalla","Done! Look at the display"));}
+
 function mensajeYa(){const x=$("#mensajeYa").value.trim();if(!x)return;
  post("/api/mensaje",t("¡Mensaje enviado!","Message sent!"),new URLSearchParams({texto:x}));$("#mensajeYa").value="";}
 
@@ -371,7 +423,8 @@ function estado(){
   $("#red").textContent=e.conectado?("WiFi: "+e.wifi+" · "+e.ip):t("Sin WiFi de casa","No home WiFi");
   $("#portal").style.display=e.portal?"block":"none";
   $("#wifiActual").textContent=e.conectado?t("Conectado a «"+e.wifi+"» (señal "+e.senal+" dBm)","Connected to “"+e.wifi+"” (signal "+e.senal+" dBm)"):t("No conectado.","Not connected.");
-  $("#version").textContent=e.version;$("#estadoAct").textContent=e.actualizacion;
+  $("#version").textContent=e.version;$("#pinesActual").textContent=e.pines||"";
+  $("#diagEstado").textContent=e.diagnostico?("🔧 "+e.diagnostico):"";$("#estadoAct").textContent=e.actualizacion;
   $("#faltan").textContent=e.diasCumple>0?t("¡Faltan "+e.diasCumple+" días para el cumpleaños!",(e.diasCumple==1?"Only 1 day":"Only "+e.diasCumple+" days")+" until the birthday!")
    :(e.diasCumple==0?t("¡HOY ES EL CUMPLEAÑOS! 🎂","IT'S BIRTHDAY TODAY! 🎂"):"");
  }).catch(()=>{});

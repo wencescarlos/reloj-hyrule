@@ -11,11 +11,16 @@
 #include <Arduino.h>
 
 // --- Versión del programa (súbela cada vez que publiques una actualización) ---
-#define VERSION_RELOJ        "1.1.1"
+#define VERSION_RELOJ        "1.2.0"
 
-// --- Conexiones Wemos D1 mini -> matrices MAX7219 ---
+// --- Conexiones Wemos D1 mini -> matrices MAX7219 (de fábrica) ---
 //     CLK -> D5 (SCK)   DIN -> D7 (MOSI)   CS -> D6
-#define PIN_CS               D6
+//     Se pueden cambiar desde la página del reloj (Diagnóstico de pantalla),
+//     por ejemplo si una pata del Wemos se ha estropeado.
+#define PIN_DIN_FABRICA      7                    // D7
+#define PIN_CLK_FABRICA      5                    // D5
+#define PIN_CS_FABRICA       6                    // D6
+#define MINUTOS_DIAGNOSTICO  10                   // el diagnóstico se cierra solo
 
 // --- Pantalla ---
 #define NUM_MODULOS          4                    // matrices de 8x8 en fila

@@ -18,6 +18,7 @@
 #include "tiempo.h"
 #include "sistema.h"
 #include "pagina_web.h"
+#include "pantalla.h"
 
 Peticiones peticiones;
 
@@ -75,6 +76,8 @@ namespace {
     j += ",\"encendido\":"; j += millis() / 1000;
     j += ",\"diasCumple\":"; j += hayHora ? Tiempo::diasParaCumple(t) : -1;
     j += ",\"actualizacion\":\""; j += escapar(Actualizacion::estado()); j += '"';
+    j += ",\"pines\":\""; j += escapar(Pantalla::descripcionPines()); j += '"';
+    j += ",\"diagnostico\":\""; j += escapar(estadoDiagnostico); j += '"';
     j += '}';
     responderJson(j);
   }
@@ -120,6 +123,18 @@ namespace {
   }
 
   void apiPrueba()        { peticiones.prueba = true; ok(); }
+
+  // Diagnóstico de pantalla: /api/diagnostico?accion=todos|modulo|pata|fin&n=...
+  void apiDiagnostico() {
+    String a = servidor.arg("accion");
+    int n = servidor.arg("n").toInt();
+    if      (a == "todos")                        peticiones.diagnostico = 0;
+    else if (a == "modulo" && n >= 1 && n <= 4)   peticiones.diagnostico = n;        // 1..4
+    else if (a == "pata"   && n >= 0 && n <= 2)   peticiones.diagnostico = 10 + n;   // 10..12
+    else if (a == "fin")                          peticiones.diagnostico = 99;
+    else { responderJson("{\"ok\":false}", 400); return; }
+    ok();
+  }
   void apiBuscarVersion() { peticiones.buscarActualizacion = true; ok(); }
   void apiReiniciar()     { peticiones.reiniciarEn = millis() + 1500; ok(); }
 
@@ -177,6 +192,7 @@ namespace {
     servidor.on("/api/animacion",        HTTP_POST, apiAnimacion);
     servidor.on("/api/mensaje",          HTTP_POST, apiMensaje);
     servidor.on("/api/prueba",           HTTP_POST, apiPrueba);
+    servidor.on("/api/diagnostico",      HTTP_POST, apiDiagnostico);
     servidor.on("/api/buscar-version",   HTTP_POST, apiBuscarVersion);
     servidor.on("/api/reiniciar",        HTTP_POST, apiReiniciar);
     servidor.on("/api/fabrica",          HTTP_POST, apiFabrica);

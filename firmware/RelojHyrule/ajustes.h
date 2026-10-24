@@ -76,6 +76,12 @@ struct Ajustes {
   // --- Actualizaciones por internet ---
   char    urlActualizacion[128];
   uint8_t autoActualizar;
+
+  // --- Conexión de la pantalla (número de la pata: 7 = D7) ---
+  uint8_t pinDin;
+  uint8_t pinClk;
+  uint8_t pinCs;
+  uint8_t spiLento;            // 1 = señales lentas (cables largos o dudosos)
 };
 
 extern Ajustes ajustes;

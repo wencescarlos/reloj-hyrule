@@ -16,6 +16,29 @@ namespace {
   bool    ordenInvertido = false; // el primer módulo está a la derecha
   bool    espejoModulo   = false; // cada módulo se ve al revés
 
+  // Patas de la pantalla (GPIO del ESP8266) y forma de enviar
+  const uint8_t GPIO_D[9] = {16, 5, 4, 0, 2, 14, 12, 13, 15};   // D0..D8
+  uint8_t dDin = PIN_DIN_FABRICA, dClk = PIN_CLK_FABRICA, dCs = PIN_CS_FABRICA;
+  uint8_t gDin = 13, gClk = 14, gCs = 12;
+  bool    spiChip = true;         // SPI del chip (rápido) o señales a mano
+  bool    lento   = false;
+  bool    spiAbierto = false;
+
+  inline void retardo() { if (lento) delayMicroseconds(5); }
+
+  // Envía un byte, el bit más alto primero (modo 0: el MAX7219 lee al subir CLK)
+  void byteSalida(uint8_t b) {
+    if (spiChip) { SPI.transfer(b); return; }
+    for (uint8_t i = 0; i < 8; i++) {
+      digitalWrite(gDin, (b & 0x80) ? HIGH : LOW);
+      b <<= 1;
+      retardo();
+      digitalWrite(gClk, HIGH);
+      retardo();
+      digitalWrite(gClk, LOW);
+    }
+  }
+
   // Registros del MAX7219
   const uint8_t REG_DECODIFICAR = 0x09;
   const uint8_t REG_INTENSIDAD  = 0x0A;
@@ -25,12 +48,14 @@ namespace {
 
   // Envía el mismo registro/valor a todos los módulos de la cadena
   void enviarTodos(uint8_t registro, uint8_t valor) {
-    digitalWrite(PIN_CS, LOW);
+    digitalWrite(gCs, LOW);
+    retardo();
     for (uint8_t i = 0; i < NUM_MODULOS; i++) {
-      SPI.transfer(registro);
-      SPI.transfer(valor);
+      byteSalida(registro);
+      byteSalida(valor);
     }
-    digitalWrite(PIN_CS, HIGH);
+    digitalWrite(gCs, HIGH);
+    retardo();
   }
 
   // Convierte un trozo de UTF-8 en el código interno de la fuente
@@ -98,13 +123,40 @@ namespace {
 
 namespace Pantalla {
 
+void pines(uint8_t din, uint8_t clk, uint8_t cs, bool modoLento) {
+  if (din > 8) din = PIN_DIN_FABRICA;
+  if (clk > 8) clk = PIN_CLK_FABRICA;
+  if (cs > 8)  cs  = PIN_CS_FABRICA;
+  if (din == clk || din == cs || clk == cs) {        // patas repetidas: de fábrica
+    din = PIN_DIN_FABRICA; clk = PIN_CLK_FABRICA; cs = PIN_CS_FABRICA;
+  }
+  dDin = din; dClk = clk; dCs = cs;
+  gDin = GPIO_D[din]; gClk = GPIO_D[clk]; gCs = GPIO_D[cs];
+  lento = modoLento;
+  spiChip = (din == 7 && clk == 5 && !modoLento);
+}
+
+String descripcionPines() {
+  String r = "DIN=D"; r += dDin; r += " CLK=D"; r += dClk; r += " CS=D"; r += dCs;
+  r += spiChip ? F(" \xC2\xB7 SPI") : (lento ? F(" \xC2\xB7 lento") : F(" \xC2\xB7 manual"));
+  return r;
+}
+
 void iniciar() {
-  pinMode(PIN_CS, OUTPUT);
-  digitalWrite(PIN_CS, HIGH);
-  SPI.begin();
-  SPI.setFrequency(1000000);          // 1 MHz: seguro con cables largos
-  SPI.setBitOrder(MSBFIRST);
-  SPI.setDataMode(SPI_MODE0);
+  if (spiAbierto) { SPI.end(); spiAbierto = false; }
+  pinMode(gCs, OUTPUT);
+  digitalWrite(gCs, HIGH);
+  if (spiChip) {
+    SPI.begin();
+    SPI.setFrequency(1000000);          // 1 MHz: seguro con cables largos
+    SPI.setBitOrder(MSBFIRST);
+    SPI.setDataMode(SPI_MODE0);
+    spiAbierto = true;
+  } else {
+    pinMode(gDin, OUTPUT); digitalWrite(gDin, LOW);
+    pinMode(gClk, OUTPUT); digitalWrite(gClk, LOW);
+  }
+  Serial.printf("[pantalla] %s\n", descripcionPines().c_str());
   enviarTodos(REG_PRUEBA, 0);
   enviarTodos(REG_DECODIFICAR, 0);
   enviarTodos(REG_LIMITE, 7);
@@ -118,6 +170,31 @@ void orientar(uint8_t rotacion, bool invertirModulos, bool espejo) {
   rotacionModulo = rotacion & 3;
   ordenInvertido = invertirModulos;
   espejoModulo = espejo;
+}
+
+void pruebaLeds(int modulo) {
+  if (modulo < 0) { iniciar(); mostrar(); return; }
+  // Varias veces seguidas: si una orden llega mal, la siguiente la corrige
+  for (uint8_t vez = 0; vez < 3; vez++) {
+    digitalWrite(gCs, LOW);
+    retardo();
+    for (int m = NUM_MODULOS - 1; m >= 0; m--) {     // el primero enviado va al más lejano
+      bool si = (modulo == 0) || (m == modulo - 1);
+      byteSalida(REG_PRUEBA);
+      byteSalida(si ? 1 : 0);
+    }
+    digitalWrite(gCs, HIGH);
+    retardo();
+  }
+}
+
+void pataFija(uint8_t cual) {
+  if (spiAbierto) { SPI.end(); spiAbierto = false; }
+  const uint8_t g[3] = {gDin, gClk, gCs};
+  for (uint8_t i = 0; i < 3; i++) {
+    pinMode(g[i], OUTPUT);
+    digitalWrite(g[i], i == cual ? HIGH : LOW);
+  }
 }
 
 void brillo(uint8_t nivel) { enviarTodos(REG_INTENSIDAD, nivel > 15 ? 15 : nivel); }
@@ -164,12 +241,14 @@ void mostrar() {
   }
   // Lo primero que se envía acaba en el módulo más alejado de la entrada
   for (uint8_t r = 0; r < 8; r++) {
-    digitalWrite(PIN_CS, LOW);
+    digitalWrite(gCs, LOW);
+    retardo();
     for (int m = NUM_MODULOS - 1; m >= 0; m--) {
-      SPI.transfer(r + 1);
-      SPI.transfer(salida[m][r]);
+      byteSalida(r + 1);
+      byteSalida(salida[m][r]);
     }
-    digitalWrite(PIN_CS, HIGH);
+    digitalWrite(gCs, HIGH);
+    retardo();
   }
 }
 
