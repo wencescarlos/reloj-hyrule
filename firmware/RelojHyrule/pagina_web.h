@@ -131,7 +131,7 @@ footer{text-align:center;color:var(--suave);font-size:.8em;margin:24px 0 40px}
  <label>¡Lánzala ahora!</label>
  <div class="aventuras" id="aventuras"></div>
  <label>Escribir un mensaje en el reloj ahora mismo</label>
- <div class="fila"><input type="text" id="mensajeYa" maxlength="200" placeholder="¡A cenar, héroe!"><button type="button" style="flex:0" onclick="mensajeYa()">Enviar</button></div>
+ <div class="fila"><input type="text" id="mensajeYa" maxlength="200" onkeydown="if(event.key==='Enter'){event.preventDefault();enviarMensajeYa();}" placeholder="¡A cenar, héroe!"><button type="button" style="flex:0" onclick="enviarMensajeYa()">Enviar</button></div>
 </section>
 
 <section>
@@ -361,8 +361,8 @@ function cambiarIdioma(l){
 }
 
 // ---------------------------------------------------------------- utilidades
-function aviso(x){const a=$("#aviso");a.textContent=x;a.classList.add("ver");clearTimeout(a.t);a.t=setTimeout(()=>a.classList.remove("ver"),2500);}
-function post(u,x,datos){return fetch(u,{method:"POST",body:datos||new URLSearchParams()}).then(r=>{if(r.ok)aviso(x||t("¡Hecho!","Done!"));else aviso(t("Algo ha fallado","Something went wrong"));return r;}).catch(()=>aviso(t("Sin conexión con el reloj","No connection to the clock")));}
+function mostrarAviso(x){const a=$("#aviso");a.textContent=x;a.classList.add("ver");clearTimeout(a.t);a.t=setTimeout(()=>a.classList.remove("ver"),2500);}
+function post(u,x,datos){return fetch(u,{method:"POST",body:datos||new URLSearchParams()}).then(r=>{if(r.ok)mostrarAviso(x||t("¡Hecho!","Done!"));else mostrarAviso(t("Algo ha fallado","Something went wrong"));return r;}).catch(()=>mostrarAviso(t("Sin conexión con el reloj","No connection to the clock")));}
 function dos(n){return String(n).padStart(2,"0");}
 
 // Rellenar los desplegables del cumpleaños
@@ -423,7 +423,7 @@ function asistente(d){
   .then(()=>post("/api/prueba?corta=1",t("Mira la pantalla","Look at the display")));
 }
 
-function mensajeYa(){const x=$("#mensajeYa").value.trim();if(!x)return;
+function enviarMensajeYa(){const x=$("#mensajeYa").value.trim();if(!x)return;
  post("/api/mensaje",t("¡Mensaje enviado!","Message sent!"),new URLSearchParams({texto:x}));$("#mensajeYa").value="";}
 
 function buscarRedes(){$("#redes").textContent=t("Buscando...","Searching...");
@@ -432,7 +432,7 @@ function buscarRedes(){$("#redes").textContent=t("Buscando...","Searching...");
   l.sort((a,b)=>b.senal-a.senal).forEach(r=>{const e=document.createElement("div");
    e.textContent=(r.abierta?"🔓 ":"🔒 ")+r.nombre+"  ("+r.senal+" dBm)";e.onclick=()=>{$("#wNombre").value=r.nombre;$("#wClave").focus();};c.appendChild(e);});});}
 
-function conectarWifi(){const n=$("#wNombre").value.trim();if(!n){aviso(t("Escribe el nombre de la red","Type the network name"));return;}
+function conectarWifi(){const n=$("#wNombre").value.trim();if(!n){mostrarAviso(t("Escribe el nombre de la red","Type the network name"));return;}
  post("/api/wifi",t("Conectando... busca el reloj en http://reloj-hyrule.local","Connecting... find the clock at http://reloj-hyrule.local"),new URLSearchParams({nombre:n,clave:$("#wClave").value}));}
 
 function fechaBonita(f){f=f.toLowerCase();return L==="en"?f.replace(/\b[a-z]/g,c=>c.toUpperCase()):f;}
