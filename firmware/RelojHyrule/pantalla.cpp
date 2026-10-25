@@ -144,8 +144,6 @@ String descripcionPines() {
 
 void iniciar() {
   if (spiAbierto) { SPI.end(); spiAbierto = false; }
-  pinMode(gCs, OUTPUT);
-  digitalWrite(gCs, HIGH);
   if (spiChip) {
     SPI.begin();
     SPI.setFrequency(1000000);          // 1 MHz: seguro con cables largos
@@ -156,6 +154,11 @@ void iniciar() {
     pinMode(gDin, OUTPUT); digitalWrite(gDin, LOW);
     pinMode(gClk, OUTPUT); digitalWrite(gClk, LOW);
   }
+  // CS se configura DESPUÉS de SPI.begin(): D6 (GPIO12) es la pata MISO del SPI
+  // y SPI.begin() se la queda. Si se hace antes, CS no cambia nunca y la matriz
+  // no recibe ninguna orden (pantalla apagada).
+  pinMode(gCs, OUTPUT);
+  digitalWrite(gCs, HIGH);
   Serial.printf("[pantalla] %s\n", descripcionPines().c_str());
   enviarTodos(REG_PRUEBA, 0);
   enviarTodos(REG_DECODIFICAR, 0);
