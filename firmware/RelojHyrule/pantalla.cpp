@@ -24,6 +24,11 @@ namespace {
   bool    lento   = false;
   bool    spiAbierto = false;
 
+  // Estado que se vuelve a enviar cada segundo (ver reconfigurar)
+  uint8_t  nivelBrillo = 1;
+  bool     pantallaEncendida = true;
+  uint32_t ultimaConfig = 0;
+
   inline void retardo() { if (lento) delayMicroseconds(5); }
 
   // Envía un byte, el bit más alto primero (modo 0: el MAX7219 lee al subir CLK)
@@ -160,11 +165,9 @@ void iniciar() {
   pinMode(gCs, OUTPUT);
   digitalWrite(gCs, HIGH);
   Serial.printf("[pantalla] %s\n", descripcionPines().c_str());
-  enviarTodos(REG_PRUEBA, 0);
-  enviarTodos(REG_DECODIFICAR, 0);
-  enviarTodos(REG_LIMITE, 7);
-  enviarTodos(REG_INTENSIDAD, 1);
-  enviarTodos(REG_APAGADO, 1);
+  nivelBrillo = 1;
+  pantallaEncendida = true;
+  reconfigurar();
   limpiar();
   mostrar();
 }
@@ -200,8 +203,21 @@ void pataFija(uint8_t cual) {
   }
 }
 
-void brillo(uint8_t nivel) { enviarTodos(REG_INTENSIDAD, nivel > 15 ? 15 : nivel); }
-void encender(bool si)      { enviarTodos(REG_APAGADO, si ? 1 : 0); }
+void brillo(uint8_t nivel) { nivelBrillo = nivel > 15 ? 15 : nivel; enviarTodos(REG_INTENSIDAD, nivelBrillo); }
+void encender(bool si)      { pantallaEncendida = si; enviarTodos(REG_APAGADO, si ? 1 : 0); }
+
+// Vuelve a enviar toda la configuración del MAX7219. Con señales de 3,3 V una
+// orden puede llegar mal (calor, ruido, bajones al transmitir el WiFi) y dejar un
+// módulo desconfigurado: modo decodificar, menos filas, modo prueba... Repetirla
+// cada segundo hace que cualquier fallo se corrija solo, sin que se note.
+void reconfigurar() {
+  enviarTodos(REG_PRUEBA, 0);
+  enviarTodos(REG_DECODIFICAR, 0);
+  enviarTodos(REG_LIMITE, 7);
+  enviarTodos(REG_INTENSIDAD, nivelBrillo);
+  enviarTodos(REG_APAGADO, pantallaEncendida ? 1 : 0);
+  ultimaConfig = millis();
+}
 
 void limpiar() { memset(imagen, 0, sizeof(imagen)); }
 
@@ -222,6 +238,7 @@ void guardar(uint8_t* copia)          { memcpy(copia, imagen, sizeof(imagen)); }
 void restaurar(const uint8_t* copia)  { memcpy(imagen, copia, sizeof(imagen)); }
 
 void mostrar() {
+  if (millis() - ultimaConfig >= 1000) reconfigurar();
   // salida[m][r]: byte del registro r (fila 0..7) del módulo m de la cadena
   uint8_t salida[NUM_MODULOS][8];
   memset(salida, 0, sizeof(salida));

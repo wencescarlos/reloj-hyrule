@@ -68,6 +68,13 @@
 | CLK | D5 |
 
 > ⚠️ **Suelda los cables en la ENTRADA de la matriz**, el lado donde pone **DIN** (o IN). Si los pones en la salida (OUT o DOUT), la pantalla se queda apagada o enciende puntos sin sentido.
+>
+> 💡 **Para una pantalla estable:**
+> - Pon un **condensador electrolítico de 100–470 µF** (10 V o más) entre VCC y GND, soldado en la entrada de la matriz. Fíjate en la polaridad: la pata **−** va a GND.
+> - Usa cables de **menos de 15 cm**.
+> - Alimenta el reloj con un **cargador de 5 V y 1 A** como mínimo.
+>
+> Aun así, desde la versión 1.2.3 el reloj reenvía la configuración a la matriz cada segundo, así que si un módulo se desconfigura, se corrige solo.
 | CS | D6 |
 | DIN | D7 |
 

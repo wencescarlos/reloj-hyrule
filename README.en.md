@@ -68,6 +68,13 @@
 | CLK | D5 |
 
 > ⚠️ **Solder the wires to the matrix INPUT**, the side marked **DIN** (or IN). If you use the output (OUT or DOUT), the display stays dark or shows random dots.
+>
+> 💡 **For a stable display:**
+> - Solder a **100–470 µF electrolytic capacitor** (10 V or higher) between VCC and GND at the matrix input. Mind the polarity: the **−** leg goes to GND.
+> - Keep the wires **under 15 cm**.
+> - Power the clock with a **5 V, 1 A** charger or better.
+>
+> Even so, since version 1.2.3 the clock resends its setup to the matrix every second, so a module that gets scrambled fixes itself.
 | CS | D6 |
 | DIN | D7 |
 

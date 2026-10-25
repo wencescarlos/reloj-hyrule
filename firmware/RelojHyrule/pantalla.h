@@ -30,6 +30,7 @@ namespace Pantalla {
   // Brillo (0..15) y apagado total
   void brillo(uint8_t nivel);
   void encender(bool si);
+  void reconfigurar();             // reenvía la configuración (se hace sola cada segundo)
 
   // Memoria de imagen
   void limpiar();
