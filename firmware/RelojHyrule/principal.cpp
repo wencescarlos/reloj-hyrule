@@ -133,11 +133,16 @@ namespace {
         Anim::lanzar(n);
       }
     }
-    if (peticiones.mensaje.length()) {
-      String m = peticiones.mensaje;
+    // Mientras dura un mensaje puede llegar otro: se atiende en cuanto acaba
+    while (peticiones.mensaje.length()) {
+      String   m   = peticiones.mensaje;
+      int16_t  in  = peticiones.mensajeIntro;
+      uint16_t seg = peticiones.mensajeSegundos;
+      uint8_t  vel = peticiones.mensajeVelocidad;
       peticiones.mensaje = "";
+      peticiones.mensajeIntro = 1; peticiones.mensajeSegundos = 0; peticiones.mensajeVelocidad = 0;
       despertar();
-      Anim::mensaje(m.c_str());
+      Anim::mensajeEspecial(m.c_str(), in, seg, vel);
     }
   }
 

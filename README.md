@@ -149,6 +149,23 @@ Las instrucciones completas de impresión y montaje, con la lista de tornillerí
 
 ---
 
+## 📱 Mensajes desde el móvil
+
+En **http://reloj-hyrule.local/mensaje** hay una página hecha para el móvil:
+- **Tu mensaje:** escríbelo tú o elige uno rápido (¡A CENAR!, ¡A DORMIR!...). El botón **+ nombre** añade el nombre del niño.
+- **¿Quién lo trae?:** el héroe, el hada, un cofre, corazones, la Trifuerza, una bomba, sorpresa o una aventura completa.
+- **Tiempo en pantalla:** una vez, o repetido durante 30 s, 1, 2, 5 o 10 minutos.
+- **Velocidad:** despacio es ideal para quien está aprendiendo a leer.
+- **Vista previa:** se ve cómo quedará en la pantalla del reloj, y el botón ■ para el mensaje antes de tiempo.
+
+**Para tenerla como una app en el iPhone:** abre la página en **Safari**, pulsa **Compartir** (el cuadrado con la flecha) y elige **Añadir a pantalla de inicio**. Aparecerá el icono de la Trifuerza y se abrirá a pantalla completa. En Android, en Chrome: menú ⋮ → **Añadir a pantalla de inicio**.
+
+> El móvil tiene que estar conectado al mismo WiFi que el reloj.
+
+<p align="center"><img src="imagenes/pagina_mensaje.png" alt="Página de mensajes en el móvil" width="320"></p>
+
+---
+
 ## 🔄 Actualizaciones automáticas
 
 Cada vez que se sube un cambio a la carpeta `firmware/` de este repositorio, **GitHub Actions** compila el programa y lo publica en **GitHub Pages**:

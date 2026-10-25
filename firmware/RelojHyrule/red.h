@@ -11,6 +11,9 @@
 struct Peticiones {
   int16_t animacion = -1;          // número de aventura, 255 = sorpresa
   String  mensaje;                 // texto para enseñar ya
+  int16_t  mensajeIntro = 1;       // personaje o aventura antes del mensaje (ver Anim::mensajeEspecial)
+  uint16_t mensajeSegundos = 0;    // 0 = una vez
+  uint8_t  mensajeVelocidad = 0;   // ms por columna (0 = la de los ajustes)
   uint8_t prueba = 0;              // patrón de prueba: 1 = completo, 2 = solo 1 2 3 4
   bool    ajustesCambiados = false;
   int8_t  diagnostico = -1;        // orden de diagnóstico pendiente (ver principal.cpp)

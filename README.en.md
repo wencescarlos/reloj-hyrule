@@ -149,6 +149,23 @@ The logo letters are by **geektoybox** ([Printables](https://www.printables.com/
 
 ---
 
+## 📱 Messages from your phone
+
+At **http://reloj-hyrule.local/mensaje** there is a page made for phones:
+- **Your message:** type it yourself or pick a quick one (dinner time, bedtime...). The **+ name** button adds the child's name.
+- **Who brings it:** the hero, the fairy, a chest, hearts, the Triforce, a bomb, a surprise or a full adventure.
+- **Time on the display:** once, or repeated for 30 s, 1, 2, 5 or 10 minutes.
+- **Speed:** slow is ideal for early readers.
+- **Preview:** shows how it will look on the clock's display, and the ■ button stops the message early.
+
+**To use it like an app on an iPhone:** open the page in **Safari**, tap **Share** (the square with the arrow) and choose **Add to Home Screen**. The Triforce icon appears and the page opens full screen. On Android, in Chrome: menu ⋮ → **Add to Home screen**.
+
+> The phone must be on the same WiFi as the clock.
+
+<p align="center"><img src="imagenes/pagina_mensaje.png" alt="Message page on a phone" width="320"></p>
+
+---
+
 ## 🔄 Automatic updates
 
 Every time a change is pushed to the `firmware/` folder of this repository, **GitHub Actions** builds the firmware and publishes it on **GitHub Pages**:

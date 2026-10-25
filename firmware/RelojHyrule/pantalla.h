@@ -54,6 +54,9 @@ namespace Pantalla {
 
   // Desplaza un texto de derecha a izquierda (bloqueante, pero atiende la red)
   void desplazar(const char* texto, uint16_t msPorColumna);
+  // Corta el desplazamiento en curso (lo usa "Parar mensaje" de la web)
+  void cortar(bool si);
+  bool cortado();
 
   // Transiciones entre dos imágenes
   void cortinaSalida(uint16_t ms);   // borra columna a columna

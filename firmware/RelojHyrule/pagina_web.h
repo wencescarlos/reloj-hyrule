@@ -131,6 +131,7 @@ footer{text-align:center;color:var(--suave);font-size:.8em;margin:24px 0 40px}
  <label>¡Lánzala ahora!</label>
  <div class="aventuras" id="aventuras"></div>
  <label>Escribir un mensaje en el reloj ahora mismo</label>
+ <p class="nota"><a href="/mensaje" style="color:var(--oro)">📱 Página de mensajes para el móvil</a> (con personaje, duración y velocidad; se puede añadir a la pantalla de inicio)</p>
  <div class="fila"><input type="text" id="mensajeYa" maxlength="200" onkeydown="if(event.key==='Enter'){event.preventDefault();enviarMensajeYa();}" placeholder="¡A cenar, héroe!"><button type="button" style="flex:0" onclick="enviarMensajeYa()">Enviar</button></div>
 </section>
 
@@ -311,7 +312,7 @@ const EN={
 "Nueva clave de administrador (déjala vacía para no cambiarla)":"New admin password (leave it empty to keep the current one)",
 "Guardar":"Save","Buscar versión nueva ahora":"Check for a new version now","Subir archivo .bin":"Upload a .bin file",
 "Para subir un archivo: usuario":"To upload a file: user","y tu clave de administrador (de fábrica: hyrule).":"and your admin password (factory default: hyrule).",
-"Reiniciar el reloj":"Restart the clock","Ajustes de fábrica":"Factory reset",
+"Reiniciar el reloj":"Restart the clock","📱 Página de mensajes para el móvil":"📱 Message page for your phone","(con personaje, duración y velocidad; se puede añadir a la pantalla de inicio)":"(with a character, duration and speed; you can add it to your home screen)","Ajustes de fábrica":"Factory reset",
 "Diagnóstico de pantalla":"Display diagnostics",
 "Para encontrar averías en los cables o en la matriz. Mientras dura, el reloj no enseña la hora; se cierra solo a los 10 minutos.":"To find faults in the wires or the matrix. While it runs, the clock doesn't show the time; it ends by itself after 10 minutes.",
 "1. Encender los LED (con el modo de prueba de la propia matriz)":"1. Light up the LEDs (using the matrix's own test mode)",

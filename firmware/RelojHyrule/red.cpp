@@ -18,6 +18,7 @@
 #include "tiempo.h"
 #include "sistema.h"
 #include "pagina_web.h"
+#include "pagina_mensaje.h"
 #include "pantalla.h"
 
 Peticiones peticiones;
@@ -76,6 +77,10 @@ namespace {
     j += ",\"encendido\":"; j += millis() / 1000;
     j += ",\"diasCumple\":"; j += hayHora ? Tiempo::diasParaCumple(t) : -1;
     j += ",\"actualizacion\":\""; j += escapar(Actualizacion::estado()); j += '"';
+    j += ",\"mensajeActivo\":"; j += Anim::mensajeEnCurso() ? "true" : "false";
+    j += ",\"mensajeQueda\":"; j += Anim::segundosMensaje();
+    j += ",\"nombre\":\""; j += escapar(ajustes.nombre); j += '"';
+    j += ",\"idioma\":"; j += ajustes.idioma;
     j += ",\"pines\":\""; j += escapar(Pantalla::descripcionPines()); j += '"';
     j += ",\"diagnostico\":\""; j += escapar(estadoDiagnostico); j += '"';
     j += '}';
@@ -118,8 +123,36 @@ namespace {
     t.trim();
     if (t.length() == 0) { responderJson("{\"ok\":false}", 400); return; }
     if (t.length() > 200) t = t.substring(0, 200);
+    // Opcionales (página del móvil): intro=0..6 | s | a<n>, segundos, velocidad
+    int16_t intro = 1;                                   // de siempre: llega el héroe
+    if (servidor.hasArg("intro")) {
+      String i = servidor.arg("intro");
+      if (i == "s")                 intro = Anim::INTRO_SORPRESA;
+      else if (i.startsWith("a"))   intro = Anim::INTRO_AVENTURA + i.substring(1).toInt();
+      else                          intro = constrain(i.toInt(), 0, (int)Anim::PERSONAJES);
+    }
+    peticiones.mensajeIntro     = intro;
+    peticiones.mensajeSegundos  = servidor.hasArg("segundos") ? constrain(servidor.arg("segundos").toInt(), 0, 1800) : 0;
+    peticiones.mensajeVelocidad = servidor.hasArg("velocidad") ? constrain(servidor.arg("velocidad").toInt(), 15, 150) : 0;
     peticiones.mensaje = t;
+    Anim::pararMensaje();                                // si había otro, se corta
     ok();
+  }
+
+  void apiMensajeParar() { Anim::pararMensaje(); peticiones.mensaje = ""; ok(); }
+
+  // Página del móvil para mandar mensajes (se puede añadir a la pantalla de inicio)
+  void paginaMensaje() {
+    servidor.sendHeader("Cache-Control", "no-store");
+    servidor.send_P(200, "text/html; charset=utf-8", PAGINA_MENSAJE);
+  }
+  void icono() {
+    servidor.sendHeader("Cache-Control", "max-age=604800");
+    servidor.send_P(200, "image/png", (const char*)ICONO_PNG, sizeof(ICONO_PNG));
+  }
+  void manifiesto() {
+    servidor.sendHeader("Cache-Control", "max-age=86400");
+    servidor.send_P(200, "application/manifest+json", MANIFIESTO);
   }
 
   void apiPrueba()        { peticiones.prueba = servidor.hasArg("corta") ? 2 : 1; ok(); }
@@ -191,6 +224,11 @@ namespace {
     servidor.on("/api/aventuras",        HTTP_GET,  apiAventuras);
     servidor.on("/api/animacion",        HTTP_POST, apiAnimacion);
     servidor.on("/api/mensaje",          HTTP_POST, apiMensaje);
+    servidor.on("/api/mensaje/parar",    HTTP_POST, apiMensajeParar);
+    servidor.on("/mensaje",              HTTP_GET,  paginaMensaje);
+    servidor.on("/icono.png",            HTTP_GET,  icono);
+    servidor.on("/apple-touch-icon.png", HTTP_GET,  icono);
+    servidor.on("/manifest.json",        HTTP_GET,  manifiesto);
     servidor.on("/api/prueba",           HTTP_POST, apiPrueba);
     servidor.on("/api/diagnostico",      HTTP_POST, apiDiagnostico);
     servidor.on("/api/buscar-version",   HTTP_POST, apiBuscarVersion);

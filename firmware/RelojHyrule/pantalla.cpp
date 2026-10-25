@@ -28,6 +28,7 @@ namespace {
   uint8_t  nivelBrillo = 1;
   bool     pantallaEncendida = true;
   uint32_t ultimaConfig = 0;
+  volatile bool cortarYa = false;
 
   inline void retardo() { if (lento) delayMicroseconds(5); }
 
@@ -323,9 +324,12 @@ int digito(uint8_t d, int x, int y) {
   return dibujarGlifo('0' + (d % 10), x, y - 1);
 }
 
+void cortar(bool si) { cortarYa = si; }
+bool cortado()        { return cortarYa; }
+
 void desplazar(const char* t, uint16_t msPorColumna) {
   int ancho = anchoTexto(t);
-  for (int x = ANCHO_PANTALLA; x >= -ancho; x--) {
+  for (int x = ANCHO_PANTALLA; x >= -ancho && !cortarYa; x--) {
     limpiar();
     texto(t, x, 0);
     mostrar();

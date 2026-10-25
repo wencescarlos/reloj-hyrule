@@ -337,6 +337,97 @@ namespace {
 
   // ------------------------------------------------------------------
   struct Aventura { const char* nombre; const char* nombreEn; void (*funcion)(); };
+  // ------------------------------------------------------------------
+  //  Personajes que traen un mensaje (entradas cortas, de 2 a 3 segundos)
+  // ------------------------------------------------------------------
+  bool parar() { return Pantalla::cortado(); }
+
+  void traeHeroe() {            // 1. el héroe llega y levanta el mensaje
+    caminar(-8, 12, 60);
+    for (uint8_t i = 0; i < 10 && !parar(); i++) {
+      limpiar(); sprite(SPR_HEROE_TESORO, 12, 0); destellos(4, 0, 27, 2, 2); cuadro(90);
+    }
+  }
+  void traeHada() {             // 2. el hada llega volando y brilla
+    for (int x = -5; x <= 13 && !parar(); x++) {
+      limpiar();
+      int y = 2 + (int)(2.0f * sinf(x / 2.0f));
+      sprite((x % 2) ? SPR_HADA_A : SPR_HADA_B, x, y);
+      if (x > -3) pixel(x - 2, y + 2 + random(-1, 2));
+      cuadro(70);
+    }
+    for (uint8_t i = 0; i < 10 && !parar(); i++) {
+      limpiar(); sprite((i % 2) ? SPR_HADA_A : SPR_HADA_B, 13, 1); destellos(9, 0, 22, 7, 3); cuadro(90);
+    }
+  }
+  void traeCofre() {            // 3. un cofre tiembla y se abre
+    for (uint8_t i = 0; i < 8 && !parar(); i++) { limpiar(); sprite(SPR_COFRE, 11 + (i % 2), 1); cuadro(110); }
+    for (uint8_t i = 0; i < 12 && !parar(); i++) {
+      limpiar(); sprite(SPR_COFRE_ABIERTO, 11, 1); destellos(9, 0, 21, 1, 3); cuadro(80);
+    }
+  }
+  void traeCorazones() {        // 4. se llenan cuatro corazones
+    bool lleno[4] = { false, false, false, false };
+    for (uint8_t c = 0; c < 4 && !parar(); c++) {
+      lleno[c] = true;
+      limpiar();
+      for (uint8_t i = 0; i < 4; i++) sprite(lleno[i] ? SPR_CORAZON : SPR_CORAZON_VACIO, i * 8, 1);
+      cuadro(300);
+    }
+    for (uint8_t i = 0; i < 4 && !parar(); i++) {
+      limpiar();
+      for (uint8_t k = 0; k < 4; k++) sprite(SPR_CORAZON, k * 8, 1);
+      if (i % 2) invertir();
+      cuadro(160);
+    }
+  }
+  void traeTrifuerza() {        // 5. la Trifuerza se une
+    for (int y = -4; y <= 0 && !parar(); y++) { limpiar(); sprite(SPR_TRIANGULO, 12, y); cuadro(90); }
+    for (int i = 0; i <= 15 && !parar(); i++) {
+      limpiar(); dibujarTrifuerza(0, -7 + i, 32 - (i * 16) / 15); cuadro(45);
+    }
+    for (uint8_t i = 0; i < 6 && !parar(); i++) {
+      limpiar(); dibujarTrifuerza(0, 8, 16); if (i % 2) invertir(); cuadro(130);
+    }
+  }
+  void traeBomba() {            // 6. ¡una bomba! y el mensaje sale del humo
+    for (uint8_t i = 0; i < 10 && !parar(); i++) {
+      limpiar(); sprite(SPR_BOMBA, 12, 0); if (i % 2) pixel(16, 0); cuadro(120);
+    }
+    for (uint8_t i = 0; i < 4 && !parar(); i++) {
+      limpiar(); sprite((i % 2) ? SPR_HUMO_2 : SPR_HUMO_1, 12, 0); if (i == 0) invertir(); cuadro(120);
+    }
+  }
+
+  // Dibujo quieto del personaje entre repeticiones del mensaje
+  void posePersonaje(uint8_t p) {
+    limpiar();
+    switch (p) {
+      case 1: sprite(SPR_HEROE_TESORO, 12, 0); break;
+      case 2: sprite(SPR_HADA_A, 13, 1); break;
+      case 3: sprite(SPR_COFRE_ABIERTO, 11, 1); break;
+      case 4: for (uint8_t k = 0; k < 4; k++) sprite(SPR_CORAZON, k * 8, 1); break;
+      case 5: dibujarTrifuerza(0, 8, 16); break;
+      case 6: sprite(SPR_HUMO_2, 12, 0); break;
+      default: break;
+    }
+  }
+
+  void traePersonaje(uint8_t p) {
+    switch (p) {
+      case 1: traeHeroe(); break;
+      case 2: traeHada(); break;
+      case 3: traeCofre(); break;
+      case 4: traeCorazones(); break;
+      case 5: traeTrifuerza(); break;
+      case 6: traeBomba(); break;
+      default: break;
+    }
+  }
+
+  bool     enCurso = false;
+  uint32_t finMensaje = 0;
+
   const Aventura AVENTURAS[] = {
     { "Paseo por Hyrule",        "A walk in Hyrule",      paseo },
     { "El cofre del tesoro",     "The treasure chest",    cofre },
@@ -364,6 +455,47 @@ String personalizar(const char* t) {
 }
 
 uint8_t total() { return NUM_AVENTURAS; }
+
+void mensajeEspecial(const char* texto, int16_t intro, uint16_t segundos, uint8_t msPorColumna) {
+  Pantalla::cortar(false);
+  enCurso = true;
+  if (segundos > 1800) segundos = 1800;                  // como mucho, media hora
+  uint16_t ms = msPorColumna ? msPorColumna : ajustes.velocidad;
+  if (ms < 15) ms = 15;
+  if (ms > 150) ms = 150;
+  uint8_t pose = 0;
+  if (intro == INTRO_SORPRESA) intro = 1 + random(PERSONAJES);
+  if (intro >= INTRO_AVENTURA && intro < INTRO_AVENTURA + NUM_AVENTURAS) {
+    lanzar(intro - INTRO_AVENTURA);                      // aventura completa antes del mensaje
+  } else if (intro >= 1 && intro <= PERSONAJES) {
+    pose = intro;
+    traePersonaje(pose);
+  }
+  String t = personalizar(texto);
+  finMensaje = millis() + segundos * 1000UL;
+  do {
+    if (Pantalla::cortado()) break;
+    desplazar(t.c_str(), ms);
+    if (segundos == 0 || Pantalla::cortado()) break;
+    if ((int32_t)(millis() - finMensaje) >= 0) break;
+    posePersonaje(pose);                                 // pausa entre repeticiones
+    mostrar();
+    for (uint8_t i = 0; i < 9 && !Pantalla::cortado(); i++) esperar(100);
+  } while ((int32_t)(millis() - finMensaje) < 0);
+  Pantalla::cortar(false);
+  enCurso = false;
+  finMensaje = 0;
+}
+
+bool mensajeEnCurso() { return enCurso; }
+
+uint16_t segundosMensaje() {
+  if (!enCurso || !finMensaje) return 0;
+  int32_t q = (int32_t)(finMensaje - millis());
+  return q > 0 ? (q + 999) / 1000 : 0;
+}
+
+void pararMensaje() { if (enCurso) Pantalla::cortar(true); }
 
 const char* nombre(uint8_t n) {
   if (n >= NUM_AVENTURAS) return "";

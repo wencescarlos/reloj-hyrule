@@ -50,6 +50,7 @@ int main(int argc,char**argv){
   else if(que=="noches") Anim::buenasNoches();
   else if(que=="hora"){ t.tm_hour=17;t.tm_min=0; Anim::horaEnPunto(t);}
   else if(que=="prueba") Anim::patronPrueba();
+  else if(que.rfind("mensaje",0)==0) Anim::mensajeEspecial("¡A CENAR, {N}!", atoi(que.c_str()+7), 20, 40);   // mensaje0..mensaje6, 99, 100+n
   else Anim::lanzar(atoi(que.c_str()));
   // salida: t brillo 32 columnas en hex
   FILE*f=fopen(argv[3],"w");
