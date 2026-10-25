@@ -11,7 +11,7 @@ Carcasa **diseñada desde cero** como dos bloques de piedra antigua de Hyrule:
 - **Detalles de piedra:** esquinas desgastadas, grietas talladas y bordes achaflanados.
 - **Dos patas de piedra:** inclinan el reloj **8° hacia atrás** para leerlo mejor desde la mesa.
 - **Tapa trasera con 4 tornillos avellanados:** las cabezas quedan hundidas en la tapa. Lleva la Trifuerza dorada grande, el **puerto USB centrado justo debajo**, "RELOJ DE HYRULE" grabado con la fuente de píxeles del reloj y rejillas de ventilación.
-- **La matriz LED, bien sujeta:** va en un marco que la centra y dos barras atornilladas la aprietan contra la ventana. Sirve para cualquier grosor de matriz.
+- **La matriz LED, bien sujeta:** va en un marco que la centra y dos barras atornilladas la aprietan contra la ventana. Sirve para matrices 4 en 1 de **128 a 130 mm** de largo y de cualquier grosor.
 
 **Medidas:** 168 mm de ancho, unos 157 mm de alto (con la cresta) y 46 mm de fondo. Peso aproximado: 185 g con la electrónica. Es muy estable: el centro de masas cae en mitad del apoyo.
 
@@ -88,7 +88,7 @@ Material: PLA, 1,75 mm. Ninguna pieza necesita soportes.
 |-------|-------------|------|---------|-------|
 | Carcasa | **Boca abajo**: el frente (con la cresta) sobre la cama, tal como viene el STL | 0,2 mm | 15 % | Cama de 170 × 160 mm como mínimo. **4 perímetros**, para que las torretas tengan pared maciza alrededor de los agujeros guía. Las grietas, la ranura de la ventana y los chaflanes salen en la primera capa: usa una cama lisa. |
 | Tapa trasera | **Boca abajo**: la cara con el texto sobre la cama, tal como viene | 0,2 mm | 20 % | 5 mm de grosor. El texto y los avellanados quedan en la cara de la cama; los bolsillos de las torretas, arriba. |
-| Ventana difusora | Plana | 0,2 mm | 100 % | 1 mm de grosor: deja pasar la luz difuminada. Para más contraste, prueba con 0,8 mm. |
+| Ventana difusora | Plana | 0,2 mm | 100 % | 131 × 33 × 1 mm: deja pasar la luz difuminada. Para más contraste, prueba con 0,8 mm. |
 | Barras de sujeción | Tal como vienen: cara de los avellanados sobre la cama y columnas hacia arriba | 0,2 mm | 100 % | Dos barras en el mismo archivo. Mejor en **PETG** (más elástico); en PLA también funcionan. |
 | Soporte del Wemos | Plano, tal como viene: avellanados sobre la cama | 0,2 mm | 100 % | Mejor en **PETG**, por la viga elástica; en PLA también funciona. |
 | Trifuerzas doradas | Con la pestaña plana sobre la cama y los triángulos hacia arriba | 0,12–0,16 mm | 100 % | La cara de arriba de los triángulos es la que se ve. |
@@ -121,8 +121,11 @@ El logo se monta igual que el de la opción A: con los 2 trozos de filamento en 
 1. **Roscas:** pasa una vez cada tornillo por su agujero guía, sin piezas, y sácalo. Así el plástico queda roscado y el montaje es más fácil. Son 10 agujeros: 4 en las esquinas de atrás (tapa), 4 a los lados de la ventana (barras) y 2 junto a la cuna del Wemos (soporte).
 2. **Trifuerzas:** mete la Trifuerza dorada pequeña por dentro del frente del pedestal y la grande por dentro de la tapa. La pestaña queda apoyada por dentro y los triángulos a ras por fuera. Fíjalas con unas gotas de pegamento. Hazlo antes de colocar el Wemos.
 3. **Logo:** con la opción A, coloca las 14 letras en el rebaje del fondo verde y pégalas. Con la opción B, el logo ya sale entero de la impresora. En los dos casos, pon los 2 trozos de filamento en los agujeros de detrás, encájalos en los agujeros de la cresta y pega el logo.
-4. **Ventana:** coloca la ventana difusora por dentro, en el rebaje del frente.
-5. **Matriz:** métela en su marco, con los LED hacia la ventana y el conector de entrada hacia cualquiera de los dos lados. Los cortes laterales del marco dejan paso a los pines y los cables.
+4. **Ventana:** con la carcasa boca abajo (el frente sobre la mesa), deja caer la ventana difusora por el hueco del marco de la matriz. Tiene el mismo tamaño que la matriz y baja hasta el fondo, donde encaja en un rebaje de 1 mm alrededor de la ventana. No hace falta pegarla: la matriz la aprieta contra el frente.
+
+   ![Ventana difusora en su sitio, vista desde atrás](../imagenes/reloj_v2_difusor.png)
+
+5. **Matriz:** métela en su marco, encima de la ventana difusora, con los LED hacia la ventana y el conector de entrada hacia cualquiera de los dos lados. Los cortes laterales del marco dejan paso a los pines y los cables.
 6. **Barras:** pon las dos barras por detrás de la matriz, con las columnas de las lengüetas hacia la placa, y atorníllalas **hasta el fondo** sobre sus torretas con 4 tornillos M3 × 6. Las lengüetas se doblan solas y dejan la matriz firme contra la ventana.
 7. **Wemos D1 mini (sin pegamento):** suelda los 5 cables (ver el [esquema](../imagenes/esquema_conexiones.svg)). Apoya la placa en la cuna, con el módulo ESP (el rectángulo metálico) hacia arriba y el USB hacia atrás, y deslízala hasta los topes delanteros. Coloca el soporte por detrás de sus dos torretas, con la zapata sobre el ESP, y atorníllalo **desde atrás** con 2 tornillos M3 × 6. La placa queda sujeta por los cuatro lados: guías a los lados, topes delante, la tapa detrás y el soporte arriba.
 

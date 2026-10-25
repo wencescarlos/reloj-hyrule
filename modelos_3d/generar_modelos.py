@@ -54,9 +54,14 @@ PATA_X0, PATA_X1, PATA_Y0 = 50.0, 80.0, -8.0     # patas (±x)
 INCLINACION = 8.0                                # grados hacia atrás
 
 VENT_C = (0.0, 57.0)          # centro de la ventana
-VENT   = (127.0, 31.0)        # hueco visible (la matriz es 128 x 32)
-DIFUSOR = (133.0, 37.0, 1.0)  # placa difusora
-MATRIZ = (128.8, 32.8)        # alojamiento de la matriz
+VENT   = (127.0, 31.0)        # hueco visible (los LED ocupan 128 x 32)
+# Alojamiento de la matriz: las placas 4 en 1 miden de 128 a 130 mm de largo
+# (módulos de 32 a 32,5 mm) y de 32 a 32,5 de alto. Se deja holgura.
+MATRIZ = (131.4, 33.4)
+# La ventana difusora entra por el mismo hueco que la matriz y cae en un rebaje
+# de 1 mm del frente; luego la matriz la aprieta contra la pared.
+DIFUSOR = (MATRIZ[0] - 0.4, MATRIZ[1] - 0.4, 1.0)   # 131,0 x 33,0 x 1
+MARCO_EXT = (MATRIZ[0] + 6.0, 41.0)                  # contorno exterior del marco
 CHAFLAN = 2.4                 # chaflán del frente (borde de piedra)
 
 # Wemos D1 mini (34,2 x 25,6 mm), tumbado, USB hacia atrás
@@ -255,12 +260,12 @@ def cuerpo(L0):
     # Ventana, rebaje del difusor y alojamiento de la matriz
     vx, vy = VENT_C
     c = R(c, [ext(rrect(vx, vy, *VENT, 1.0), FRENTE + 2, -1),
-              ext(rrect(vx, vy, DIFUSOR[0] + 0.4, DIFUSOR[1] + 0.4, 1.0), DIFUSOR[2] + 0.01, FRENTE - DIFUSOR[2])])
+              ext(rrect(vx, vy, MATRIZ[0], MATRIZ[1], 0.5), DIFUSOR[2] + 0.01, FRENTE - DIFUSOR[2])])   # rebaje del difusor
     mw, mh = MATRIZ
-    marco = rrect(vx, vy, DIFUSOR[0] + 4.0, DIFUSOR[1] + 4.0, 1).difference(rrect(vx, vy, mw, mh, 0.5))
+    marco = rrect(vx, vy, *MARCO_EXT, 1).difference(rrect(vx, vy, mw, mh, 0.5))
     marco = marco.difference(box(vx - mw/2 - 8, vy - 7, vx - mw/2 + 1, vy + 7))   # paso de pines y cables
     marco = marco.difference(box(vx + mw/2 - 1, vy - 7, vx + mw/2 + 8, vy + 7))
-    rebaje = rrect(vx, vy, DIFUSOR[0] + 0.4, DIFUSOR[1] + 0.4, 1.0)
+    rebaje = rrect(vx, vy, MATRIZ[0], MATRIZ[1], 0.5)
     piezas = [c, ext(marco, MARCO_Z - FRENTE, FRENTE), ext(marco.difference(rebaje.buffer(0.01)), 0.8, FRENTE - 0.5)]   # el marco se apoya en la pared
     # Cresta del logo
     if L0 is not None:
@@ -414,7 +419,7 @@ def soporte_wemos():
     return p
 
 def difusor():
-    return ext(rrect(0, 0, *DIFUSOR[:2], 1.0), DIFUSOR[2])
+    return ext(rrect(0, 0, *DIFUSOR[:2], 0.5), DIFUSOR[2])
 
 def fondo_logo(L0):
     _, fondo, guias = cresta_y_fondo(L0)
