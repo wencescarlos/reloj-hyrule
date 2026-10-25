@@ -104,6 +104,7 @@ All parts are in [`modelos_3d/`](modelos_3d/):
 | Gold Triforce for the pedestal | `trifuerza_dorada_frontal.stl` | Silk gold |
 | Matrix holding bars | `barras_sujecion_matriz.stl` | Any |
 | Wemos holder | `soporte_wemos.stl` | Any |
+| **Or:** Wemos holder with a buzzer ring | `soporte_wemos_zumbador.stl` | Any |
 | Logo background | `fondo_logo.stl` | Green |
 | Logo letters | `logo_letras_geektoybox.stl` | Silk gold |
 | **Or:** one-piece logo | `logo_dos_colores.stl` | Green and gold, with a pause at 2.0 mm to swap filament |
@@ -169,7 +170,11 @@ With a **12 mm passive buzzer**, like a PC motherboard speaker, the clock can:
 
 The clock **only makes sound when asked**: adventures and the time are silent. The 8 tunes (Adventure, Little bells, Sunrise, Victory, Alert, Mystery, March and Lullaby) are **original compositions** made for this project; the clock does not play music from the games.
 
-The buzzer is **optional**. If you add one, print **`tapa_trasera_zumbador.stl`** instead of `tapa_trasera.stl`: it has a ring inside, behind a vent, where the buzzer press-fits. It connects to **D1** (diagram in Spanish):
+The buzzer is **optional** and there are two places for it:
+- **In the back cover:** print `tapa_trasera_zumbador.stl` instead of `tapa_trasera.stl`. The buzzer sits behind a vent and is louder.
+- **On the Wemos holder:** print `soporte_wemos_zumbador.stl` instead of `soporte_wemos.stl`. The buzzer sits inside the pedestal next to the Wemos, with very short wires. It sounds a bit more muffled, which can be nicer for a child.
+
+It connects to **D1** (diagram in Spanish):
 
 <p align="center"><img src="imagenes/esquema_zumbador.svg" alt="Buzzer wiring" width="760"></p>
 

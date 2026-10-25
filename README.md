@@ -104,6 +104,7 @@ Todas las piezas están en [`modelos_3d/`](modelos_3d/):
 | Trifuerza dorada del pedestal | `trifuerza_dorada_frontal.stl` | Dorado silk |
 | Barras de sujeción de la matriz | `barras_sujecion_matriz.stl` | Cualquiera |
 | Soporte del Wemos | `soporte_wemos.stl` | Cualquiera |
+| **O bien:** soporte del Wemos con aro para el zumbador | `soporte_wemos_zumbador.stl` | Cualquiera |
 | Fondo del logo | `fondo_logo.stl` | Verde |
 | Letras del logo | `logo_letras_geektoybox.stl` | Dorado silk |
 | **O bien:** logo en una sola pieza | `logo_dos_colores.stl` | Verde y dorado, con una pausa a 2,0 mm para cambiar el filamento |
@@ -169,7 +170,11 @@ Con un **zumbador pasivo de 12 mm**, como el «speaker» de las placas base, el 
 
 El reloj **solo suena cuando se pide**: las aventuras y la hora son silenciosas. Las 8 melodías (Aventura, Campanitas, Amanecer, Victoria, Aviso, Misterio, Marcha y Nana) son **composiciones originales** de este proyecto; el reloj no reproduce música de los juegos.
 
-El zumbador es **opcional**. Si lo pones, imprime la tapa **`tapa_trasera_zumbador.stl`** en lugar de `tapa_trasera.stl`: tiene un aro por dentro, detrás de una rejilla, donde el zumbador entra a presión. Se conecta a **D1**:
+El zumbador es **opcional** y hay dos sitios para ponerlo:
+- **En la tapa:** imprime `tapa_trasera_zumbador.stl` en lugar de `tapa_trasera.stl`. El zumbador queda detrás de una rejilla y se oye más.
+- **En el soporte del Wemos:** imprime `soporte_wemos_zumbador.stl` en lugar de `soporte_wemos.stl`. El zumbador queda dentro del pedestal, junto al Wemos y con los cables muy cortos. Se oye algo más apagado, que para un niño puede ser incluso mejor.
+
+Se conecta a **D1**:
 
 <p align="center"><img src="imagenes/esquema_zumbador.svg" alt="Conexión del zumbador" width="760"></p>
 
