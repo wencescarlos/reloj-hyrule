@@ -19,6 +19,7 @@
 #  Genera, en la carpeta "piezas/":
 #     cuerpo_piedra.stl              carcasa (losa + pedestal + patas + cresta)
 #     tapa_trasera.stl               tapa con Trifuerza, puerto USB y 4 tornillos avellanados
+#     tapa_trasera_zumbador.stl      la misma tapa con un aro para el zumbador opcional
 #     barras_sujecion_matriz.stl     2 barras que aprietan la matriz contra la ventana
 #     ventana_difusora.stl           placa blanca delante de los LED
 #     trifuerza_dorada_trasera.stl   Trifuerza dorada de la tapa (30 mm)
@@ -350,7 +351,7 @@ def aro_zumbador():
     alto = ext(aro.difference(ranura), ZUMB_ALTO - 2.0, TAPA + 2.0)
     return U([base, alto])
 
-def tapa():
+def tapa(con_zumbador=False):
     # La tapa se imprime boca abajo y luego se le da la vuelta (giro sobre el eje vertical):
     # por eso su silueta y su texto se dibujan en espejo respecto al cuerpo.
     espejo = lambda g: affinity.scale(g, xfact=-1, yfact=1, origin=(0, 0))
@@ -375,7 +376,8 @@ def tapa():
         for k in range(4):
             agujeros.append(ext(rrect(s * (40 + k * 6), 40, 2.2, 16, 1.1), TAPA + 2, -1))
     p = R(p, agujeros)
-    p = U([p, aro_zumbador()])
+    if con_zumbador:
+        p = U([p, aro_zumbador()])
     return p      # z=0 es la cara exterior: se imprime así, boca abajo
 
 def trifuerza_dorada(alto, hueco, holgura=0.15, grosor=TAPA, pestana=0.6, margen=1.4):
@@ -473,6 +475,7 @@ def main():
     out = lambda m, n: (m.export(os.path.join(args.salida, n)), print(f"  → {n}  estanca={m.is_watertight}  {np.round(m.extents,1)}"))
     c = cuerpo(L0); out(c, "cuerpo_piedra.stl")
     out(tapa(), "tapa_trasera.stl")
+    out(tapa(con_zumbador=True), "tapa_trasera_zumbador.stl")
     out(trifuerza_dorada(30.0, 1.6), "trifuerza_dorada_trasera.stl")
     out(trifuerza_dorada(15.0, 0.9, grosor=FRENTE), "trifuerza_dorada_frontal.stl")
     out(difusor(), "ventana_difusora.stl")

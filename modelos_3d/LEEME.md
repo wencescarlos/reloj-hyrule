@@ -22,7 +22,8 @@ Carcasa **diseñada desde cero** como dos bloques de piedra antigua de Hyrule:
 | # | Pieza | Archivo | Color recomendado | Cantidad |
 |---|-------|---------|-------------------|----------|
 | 1 | Carcasa (losa, pedestal, patas y cresta) | `cuerpo_piedra.stl` | **Gris piedra** (PLA gris, "piedra" o mármol) | 1 |
-| 2 | Tapa trasera | `tapa_trasera.stl` | Gris piedra | 1 |
+| 2 | Tapa trasera **sin zumbador** | `tapa_trasera.stl` | Gris piedra | 1 |
+| 2 | **O bien:** tapa trasera **con zumbador** (aro por dentro, detrás de una rejilla) | `tapa_trasera_zumbador.stl` | Gris piedra | 1 |
 | 3 | Ventana difusora | `ventana_difusora.stl` | **Blanco** (deja pasar la luz de los LED) | 1 |
 | 4 | Trifuerza dorada de la tapa | `trifuerza_dorada_trasera.stl` | Dorado silk | 1 |
 | 5 | Trifuerza dorada del pedestal | `trifuerza_dorada_frontal.stl` | Dorado silk | 1 |
@@ -49,7 +50,7 @@ Ya no hace falta que la carcasa sea de color claro: la luz sale por la ventana d
 
 | Archivo | Autor | Licencia |
 |---------|-------|----------|
-| `cuerpo_piedra.stl`, `tapa_trasera.stl`, `ventana_difusora.stl`, `barras_sujecion_matriz.stl`, `soporte_wemos.stl`, Trifuerzas | **Diseño original** de este proyecto | CC BY-NC-SA 4.0 |
+| `cuerpo_piedra.stl`, `tapa_trasera.stl`, `tapa_trasera_zumbador.stl`, `ventana_difusora.stl`, `barras_sujecion_matriz.stl`, `soporte_wemos.stl`, Trifuerzas | **Diseño original** de este proyecto | CC BY-NC-SA 4.0 |
 | `logo_letras_geektoybox.stl` | **geektoybox** ([Printables](https://www.printables.com/model/499505-legend-of-zelda-logo-text)), sin cambios | CC BY-NC 4.0 |
 | `fondo_logo.stl`, `logo_dos_colores.stl` y la cresta | Hechos a partir del logo de geektoybox | CC BY-NC 4.0 |
 
@@ -132,7 +133,7 @@ El logo se monta igual que el de la opción A: con los 2 trozos de filamento en 
    ![Wemos sujeto con el soporte](../imagenes/reloj_v2_wemos.png)
 
 8. **Cables:** conecta los cables a la **entrada (IN)** de la matriz. Hay sitio de sobra entre el pedestal y la matriz.
-9. **Zumbador (opcional):** mete el zumbador de 12 mm a presión en el aro que hay por dentro de la tapa, con el agujero mirando a la rejilla, y saca los cables por la ranura del aro. La conexión está en el [esquema del zumbador](../imagenes/esquema_zumbador.svg).
+9. **Zumbador (opcional, solo con `tapa_trasera_zumbador.stl`):** mete el zumbador de 12 mm a presión en el aro que hay por dentro de la tapa, con el agujero mirando a la rejilla, y saca los cables por la ranura del aro. La conexión está en el [esquema del zumbador](../imagenes/esquema_zumbador.svg).
 
    ![Zumbador en la tapa](../imagenes/tapa_zumbador.png)
 

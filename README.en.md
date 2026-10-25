@@ -98,6 +98,7 @@ All parts are in [`modelos_3d/`](modelos_3d/):
 |------|------|-------|
 | Stone case (slab, pedestal, feet and crest) | `cuerpo_piedra.stl` | Stone grey |
 | Back cover (Triforce, USB and 4 screws) | `tapa_trasera.stl` | Stone grey |
+| **Or:** back cover with a ring for the optional buzzer | `tapa_trasera_zumbador.stl` | Stone grey |
 | Diffuser window | `ventana_difusora.stl` | **White** (lets the light through) |
 | Gold Triforce for the cover | `trifuerza_dorada_trasera.stl` | Silk gold |
 | Gold Triforce for the pedestal | `trifuerza_dorada_frontal.stl` | Silk gold |
@@ -168,7 +169,7 @@ With a **12 mm passive buzzer**, like a PC motherboard speaker, the clock can:
 
 The clock **only makes sound when asked**: adventures and the time are silent. The 8 tunes (Adventure, Little bells, Sunrise, Victory, Alert, Mystery, March and Lullaby) are **original compositions** made for this project; the clock does not play music from the games.
 
-The buzzer sits in a ring inside the back cover, behind a vent, and connects to **D1** (diagram in Spanish):
+The buzzer is **optional**. If you add one, print **`tapa_trasera_zumbador.stl`** instead of `tapa_trasera.stl`: it has a ring inside, behind a vent, where the buzzer press-fits. It connects to **D1** (diagram in Spanish):
 
 <p align="center"><img src="imagenes/esquema_zumbador.svg" alt="Buzzer wiring" width="760"></p>
 

@@ -98,6 +98,7 @@ Todas las piezas están en [`modelos_3d/`](modelos_3d/):
 |-------|---------|-------|
 | Carcasa de piedra (losa, pedestal, patas y cresta) | `cuerpo_piedra.stl` | Gris piedra |
 | Tapa trasera (Trifuerza, USB y 4 tornillos) | `tapa_trasera.stl` | Gris piedra |
+| **O bien:** tapa trasera con aro para el zumbador opcional | `tapa_trasera_zumbador.stl` | Gris piedra |
 | Ventana difusora | `ventana_difusora.stl` | **Blanco** (deja pasar la luz) |
 | Trifuerza dorada de la tapa | `trifuerza_dorada_trasera.stl` | Dorado silk |
 | Trifuerza dorada del pedestal | `trifuerza_dorada_frontal.stl` | Dorado silk |
@@ -168,7 +169,7 @@ Con un **zumbador pasivo de 12 mm**, como el «speaker» de las placas base, el 
 
 El reloj **solo suena cuando se pide**: las aventuras y la hora son silenciosas. Las 8 melodías (Aventura, Campanitas, Amanecer, Victoria, Aviso, Misterio, Marcha y Nana) son **composiciones originales** de este proyecto; el reloj no reproduce música de los juegos.
 
-El zumbador va en un aro por dentro de la tapa, detrás de una rejilla, y se conecta a **D1**:
+El zumbador es **opcional**. Si lo pones, imprime la tapa **`tapa_trasera_zumbador.stl`** en lugar de `tapa_trasera.stl`: tiene un aro por dentro, detrás de una rejilla, donde el zumbador entra a presión. Se conecta a **D1**:
 
 <p align="center"><img src="imagenes/esquema_zumbador.svg" alt="Conexión del zumbador" width="760"></p>
 

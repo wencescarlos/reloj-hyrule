@@ -36,7 +36,7 @@ Resumen oficial:
 PARTES DE OTROS AUTORES
 -------------------------------------------------------------------------------
 
-La carcasa (modelos_3d/cuerpo_piedra.stl, tapa_trasera.stl, ventana_difusora.stl,
+La carcasa (modelos_3d/cuerpo_piedra.stl, tapa_trasera.stl, tapa_trasera_zumbador.stl, ventana_difusora.stl,
 barras_sujecion_matriz.stl, soporte_wemos.stl y las Trifuerzas doradas) es un
 diseño original de este proyecto.
 
