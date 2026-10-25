@@ -36,6 +36,8 @@
 | 🌙 **Good morning and good night** | Plus night mode: minimum brightness or display off |
 | 📱 **Setup from your phone** | At http://reloj-hyrule.local, no app to install |
 | 🌍 **English or Spanish** | Chosen on the clock's page: it changes the clock's texts and the page itself |
+| 🎓 **Focus mode** | For studying: just the time, still, no date or adventures. By hand or on a schedule |
+| 🔔 **Alerts and alarm with sound** | With an optional buzzer: original tunes, adjustable volume, programmable morning alarm |
 | 🔄 **Updates itself** | Downloads new versions from this repository |
 
 <p align="center">
@@ -55,6 +57,7 @@
 | M3 × 6 self-tapping countersunk hex socket screw, stainless (all the same, no inserts) | 10 |
 | Dupont wires or thin wire | 5 |
 | 5 V USB charger and micro-USB cable | 1 |
+| *Optional:* 12 mm passive buzzer (a PC motherboard speaker works) + NPN transistor, 1 kΩ resistor and 1N4148 diode | 1 |
 | PLA filament: stone grey, white, green and gold | — |
 
 ### Wiring
@@ -148,6 +151,26 @@ The logo letters are by **geektoybox** ([Printables](https://www.printables.com/
 <p align="center"><img src="imagenes/en/portal_configuracion.png" alt="Settings page" width="700"></p>
 
 ---
+
+## 🎓 Focus mode
+
+For homework without distractions, the clock shows **just the time, still**: no blinking, no seconds, no date, no adventures or greetings. Messages you send still show up.
+- **By hand:** from the clock's page or the phone page, for 25 min, 45 min, 1 h, 2 h or no limit.
+- **On a schedule:** for example, Monday to Friday from 17:00 to 18:00 it turns on by itself.
+- **When it ends:** optionally, a tune plays and "WELL DONE, {name}! TIME FOR A BREAK!" scrolls by.
+
+## 🔔 Sound and alarm (optional)
+
+With a **12 mm passive buzzer**, like a PC motherboard speaker, the clock can:
+- **Play alerts:** a tune when you send a message, if you choose one.
+- **Morning alarm:** at the time and on the days you choose, for a few seconds, with its own message.
+- **Volume:** adjustable from 1 to 10 on the page.
+
+The clock **only makes sound when asked**: adventures and the time are silent. The 8 tunes (Adventure, Little bells, Sunrise, Victory, Alert, Mystery, March and Lullaby) are **original compositions** made for this project; the clock does not play music from the games.
+
+The buzzer sits in a ring inside the back cover, behind a vent, and connects to **D1** (diagram in Spanish):
+
+<p align="center"><img src="imagenes/esquema_zumbador.svg" alt="Buzzer wiring" width="760"></p>
 
 ## 📱 Messages from your phone
 

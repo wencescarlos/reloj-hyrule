@@ -10,7 +10,7 @@
 
 namespace Esfera {
 
-void hora(const struct tm& t, uint16_t ms) {
+void hora(const struct tm& t, uint16_t ms, bool tranquila) {
   int h = t.tm_hour;
   bool doce = !ajustes.formato24;
   if (doce) { h = h % 12; if (h == 0) h = 12; }
@@ -24,7 +24,7 @@ void hora(const struct tm& t, uint16_t ms) {
   Pantalla::digito(h % 10, x + 6, 0);
 
   // Los dos puntos: encendidos la primera mitad de cada segundo
-  bool puntos = !ajustes.parpadeo || ms < 500;
+  bool puntos = tranquila || !ajustes.parpadeo || ms < 500;
   if (puntos) {
     Pantalla::pixel(x + 12, 1);
     Pantalla::pixel(x + 12, 2);
@@ -36,7 +36,8 @@ void hora(const struct tm& t, uint16_t ms) {
 
   if (doce) Pantalla::mini(t.tm_hour < 12 ? MINI_A : MINI_P, 28, 0);
 
-  // Fila de abajo: los segundos
+  // Fila de abajo: los segundos (nunca en modo concentración)
+  if (tranquila) return;
   if (ajustes.modoSegundos == SEG_BARRA) {
     int largo = (t.tm_sec * ANCHO_PANTALLA) / 60;
     if (largo > 0) Pantalla::lineaH(0, largo - 1, 7);

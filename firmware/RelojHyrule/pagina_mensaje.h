@@ -48,6 +48,8 @@ textarea:focus{outline:2px solid var(--oro)}
 .chip{flex:none;border:1px solid #5d7a4f;background:#0d1d13;color:var(--texto);border-radius:20px;padding:7px 12px;font:14px Georgia,serif}
 .chip.sel{border-color:var(--oro);color:#1d1606;background:var(--oro);font-weight:700}
 .chips.envolver{flex-wrap:wrap;overflow:visible}
+#secConc.activo{border-color:var(--oro);box-shadow:0 0 12px #e8c04a44}
+.chip.quitar{border-color:var(--rojo);color:#ffd7d4;background:#5a1d1b}
 .peque{padding:5px 10px;font-size:13px}
 .personajes{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
 .pj{border:2px solid #2f5a3f;background:#0d1d13;border-radius:12px;padding:7px 4px 6px;text-align:center;color:var(--texto);font:12.5px Georgia,serif}
@@ -98,6 +100,20 @@ select{width:100%;margin-top:8px;padding:9px;border-radius:10px;border:1px solid
  <p class="consejo" id="consejo">Para quien está aprendiendo a leer: despacio y 1 minuto o más.</p>
 </section>
 
+<section>
+ <h2 id="tSonido">Sonido del aviso</h2>
+ <div class="chips envolver" id="sonidos"></div>
+ <button type="button" class="chip peque" id="probarSonido" style="margin-top:6px">♪ Probar en el reloj</button>
+ <p class="consejo" id="sinZumbador" style="display:none">El reloj no tiene zumbador activado (Ajustes del reloj → Sonido).</p>
+</section>
+
+<section id="secConc">
+ <h2 id="tConc">Modo concentración</h2>
+ <p class="consejo" id="concTexto" style="margin-top:0">Solo la hora, quieta: sin segundos, sin fecha y sin aventuras.</p>
+ <div class="chips envolver" id="concBotones"></div>
+ <p class="consejo"><b id="concEstado"></b></p>
+</section>
+
 <a class="enlace" href="/" id="aAjustes">⚙️ Ajustes del reloj</a>
 </main>
 
@@ -117,7 +133,8 @@ let L="es",NOMBRE="",conectado=false;
 const t=(es,en)=>L==="en"?en:es;
 const guardado=(()=>{try{return JSON.parse(localStorage.getItem("hyrule-msg")||"{}")}catch(e){return{}}})();
 function guardar(){try{localStorage.setItem("hyrule-msg",JSON.stringify(est))}catch(e){}}
-const est=Object.assign({pj:"1",dur:60,vel:80,recientes:[]},guardado);
+const est=Object.assign({pj:"1",dur:60,vel:80,son:0,recientes:[]},guardado);
+let MELODIAS=[],HAY_SONIDO=false;
 
 const PERSONAJES=[["0","Solo texto","Just text"],["1","Héroe","Hero"],["2","Hada","Fairy"],["3","Cofre","Chest"],
  ["4","Corazones","Hearts"],["5","Trifuerza","Triforce"],["6","Bomba","Bomb"],["s","Sorpresa","Surprise"]];
@@ -189,12 +206,29 @@ function construir(){
  chips("#duraciones",DURACIONES,est.dur,v=>est.dur=v);
  chips("#velocidades",VELOCIDADES,est.vel,v=>est.vel=v);
  rapidos();
+ $("#tSonido").textContent=t("Sonido del aviso","Alert sound");$("#probarSonido").textContent=t("♪ Probar en el reloj","♪ Try it on the clock");
+ $("#sinZumbador").textContent=t("El reloj no tiene zumbador activado (Ajustes del reloj → Sonido).","The clock has no buzzer turned on (Clock settings → Sound).");
+ $("#tConc").textContent=t("Modo concentración","Focus mode");
+ $("#concTexto").textContent=t("Solo la hora, quieta: sin segundos, sin fecha y sin aventuras.","Just the time, still: no seconds, no date, no adventures.");
+ const cb=$("#concBotones");cb.innerHTML="";
+ [[25,"25 min"],[45,"45 min"],[60,"1 h"],[120,"2 h"],[-1,t("Sin límite","No limit")],[0,t("Quitar","Turn off")]].forEach(([m,txt])=>{
+  const b=document.createElement("button");b.type="button";b.className="chip"+(m===0?" quitar":"");b.textContent=txt;
+  b.onclick=()=>fetch("/api/concentracion?minutos="+m,{method:"POST"}).then(()=>{mostrarAviso(m?t("🎓 Modo concentración puesto","🎓 Focus mode on"):t("Modo concentración quitado","Focus mode off"));setTimeout(estado,300);}).catch(()=>mostrarAviso(t("No llego al reloj 😕","Can't reach the clock 😕")));
+  cb.appendChild(b);});
+ fetch("/api/melodias").then(r=>r.json()).then(l=>{MELODIAS=l;sonidos();}).catch(()=>{});
  fetch("/api/aventuras").then(r=>r.json()).then(l=>{const s=$("#aventura");s.innerHTML="";
   const o=new Option(t("…o una aventura completa antes del mensaje","…or a full adventure before the message"),"");s.appendChild(o);
   l.forEach((n,i)=>s.appendChild(new Option("⚔️ "+n,"a"+i)));
   if(String(est.pj).startsWith("a")){s.value=est.pj;pc.querySelectorAll(".pj").forEach(e=>e.classList.remove("sel"));}}).catch(()=>{});
  vistaPrevia();
 }
+function sonidos(){
+ const lista=[[0,t("🔇 Sin sonido","🔇 No sound"),t("🔇 Sin sonido","🔇 No sound")],...MELODIAS.map((n,i)=>[i+1,"♪ "+n,"♪ "+n])];
+ if(est.son>MELODIAS.length)est.son=0;
+ chips("#sonidos",lista,est.son,v=>est.son=v);
+ $("#sinZumbador").style.display=HAY_SONIDO?"none":"block";}
+$("#probarSonido").onclick=()=>{if(!est.son){mostrarAviso(t("Elige una melodía","Pick a tune"));return;}
+ fetch("/api/sonido?melodia="+(est.son-1),{method:"POST"}).then(r=>mostrarAviso(r.ok?t("♪ Sonando en el reloj","♪ Playing on the clock"):t("Sin zumbador","No buzzer")));};
 function rapidos(){const c=$("#rapidos");c.innerHTML="";
  const lista=[...est.recientes.filter(r=>!RAPIDOS[L].includes(r)).slice(0,5),...RAPIDOS[L]];
  lista.forEach(m=>{const b=document.createElement("button");b.type="button";b.className="chip";b.textContent=personalizar(m);
@@ -211,7 +245,7 @@ function enviar(){
  const x=$("#texto").value.trim().toUpperCase();
  const paraReloj=x.replace(/♥/g,"\x01").replace(/◆/g,"\x02").replace(/▲/g,"\x03").replace(/✦/g,"\x04");
  if(!x){mostrarAviso(t("Escribe un mensaje","Type a message"));$("#texto").focus();return;}
- const datos=new URLSearchParams({texto:paraReloj,intro:est.pj,segundos:est.dur,velocidad:est.vel});
+ const datos=new URLSearchParams({texto:paraReloj,intro:est.pj,segundos:est.dur,velocidad:est.vel,sonido:HAY_SONIDO?est.son:0});
  fetch("/api/mensaje",{method:"POST",body:datos}).then(r=>{
   if(!r.ok)throw 0;mostrarAviso(t("¡Mensaje enviado! ▲","Message sent! ▲"));
   est.recientes=[x,...est.recientes.filter(m=>m!==x)].slice(0,5);guardar();rapidos();
@@ -226,6 +260,10 @@ function estado(){
   conectado=true;$("#estado").className="ok";
   const cambia=(e.idioma==1?"en":"es")!==L||(e.nombre||"")!==NOMBRE;
   L=e.idioma==1?"en":"es";NOMBRE=e.nombre||"";if(cambia)construir();
+  if(HAY_SONIDO!==!!e.sonido){HAY_SONIDO=!!e.sonido;sonidos();}
+  $("#secConc").classList.toggle("activo",!!e.concentracion);
+  $("#concEstado").textContent=e.concentracion?("🎓 "+t("Activo","On")+(e.concHorario?t(" (horario de estudio)"," (study schedule)"):"")+" · "+
+   (e.concQueda<0?t("sin límite","no limit"):t("quedan ","")+Math.ceil(e.concQueda/60)+" min"+t(""," left"))):"";
   const p=$("#parar");
   if(e.mensajeActivo){p.classList.add("ver");
    p.textContent=e.mensajeQueda>0?"■ "+Math.floor(e.mensajeQueda/60)+":"+String(e.mensajeQueda%60).padStart(2,"0"):"■ "+t("Parar","Stop");

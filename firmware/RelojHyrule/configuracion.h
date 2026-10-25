@@ -11,7 +11,7 @@
 #include <Arduino.h>
 
 // --- Versión del programa (súbela cada vez que publiques una actualización) ---
-#define VERSION_RELOJ        "1.3.0"
+#define VERSION_RELOJ        "1.4.0"
 
 // --- Conexiones Wemos D1 mini -> matrices MAX7219 (de fábrica) ---
 //     CLK -> D5 (SCK)   DIN -> D7 (MOSI)   CS -> D6

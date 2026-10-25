@@ -334,6 +334,22 @@ def cuerpo(L0):
     c = R(c, corte)
     return c
 
+# Zumbador opcional (pasivo de 12 mm, como el "speaker" de las placas base):
+# va en un aro por dentro de la tapa, justo detrás de una rejilla, para que se oiga.
+ZUMB_X, ZUMB_Y = 49.0, 40.0          # en coordenadas de la tapa (impresa boca abajo)
+ZUMB_D, ZUMB_ALTO = 12.4, 6.0         # hueco para el zumbador y altura del aro
+
+def aro_zumbador():
+    exterior = Point(ZUMB_X, ZUMB_Y).buffer(ZUMB_D / 2 + 1.6, resolution=64)
+    hueco = Point(ZUMB_X, ZUMB_Y).buffer(ZUMB_D / 2, resolution=64)
+    nervios = unary_union([Point(ZUMB_X + (ZUMB_D / 2) * np.cos(a), ZUMB_Y + (ZUMB_D / 2) * np.sin(a)).buffer(0.45, resolution=16)
+                           for a in np.radians([90, 210, 330])])          # tres nervios: entra a presión
+    aro = exterior.difference(hueco).union(nervios.intersection(exterior))
+    ranura = box(ZUMB_X - ZUMB_D / 2 - 3, ZUMB_Y - 1.6, ZUMB_X - ZUMB_D / 2 + 0.5, ZUMB_Y + 1.6)  # paso de los cables
+    base = ext(aro, 2.0, TAPA)
+    alto = ext(aro.difference(ranura), ZUMB_ALTO - 2.0, TAPA + 2.0)
+    return U([base, alto])
+
 def tapa():
     # La tapa se imprime boca abajo y luego se le da la vuelta (giro sobre el eje vertical):
     # por eso su silueta y su texto se dibujan en espejo respecto al cuerpo.
@@ -359,6 +375,7 @@ def tapa():
         for k in range(4):
             agujeros.append(ext(rrect(s * (40 + k * 6), 40, 2.2, 16, 1.1), TAPA + 2, -1))
     p = R(p, agujeros)
+    p = U([p, aro_zumbador()])
     return p      # z=0 es la cara exterior: se imprime así, boca abajo
 
 def trifuerza_dorada(alto, hueco, holgura=0.15, grosor=TAPA, pestana=0.6, margen=1.4):

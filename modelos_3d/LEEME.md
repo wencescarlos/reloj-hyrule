@@ -132,7 +132,11 @@ El logo se monta igual que el de la opción A: con los 2 trozos de filamento en 
    ![Wemos sujeto con el soporte](../imagenes/reloj_v2_wemos.png)
 
 8. **Cables:** conecta los cables a la **entrada (IN)** de la matriz. Hay sitio de sobra entre el pedestal y la matriz.
-9. **Tapa:** colócala de forma que las torretas entren en sus bolsillos y ciérrala con 4 tornillos M3 × 6. El conector USB del Wemos queda justo detrás del hueco de la tapa, debajo de la Trifuerza.
+9. **Zumbador (opcional):** mete el zumbador de 12 mm a presión en el aro que hay por dentro de la tapa, con el agujero mirando a la rejilla, y saca los cables por la ranura del aro. La conexión está en el [esquema del zumbador](../imagenes/esquema_zumbador.svg).
+
+   ![Zumbador en la tapa](../imagenes/tapa_zumbador.png)
+
+10. **Tapa:** colócala de forma que las torretas entren en sus bolsillos y ciérrala con 4 tornillos M3 × 6. El conector USB del Wemos queda justo detrás del hueco de la tapa, debajo de la Trifuerza.
 
 Si las letras de la pantalla salen giradas o desordenadas, no hace falta abrir: en la página del reloj, ve a **Pantalla** y cambia el giro o el orden de los módulos.
 

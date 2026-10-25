@@ -25,7 +25,7 @@ Para evitar cualquier confusión o acusación de plagio, aquí se detalla qué e
 | Página de configuración | **Original** | CC BY-NC-SA 4.0 |
 | Carcasa v2 (`cuerpo_piedra.stl`, `tapa_trasera.stl`, `ventana_difusora.stl`, `barras_sujecion_matriz.stl`, `soporte_wemos.stl`, Trifuerzas doradas) y `generar_modelos.py` | **Originales**, diseñados desde cero | CC BY-NC-SA 4.0 |
 | Letras del logo | **De geektoybox** (ver abajo), usadas con su licencia | CC BY-NC 4.0 |
-| Música y sonidos | El reloj **no reproduce ninguna música ni sonido** de los juegos | — |
+| Música y sonidos | El reloj **no reproduce ninguna música ni sonido** de los juegos. Las melodías del zumbador opcional (`sonido.cpp`) son **composiciones originales** de este proyecto | CC BY-NC-SA 4.0 |
 
 ## Créditos a otros autores
 

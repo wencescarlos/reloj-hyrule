@@ -36,6 +36,8 @@
 | 🌙 **Buenos días y buenas noches** | Y modo noche: brillo mínimo o pantalla apagada |
 | 📱 **Configuración desde el móvil** | En http://reloj-hyrule.local, sin instalar ninguna app |
 | 🌍 **En español o en inglés** | Se elige en la página del reloj: cambia los textos del reloj y de la página |
+| 🎓 **Modo concentración** | Para estudiar: solo la hora, quieta, sin fecha ni aventuras. A mano o con horario |
+| 🔔 **Avisos y alarma con sonido** | Con un zumbador opcional: melodías originales, volumen regulable, alarma de la mañana programable |
 | 🔄 **Se actualiza solo** | Descarga las versiones nuevas desde este repositorio |
 
 <p align="center">
@@ -55,6 +57,7 @@
 | Tornillo M3 × 6 autorroscante de cabeza avellanada allen, inox (todos iguales, sin insertos) | 10 |
 | Cables dupont o cable fino | 5 |
 | Cargador USB de 5 V y cable micro-USB | 1 |
+| *Opcional:* zumbador pasivo de 12 mm (el «speaker» de placa base vale) + transistor NPN, resistencia de 1 kΩ y diodo 1N4148 | 1 |
 | Filamento PLA: gris piedra, blanco, verde y dorado | — |
 
 ### Conexiones
@@ -148,6 +151,26 @@ Las instrucciones completas de impresión y montaje, con la lista de tornillerí
 <p align="center"><img src="imagenes/portal_configuracion.png" alt="Portal de configuración" width="700"></p>
 
 ---
+
+## 🎓 Modo concentración
+
+Para hacer los deberes sin distraerse, el reloj enseña **solo la hora, quieta**: sin parpadeo, sin segundos, sin fecha, sin aventuras ni saludos. Los mensajes que envíes tú sí aparecen.
+- **A mano:** desde la página del reloj o la del móvil, durante 25 min, 45 min, 1 h, 2 h o sin límite.
+- **Con horario:** por ejemplo, de lunes a viernes de 17:00 a 18:00 se pone solo.
+- **Al terminar:** si quieres, suena una melodía y sale "¡BUEN TRABAJO, {nombre}! ¡A DESCANSAR!".
+
+## 🔔 Sonido y alarma (opcional)
+
+Con un **zumbador pasivo de 12 mm**, como el «speaker» de las placas base, el reloj puede:
+- **Tocar avisos:** una melodía cuando envías un mensaje, si la eliges.
+- **Alarma de la mañana:** a la hora y los días que quieras, durante unos segundos, con su mensaje.
+- **Volumen:** se regula de 1 a 10 desde la página.
+
+El reloj **solo suena cuando se pide**: las aventuras y la hora son silenciosas. Las 8 melodías (Aventura, Campanitas, Amanecer, Victoria, Aviso, Misterio, Marcha y Nana) son **composiciones originales** de este proyecto; el reloj no reproduce música de los juegos.
+
+El zumbador va en un aro por dentro de la tapa, detrás de una rejilla, y se conecta a **D1**:
+
+<p align="center"><img src="imagenes/esquema_zumbador.svg" alt="Conexión del zumbador" width="760"></p>
 
 ## 📱 Mensajes desde el móvil
 

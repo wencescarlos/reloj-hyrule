@@ -20,6 +20,8 @@
 #include "pagina_web.h"
 #include "pagina_mensaje.h"
 #include "pantalla.h"
+#include "sonido.h"
+#include "principal.h"
 
 Peticiones peticiones;
 
@@ -77,6 +79,10 @@ namespace {
     j += ",\"encendido\":"; j += millis() / 1000;
     j += ",\"diasCumple\":"; j += hayHora ? Tiempo::diasParaCumple(t) : -1;
     j += ",\"actualizacion\":\""; j += escapar(Actualizacion::estado()); j += '"';
+    j += ",\"concentracion\":"; j += Concentracion::activa() ? "true" : "false";
+    j += ",\"concQueda\":"; j += Concentracion::segundosQuedan();
+    j += ",\"concHorario\":"; j += Concentracion::porHorario() ? "true" : "false";
+    j += ",\"sonido\":"; j += Sonido::disponible() ? "true" : "false";
     j += ",\"mensajeActivo\":"; j += Anim::mensajeEnCurso() ? "true" : "false";
     j += ",\"mensajeQueda\":"; j += Anim::segundosMensaje();
     j += ",\"nombre\":\""; j += escapar(ajustes.nombre); j += '"';
@@ -134,12 +140,39 @@ namespace {
     peticiones.mensajeIntro     = intro;
     peticiones.mensajeSegundos  = servidor.hasArg("segundos") ? constrain(servidor.arg("segundos").toInt(), 0, 1800) : 0;
     peticiones.mensajeVelocidad = servidor.hasArg("velocidad") ? constrain(servidor.arg("velocidad").toInt(), 15, 150) : 0;
+    peticiones.mensajeSonido    = servidor.hasArg("sonido") ? constrain(servidor.arg("sonido").toInt(), 0, (int)Sonido::total()) : 0;
     peticiones.mensaje = t;
     Anim::pararMensaje();                                // si había otro, se corta
     ok();
   }
 
-  void apiMensajeParar() { Anim::pararMensaje(); peticiones.mensaje = ""; ok(); }
+  void apiMensajeParar() { Anim::pararMensaje(); Sonido::parar(); peticiones.mensaje = ""; ok(); }
+
+  // Modo concentración: minutos > 0, -1 = hasta que se quite, 0 = quitar
+  void apiConcentracion() {
+    int m = servidor.arg("minutos").toInt();
+    if (m == 0) Concentracion::terminar();
+    else Concentracion::empezar(m < 0 ? -1 : constrain(m, 1, 600));
+    ok();
+  }
+
+  // Probar una melodía (melodia=n) o parar (sin parámetro)
+  void apiSonido() {
+    if (!Sonido::disponible()) { responderJson("{\"ok\":false,\"motivo\":\"sin zumbador\"}", 409); return; }
+    if (servidor.hasArg("melodia")) Sonido::tocar(servidor.arg("melodia").toInt());
+    else Sonido::parar();
+    ok();
+  }
+
+  void apiMelodias() {
+    String j = "[";
+    for (uint8_t i = 0; i < Sonido::total(); i++) {
+      if (i) j += ',';
+      j += '"'; j += escapar(Sonido::nombre(i)); j += '"';
+    }
+    j += ']';
+    responderJson(j);
+  }
 
   // Página del móvil para mandar mensajes (se puede añadir a la pantalla de inicio)
   void paginaMensaje() {
@@ -225,6 +258,9 @@ namespace {
     servidor.on("/api/animacion",        HTTP_POST, apiAnimacion);
     servidor.on("/api/mensaje",          HTTP_POST, apiMensaje);
     servidor.on("/api/mensaje/parar",    HTTP_POST, apiMensajeParar);
+    servidor.on("/api/concentracion",    HTTP_POST, apiConcentracion);
+    servidor.on("/api/sonido",           HTTP_POST, apiSonido);
+    servidor.on("/api/melodias",         HTTP_GET,  apiMelodias);
     servidor.on("/mensaje",              HTTP_GET,  paginaMensaje);
     servidor.on("/icono.png",            HTTP_GET,  icono);
     servidor.on("/apple-touch-icon.png", HTTP_GET,  icono);
@@ -264,6 +300,7 @@ void esperar(uint32_t ms) {
   uint32_t inicio = millis();
   do {
     Red::servicio();
+    Sonido::servicio();
     delay(1);
   } while (millis() - inicio < ms);
 }

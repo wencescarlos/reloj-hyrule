@@ -55,6 +55,9 @@ button.peligro{background:#5a1d1b;color:#ffd7d4;border:1px solid var(--rojo)}
 .idiomas button{margin:0;border-radius:0;background:#0d1d13;color:var(--suave);padding:6px 14px;font-weight:400}
 .idiomas button.activo{background:linear-gradient(#e8c04a,#b38a1b);color:#1d1606;font-weight:700}
 [data-l]{display:none}html[lang=es] [data-l=es],html[lang=en] [data-l=en]{display:inline}
+.dias{display:flex;gap:6px;margin:10px 0}.dias label{margin:0;flex:1;text-align:center;border:1px solid #5d7a4f;border-radius:9px;padding:8px 0;cursor:pointer;color:var(--texto)}
+.dias input{display:none}.dias label:has(input:checked){background:var(--oro);color:#1d1606;font-weight:700;border-color:var(--oro)}
+.botonesConc button{margin:3px 3px 3px 0}
 footer{text-align:center;color:var(--suave);font-size:.8em;margin:24px 0 40px}
 </style></head><body><main>
 
@@ -145,6 +148,48 @@ footer{text-align:center;color:var(--suave);font-size:.8em;margin:24px 0 40px}
  <label class="check"><input type="checkbox" name="nocheApagar"> Apagar la pantalla del todo por la noche</label>
  <label>Brillo por la noche (si no se apaga): <b id="vBrilloNoche"></b></label>
  <input type="range" name="brilloNoche" min="0" max="15">
+</section>
+
+<section>
+ <h2>Modo concentración</h2>
+ <p class="nota">Para estudiar sin distracciones: solo la hora, quieta. Sin parpadeo, sin segundos, sin fecha, sin aventuras ni saludos. Los mensajes que envíes tú sí se ven.</p>
+ <p><b id="concEstado"></b></p>
+ <div class="botonesConc">
+  <button type="button" class="sec" onclick="conc(25)">25 min</button><button type="button" class="sec" onclick="conc(45)">45 min</button><button type="button" class="sec" onclick="conc(60)">1 h</button><button type="button" class="sec" onclick="conc(120)">2 h</button><button type="button" class="sec" onclick="conc(-1)">Hasta que la quite</button><button type="button" class="peligro" onclick="conc(0)">Quitar</button>
+ </div>
+ <label class="check"><input type="checkbox" name="estudioActivo"> Horario de estudio (se pone solo)</label>
+ <div class="fila">
+  <div><label>Desde</label><input type="time" data-h="estudioIniH" data-m="estudioIniM"></div>
+  <div><label>Hasta</label><input type="time" data-h="estudioFinH" data-m="estudioFinM"></div>
+ </div>
+ <div class="dias" data-campo="estudioDias"><label><input type="checkbox" data-bit="1"><span>L</span></label><label><input type="checkbox" data-bit="2"><span>M</span></label><label><input type="checkbox" data-bit="3"><span>X</span></label><label><input type="checkbox" data-bit="4"><span>J</span></label><label><input type="checkbox" data-bit="5"><span>V</span></label><label><input type="checkbox" data-bit="6"><span>S</span></label><label><input type="checkbox" data-bit="0"><span>D</span></label></div>
+ <label class="check"><input type="checkbox" name="estudioAviso"> Al terminar: melodía y "¡BUEN TRABAJO!"</label>
+</section>
+
+<section>
+ <h2>Sonido</h2>
+ <p class="nota">El reloj solo suena cuando tú lo pides: un aviso con un mensaje o la alarma. Melodías originales de este proyecto.</p>
+ <label class="check"><input type="checkbox" name="sonidoActivo"> Zumbador conectado</label>
+ <label>Volumen: <b id="vVolumen"></b></label>
+ <input type="range" name="volumen" min="1" max="10">
+ <label>Pata del zumbador</label>
+ <select name="pinSonido"><option value="0">D0</option><option value="1">D1</option><option value="2">D2</option><option value="3">D3</option><option value="4">D4</option><option value="5">D5</option><option value="6">D6</option><option value="7">D7</option></select>
+ <p class="nota">Guarda los ajustes y prueba una melodía:</p>
+ <div class="aventuras" id="melodias"></div>
+</section>
+
+<section>
+ <h2>Alarma de la mañana</h2>
+ <label class="check"><input type="checkbox" name="alarmaActiva"> Activar la alarma</label>
+ <div class="fila">
+  <div><label>Hora</label><input type="time" data-h="alarmaH" data-m="alarmaM"></div>
+  <div><label>Melodía</label><select name="alarmaMelodia" id="alarmaMelodia"></select></div>
+ </div>
+ <div class="dias" data-campo="alarmaDias"><label><input type="checkbox" data-bit="1"><span>L</span></label><label><input type="checkbox" data-bit="2"><span>M</span></label><label><input type="checkbox" data-bit="3"><span>X</span></label><label><input type="checkbox" data-bit="4"><span>J</span></label><label><input type="checkbox" data-bit="5"><span>V</span></label><label><input type="checkbox" data-bit="6"><span>S</span></label><label><input type="checkbox" data-bit="0"><span>D</span></label></div>
+ <label>Cuánto suena: <b id="vAlarmaSegundos"></b> s</label>
+ <input type="range" name="alarmaSegundos" min="3" max="60">
+ <label>Mensaje (vacío = "¡BUENOS DÍAS, {N}!")</label>
+ <input type="text" name="alarmaTexto" maxlength="46" placeholder="¡BUENOS DÍAS, {N}!">
 </section>
 
 <section>
@@ -312,7 +357,14 @@ const EN={
 "Nueva clave de administrador (déjala vacía para no cambiarla)":"New admin password (leave it empty to keep the current one)",
 "Guardar":"Save","Buscar versión nueva ahora":"Check for a new version now","Subir archivo .bin":"Upload a .bin file",
 "Para subir un archivo: usuario":"To upload a file: user","y tu clave de administrador (de fábrica: hyrule).":"and your admin password (factory default: hyrule).",
-"Reiniciar el reloj":"Restart the clock","📱 Página de mensajes para el móvil":"📱 Message page for your phone","(con personaje, duración y velocidad; se puede añadir a la pantalla de inicio)":"(with a character, duration and speed; you can add it to your home screen)","Ajustes de fábrica":"Factory reset",
+"Reiniciar el reloj":"Restart the clock",
+"Modo concentración":"Focus mode","Para estudiar sin distracciones: solo la hora, quieta. Sin parpadeo, sin segundos, sin fecha, sin aventuras ni saludos. Los mensajes que envíes tú sí se ven.":"To study without distractions: just the time, still. No blinking, no seconds, no date, no adventures or greetings. Messages you send still show up.",
+"Hasta que la quite":"Until I turn it off","Quitar":"Turn off","Horario de estudio (se pone solo)":"Study schedule (turns on by itself)",
+"Al terminar: melodía y \"¡BUEN TRABAJO!\"":"When it ends: a tune and \"WELL DONE!\"",
+"Sonido":"Sound","El reloj solo suena cuando tú lo pides: un aviso con un mensaje o la alarma. Melodías originales de este proyecto.":"The clock only makes sound when you ask: a message alert or the alarm. Original tunes made for this project.",
+"Zumbador conectado":"Buzzer connected","Volumen:":"Volume:","Pata del zumbador":"Buzzer pin","Guarda los ajustes y prueba una melodía:":"Save the settings and try a tune:",
+"Alarma de la mañana":"Morning alarm","Activar la alarma":"Turn the alarm on","Hora":"Time","Melodía":"Tune","Cuánto suena:":"How long it plays:",
+"Mensaje (vacío = \"¡BUENOS DÍAS, {N}!\")":"Message (empty = \"GOOD MORNING, {N}!\")","📱 Página de mensajes para el móvil":"📱 Message page for your phone","(con personaje, duración y velocidad; se puede añadir a la pantalla de inicio)":"(with a character, duration and speed; you can add it to your home screen)","Ajustes de fábrica":"Factory reset",
 "Diagnóstico de pantalla":"Display diagnostics",
 "Para encontrar averías en los cables o en la matriz. Mientras dura, el reloj no enseña la hora; se cierra solo a los 10 minutos.":"To find faults in the wires or the matrix. While it runs, the clock doesn't show the time; it ends by itself after 10 minutes.",
 "1. Encender los LED (con el modo de prueba de la propia matriz)":"1. Light up the LEDs (using the matrix's own test mode)",
@@ -354,6 +406,8 @@ function aplicarIdioma(){
  $("[name=mensaje]").placeholder=t("¡Te queremos mucho, {N}!","We love you so much, {N}!");
  $("#idioma-es").classList.toggle("activo",L==="es");$("#idioma-en").classList.toggle("activo",L==="en");
  const m=$("#cumpleMes");MESES[L].forEach((n,i)=>m.options[i+1].text=n);
+ const DIAS={es:["D","L","M","X","J","V","S"],en:["S","M","T","W","T","F","S"]};
+ document.querySelectorAll(".dias input").forEach(c=>c.nextElementSibling.textContent=DIAS[L][c.dataset.bit]);
 }
 function cambiarIdioma(l){
  if(l===L)return;L=l;aplicarIdioma();
@@ -370,7 +424,7 @@ function dos(n){return String(n).padStart(2,"0");}
 let d=$("#cumpleDia");d.add(new Option("—","0"));for(let i=1;i<=31;i++)d.add(new Option(i,i));
 let m=$("#cumpleMes");m.add(new Option("—","0"));MESES.es.forEach((n,i)=>m.add(new Option(n,i+1)));
 
-function rangos(){[["brillo","vBrillo"],["brilloNoche","vBrilloNoche"],["velocidad","vVelocidad"]].forEach(([n,v])=>{
+function rangos(){[["brillo","vBrillo"],["brilloNoche","vBrilloNoche"],["velocidad","vVelocidad"],["volumen","vVolumen"],["alarmaSegundos","vAlarmaSegundos"]].forEach(([n,v])=>{
  const e=document.querySelector("[name="+n+"]");$("#"+v).textContent=e.value;e.oninput=()=>$("#"+v).textContent=e.value;});}
 
 function zonaElegida(){const v=$("#zonaLista").value;if(v!=="otra")$("#zona").value=v;$("#zona").style.display=v==="otra"?"block":"none";}
@@ -391,6 +445,9 @@ function cargar(){
    if(!(e.name in a))return;const v=a[e.name];
    if(e.type==="checkbox")e.checked=v==1;else if(e.type==="radio")e.checked=e.value==v;else e.value=v;});
   $("#nocheIni").value=dos(a.nocheIniH)+":"+dos(a.nocheIniM);
+  document.querySelectorAll("[data-h]").forEach(e=>{if(e.dataset.h in a)e.value=dos(a[e.dataset.h])+":"+dos(a[e.dataset.m]);});
+  document.querySelectorAll(".dias").forEach(d=>{const v=a[d.dataset.campo]||0;d.querySelectorAll("input").forEach(c=>c.checked=!!(v>>c.dataset.bit&1));});
+  cargarMelodias(a);
   $("#nocheFin").value=dos(a.nocheFinH)+":"+dos(a.nocheFinM);
   const zl=$("#zonaLista");zl.value=[...zl.options].some(o=>o.value===a.zona)?a.zona:"otra";zonaElegida();
   rangos();
@@ -405,6 +462,8 @@ function guardar(id){
   if(e.type==="checkbox")p.append(e.name,e.checked?"1":"0");
   else if(e.type==="radio"){if(e.checked)p.append(e.name,e.value);}
   else p.append(e.name,e.value);});
+ f.querySelectorAll("[data-h]").forEach(e=>{if(!e.value)return;const [h,m]=e.value.split(":");p.append(e.dataset.h,+h);p.append(e.dataset.m,+m);});
+ f.querySelectorAll(".dias").forEach(d=>{let v=0;d.querySelectorAll("input").forEach(c=>{if(c.checked)v|=1<<c.dataset.bit;});p.append(d.dataset.campo,v);});
  if(!id){const [ih,im]=$("#nocheIni").value.split(":"),[fh,fm]=$("#nocheFin").value.split(":");
   p.append("nocheIniH",+ih);p.append("nocheIniM",+im);p.append("nocheFinH",+fh);p.append("nocheFinM",+fm);}
  post("/api/ajustes",t("¡Ajustes guardados!","Settings saved!"),p);
@@ -423,6 +482,17 @@ function asistente(d){
  fetch("/api/ajustes",{method:"POST",body:new URLSearchParams({rotacion:r,espejo:e,invertirModulos:inv})})
   .then(()=>post("/api/prueba?corta=1",t("Mira la pantalla","Look at the display")));
 }
+
+function conc(m){post("/api/concentracion?minutos="+m,m?t("Modo concentración puesto","Focus mode on"):t("Modo concentración quitado","Focus mode off")).then(()=>setTimeout(estado,300));}
+function cargarMelodias(a){fetch("/api/melodias").then(r=>r.json()).then(l=>{
+ const c=$("#melodias");c.innerHTML="";const s=$("#alarmaMelodia");s.innerHTML="";
+ l.forEach((n,i)=>{const b=document.createElement("button");b.type="button";b.className="sec";b.textContent="♪ "+n;
+  b.onclick=()=>fetch("/api/sonido?melodia="+i,{method:"POST"}).then(r=>mostrarAviso(r.ok?t("♪ Sonando: ","♪ Playing: ")+n:t("Activa el zumbador y guarda los ajustes","Turn the buzzer on and save the settings")));c.appendChild(b);
+  s.appendChild(new Option(n,i));});
+ const p=document.createElement("button");p.type="button";p.className="peligro";p.textContent=t("■ Parar","■ Stop");
+ p.onclick=()=>fetch("/api/sonido",{method:"POST"});c.appendChild(p);
+ if(a)s.value=a.alarmaMelodia;}).catch(()=>{});}
+function tiempoTexto(s){if(s<0)return t("hasta que la quites","until you turn it off");const h=Math.floor(s/3600),m=Math.ceil((s%3600)/60);return (h?h+" h ":"")+m+" min";}
 
 function enviarMensajeYa(){const x=$("#mensajeYa").value.trim();if(!x)return;
  post("/api/mensaje",t("¡Mensaje enviado!","Message sent!"),new URLSearchParams({texto:x}));$("#mensajeYa").value="";}
@@ -445,6 +515,7 @@ function estado(){
   $("#red").textContent=e.conectado?("WiFi: "+e.wifi+" · "+e.ip):t("Sin WiFi de casa","No home WiFi");
   $("#portal").style.display=e.portal?"block":"none";
   $("#wifiActual").textContent=e.conectado?t("Conectado a «"+e.wifi+"» (señal "+e.senal+" dBm)","Connected to “"+e.wifi+"” (signal "+e.senal+" dBm)"):t("No conectado.","Not connected.");
+  $("#concEstado").textContent=e.concentracion?("🎓 "+t("Activo","On")+(e.concHorario?t(" (horario de estudio)"," (study schedule)"):"")+" · "+t("queda ","left: ")+tiempoTexto(e.concQueda)):t("Ahora no está activo.","Not active right now.");
   $("#version").textContent=e.version;$("#pinesActual").textContent=e.pines||"";
   $("#diagEstado").textContent=e.diagnostico?("🔧 "+e.diagnostico):"";$("#estadoAct").textContent=e.actualizacion;
   $("#faltan").textContent=e.diasCumple>0?t("¡Faltan "+e.diasCumple+" días para el cumpleaños!",(e.diasCumple==1?"Only 1 day":"Only "+e.diasCumple+" days")+" until the birthday!")

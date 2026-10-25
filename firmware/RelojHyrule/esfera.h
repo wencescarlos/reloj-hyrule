@@ -9,7 +9,8 @@
 
 namespace Esfera {
   // Dibuja la hora (no llama a mostrar()). msDelSegundo: 0..999
-  void hora(const struct tm& t, uint16_t msDelSegundo);
+  // tranquila = modo concentración: sin parpadeo y sin segundos
+  void hora(const struct tm& t, uint16_t msDelSegundo, bool tranquila = false);
   // Dibuja la fecha corta "18/10"
   void fechaCorta(const struct tm& t);
 }

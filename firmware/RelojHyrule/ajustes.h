@@ -82,6 +82,26 @@ struct Ajustes {
   uint8_t pinClk;
   uint8_t pinCs;
   uint8_t spiLento;            // 1 = señales lentas (cables largos o dudosos)
+
+  // --- Sonido (zumbador pasivo) ---
+  uint8_t sonidoActivo;
+  uint8_t volumen;             // 1..10
+  uint8_t pinSonido;           // número de la pata: 1 = D1
+
+  // --- Alarma de la mañana ---
+  uint8_t alarmaActiva;
+  uint8_t alarmaH, alarmaM;
+  uint8_t alarmaDias;          // bit 0 = domingo, 1 = lunes ... 6 = sábado
+  uint8_t alarmaMelodia;
+  uint8_t alarmaSegundos;      // cuánto suena (3..60)
+  char    alarmaTexto[48];     // vacío = "¡BUENOS DÍAS, {N}!"
+
+  // --- Modo concentración con horario (deberes) ---
+  uint8_t estudioActivo;
+  uint8_t estudioIniH, estudioIniM;
+  uint8_t estudioFinH, estudioFinM;
+  uint8_t estudioDias;         // como alarmaDias
+  uint8_t estudioAviso;        // al terminar: melodía y "¡BUEN TRABAJO!"
 };
 
 extern Ajustes ajustes;

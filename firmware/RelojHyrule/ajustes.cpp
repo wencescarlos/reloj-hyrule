@@ -66,6 +66,23 @@ namespace {
     NUM("pinClk", pinClk, 0, 8),
     NUM("pinCs", pinCs, 0, 8),
     NUM("spiLento", spiLento, 0, 1),
+    NUM("sonidoActivo", sonidoActivo, 0, 1),
+    NUM("volumen", volumen, 1, 10),
+    NUM("pinSonido", pinSonido, 0, 8),
+    NUM("alarmaActiva", alarmaActiva, 0, 1),
+    NUM("alarmaH", alarmaH, 0, 23),
+    NUM("alarmaM", alarmaM, 0, 59),
+    NUM("alarmaDias", alarmaDias, 0, 127),
+    NUM("alarmaMelodia", alarmaMelodia, 0, 20),
+    NUM("alarmaSegundos", alarmaSegundos, 3, 60),
+    TXT("alarmaTexto", alarmaTexto),
+    NUM("estudioActivo", estudioActivo, 0, 1),
+    NUM("estudioIniH", estudioIniH, 0, 23),
+    NUM("estudioIniM", estudioIniM, 0, 59),
+    NUM("estudioFinH", estudioFinH, 0, 23),
+    NUM("estudioFinM", estudioFinM, 0, 59),
+    NUM("estudioDias", estudioDias, 0, 127),
+    NUM("estudioAviso", estudioAviso, 0, 1),
   };
   const size_t NUM_CAMPOS = sizeof(CAMPOS) / sizeof(CAMPOS[0]);
 
@@ -136,6 +153,23 @@ void valoresPorDefecto() {
   ajustes.pinClk = PIN_CLK_FABRICA;
   ajustes.pinCs  = PIN_CS_FABRICA;
   ajustes.spiLento = 0;
+
+  ajustes.sonidoActivo = 1;
+  ajustes.volumen = 5;
+  ajustes.pinSonido = 1;                 // D1
+
+  ajustes.alarmaActiva = 0;
+  ajustes.alarmaH = 7; ajustes.alarmaM = 30;
+  ajustes.alarmaDias = 0x3E;             // de lunes a viernes
+  ajustes.alarmaMelodia = 2;             // Amanecer
+  ajustes.alarmaSegundos = 15;
+  strcpy(ajustes.alarmaTexto, "");
+
+  ajustes.estudioActivo = 0;
+  ajustes.estudioIniH = 17; ajustes.estudioIniM = 0;
+  ajustes.estudioFinH = 18; ajustes.estudioFinM = 0;
+  ajustes.estudioDias = 0x3E;
+  ajustes.estudioAviso = 1;
 }
 
 bool asignar(const String& clave, const String& valor) {

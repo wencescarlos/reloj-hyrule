@@ -15,6 +15,7 @@
 #include "actualizacion.h"
 #include "sistema.h"
 #include "principal.h"
+#include "sonido.h"
 
 namespace {
   int      ultimoMinuto = -1;
@@ -24,6 +25,34 @@ namespace {
   uint32_t finDiagnostico = 0;
 
   const char* NOMBRE_PATA[3] = {"DIN", "CLK", "CS"};
+
+  // ---------------------------------------------------------- concentración
+  bool     concManual = false;      // puesta desde la web
+  bool     concSinFin = false;
+  uint32_t concHasta = 0;           // millis() del final
+  bool     horarioCancelado = false;// se quitó a mano durante el horario
+  bool     concAntes = false;       // para notar cuándo termina
+  bool     concParadaAMano = false;
+
+  bool diaMarcado(uint8_t dias, const struct tm& t) { return (dias >> t.tm_wday) & 1; }
+
+  bool dentroDe(int iniH, int iniM, int finH, int finM, const struct tm& t) {
+    int ahora = t.tm_hour * 60 + t.tm_min, ini = iniH * 60 + iniM, fin = finH * 60 + finM;
+    if (ini == fin) return false;
+    if (ini < fin) return ahora >= ini && ahora < fin;
+    return ahora >= ini || ahora < fin;
+  }
+
+  bool enHorarioEstudio() {
+    if (!ajustes.estudioActivo) return false;
+    struct tm t;
+    if (!Tiempo::ahora(t)) return false;
+    return diaMarcado(ajustes.estudioDias, t) &&
+           dentroDe(ajustes.estudioIniH, ajustes.estudioIniM, ajustes.estudioFinH, ajustes.estudioFinM, t);
+  }
+
+  // ---------------------------------------------------------- alarma
+  bool revisarAlarma(const struct tm& t);
 
   // Órdenes de diagnóstico que llegan desde la página web
   void atenderDiagnostico() {
@@ -60,6 +89,7 @@ namespace {
 
   // Aplica orientación, zona horaria, etc. tras guardar ajustes
   void aplicarAjustes() {
+    Sonido::iniciar();
     Pantalla::pines(ajustes.pinDin, ajustes.pinClk, ajustes.pinCs, ajustes.spiLento);
     Pantalla::iniciar();
     enDiagnostico = false;
@@ -139,15 +169,34 @@ namespace {
       int16_t  in  = peticiones.mensajeIntro;
       uint16_t seg = peticiones.mensajeSegundos;
       uint8_t  vel = peticiones.mensajeVelocidad;
+      uint8_t  snd = peticiones.mensajeSonido;
       peticiones.mensaje = "";
       peticiones.mensajeIntro = 1; peticiones.mensajeSegundos = 0; peticiones.mensajeVelocidad = 0;
+      peticiones.mensajeSonido = 0;
       despertar();
+      if (snd) Sonido::tocar(snd - 1);               // aviso con melodía (solo si se pide)
       Anim::mensajeEspecial(m.c_str(), in, seg, vel);
     }
   }
 
+  bool revisarAlarma(const struct tm& t) {
+    if (!ajustes.alarmaActiva || t.tm_hour != ajustes.alarmaH || t.tm_min != ajustes.alarmaM) return false;
+    if (!diaMarcado(ajustes.alarmaDias, t)) return false;
+    Serial.println(F("[alarma] ¡Arriba!"));
+    despertar();
+    Sonido::tocar(ajustes.alarmaMelodia, ajustes.alarmaSegundos);
+    const char* texto = ajustes.alarmaTexto[0] ? ajustes.alarmaTexto : tr("¡BUENOS DÍAS, {N}! \x03", "GOOD MORNING, {N}! \x03");
+    Anim::mensajeEspecial(texto, 1, ajustes.alarmaSegundos, 0);
+    Sonido::parar();
+    if (Tiempo::esCumple(t)) Anim::cumple();
+    return true;
+  }
+
   // Cosas que pasan al empezar cada minuto
   void eventosDelMinuto(const struct tm& t, bool noche) {
+    if (revisarAlarma(t)) return;                  // la alarma va primero
+    if (Concentracion::activa()) return;           // concentración: nada que distraiga
+
     int ahora  = t.tm_hour * 60 + t.tm_min;
     int inicio = ajustes.nocheIniH * 60 + ajustes.nocheIniM;
     int fin    = ajustes.nocheFinH * 60 + ajustes.nocheFinM;
@@ -180,6 +229,38 @@ namespace {
 // ---------------------------------------------------------------------------
 String estadoDiagnostico;
 
+namespace Concentracion {
+  void empezar(int minutos) {
+    concManual = true;
+    concSinFin = (minutos < 0);
+    concHasta = millis() + (uint32_t)(minutos > 0 ? minutos : 0) * 60000UL;
+    horarioCancelado = false;
+    concParadaAMano = false;
+  }
+  void terminar() {
+    concManual = false;
+    if (enHorarioEstudio()) horarioCancelado = true;
+    concParadaAMano = true;
+  }
+  bool porHorario() { return !concManual && enHorarioEstudio() && !horarioCancelado; }
+  bool activa() {
+    if (concManual && !concSinFin && (int32_t)(millis() - concHasta) >= 0) concManual = false;
+    if (!enHorarioEstudio()) horarioCancelado = false;
+    return concManual || (enHorarioEstudio() && !horarioCancelado);
+  }
+  int32_t segundosQuedan() {
+    if (!activa()) return 0;
+    if (concManual) return concSinFin ? -1 : (int32_t)((concHasta - millis()) / 1000);
+    // por horario: hasta el final del horario de hoy
+    struct tm t;
+    if (!Tiempo::ahora(t)) return -1;
+    int ahora = t.tm_hour * 3600 + t.tm_min * 60 + t.tm_sec;
+    int fin = ajustes.estudioFinH * 3600 + ajustes.estudioFinM * 60;
+    int q = fin - ahora; if (q < 0) q += 86400;
+    return q;
+  }
+}
+
 namespace Principal {
 
 void iniciar() {
@@ -192,6 +273,7 @@ void iniciar() {
   Pantalla::iniciar();
   Pantalla::orientar(ajustes.rotacion, ajustes.invertirModulos, ajustes.espejo);
   Pantalla::brillo(max(ajustes.brillo, (uint8_t)1));
+  Sonido::iniciar();
 
   Anim::arranque();
   Red::iniciar();
@@ -233,14 +315,31 @@ void bucle() {
 
   ajustarBrillo(noche);
 
+  // ¿Acaba de terminar la concentración? Aviso suave (si se quiere)
+  bool conc = Concentracion::activa();
+  if (concAntes && !conc) {
+    if (ajustes.estudioAviso && !concParadaAMano) {
+      despertar();
+      if (Sonido::disponible()) Sonido::tocar(3);             // Victoria
+      Anim::mensajeEspecial(tr("¡BUEN TRABAJO, {N}! ¡A DESCANSAR! \x03",
+                               "WELL DONE, {N}! TIME FOR A BREAK! \x03"), 1, 0, 0);
+    }
+    concParadaAMano = false;
+    programarAventura();
+  }
+  if (!concAntes && conc) concParadaAMano = false;
+  concAntes = conc;
+
   if (t.tm_min != ultimoMinuto) {
     bool primeraVez = (ultimoMinuto < 0);
     ultimoMinuto = t.tm_min;
     if (!primeraVez) eventosDelMinuto(t, noche);
   }
 
-  // Aventura al azar (nunca de noche)
-  if (!noche && proximaAventura && (int32_t)(millis() - proximaAventura) >= 0) {
+  // Aventura al azar (nunca de noche ni en concentración)
+  if (Concentracion::activa()) {
+    if (proximaAventura && (int32_t)(millis() - proximaAventura) >= 0) programarAventura();
+  } else if (!noche && proximaAventura && (int32_t)(millis() - proximaAventura) >= 0) {
     Anim::alAzar(t);
     programarAventura();
   }
@@ -250,7 +349,9 @@ void bucle() {
   noche = Tiempo::esNoche(t);
   ajustarBrillo(noche);
   Pantalla::limpiar();
-  if (ajustes.modoFecha == FECHA_ALTERNAR && t.tm_sec >= 30 && t.tm_sec < 34)
+  if (Concentracion::activa())
+    Esfera::hora(t, 0, true);                       // solo la hora, quieta
+  else if (ajustes.modoFecha == FECHA_ALTERNAR && t.tm_sec >= 30 && t.tm_sec < 34)
     Esfera::fechaCorta(t);
   else
     Esfera::hora(t, milisegundosDelSegundo());
