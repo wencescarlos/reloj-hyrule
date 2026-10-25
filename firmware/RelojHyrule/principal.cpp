@@ -117,9 +117,10 @@ namespace {
       Actualizacion::comprobar();
     }
     if (peticiones.prueba) {
-      peticiones.prueba = false;
+      bool corta = (peticiones.prueba == 2);
+      peticiones.prueba = 0;
       despertar();
-      Anim::patronPrueba();
+      Anim::patronPrueba(corta);
     }
     if (peticiones.animacion >= 0) {
       int n = peticiones.animacion;
@@ -208,7 +209,7 @@ void bucle() {
 
   atenderDiagnostico();
   if (enDiagnostico) {          // la pantalla es para el diagnóstico: no se dibuja nada
-    peticiones.prueba = false;
+    peticiones.prueba = 0;
     peticiones.animacion = -1;
     peticiones.mensaje = "";
     if (peticiones.ajustesCambiados) atenderPeticiones(t, hayHora);

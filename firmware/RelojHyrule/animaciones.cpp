@@ -494,14 +494,15 @@ void mensaje(const char* t) {
   decir(personalizar(t));
 }
 
-void patronPrueba() {
+void patronPrueba(bool corta) {
   // Marco + "1234": así se ve si los módulos están en orden y bien girados
   limpiar();
   for (uint8_t m = 0; m < NUM_MODULOS; m++) {
     rectangulo(m * 8, 0, 8, 8);
     digito(m + 1, m * 8 + 2, 1);
   }
-  cuadro(2500);
+  cuadro(corta ? 6000 : 3000);
+  if (corta) return;               // el asistente de orientación solo necesita los números
   // Flecha que recorre de izquierda a derecha
   for (int x = 0; x < ANCHO_PANTALLA; x++) {
     limpiar();

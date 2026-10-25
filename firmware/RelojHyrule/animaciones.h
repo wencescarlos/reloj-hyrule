@@ -25,7 +25,7 @@ namespace Anim {
   void cumple();
   void fecha(const struct tm& t);
   void mensaje(const char* texto);
-  void patronPrueba();
+  void patronPrueba(bool corta = false);
   void progreso(uint8_t porcentaje);       // barra de actualización
 
   // Cambia {N} por el nombre del niño o niña

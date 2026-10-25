@@ -11,7 +11,7 @@
 struct Peticiones {
   int16_t animacion = -1;          // número de aventura, 255 = sorpresa
   String  mensaje;                 // texto para enseñar ya
-  bool    prueba = false;          // patrón de prueba de pantalla
+  uint8_t prueba = 0;              // patrón de prueba: 1 = completo, 2 = solo 1 2 3 4
   bool    ajustesCambiados = false;
   int8_t  diagnostico = -1;        // orden de diagnóstico pendiente (ver principal.cpp)
   bool    buscarActualizacion = false;

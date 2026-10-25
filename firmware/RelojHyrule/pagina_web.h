@@ -154,7 +154,12 @@ footer{text-align:center;color:var(--suave);font-size:.8em;margin:24px 0 40px}
  <label>Velocidad del texto: <b id="vVelocidad"></b> ms</label>
  <input type="range" name="velocidad" min="10" max="120">
  <p class="nota">Más número = más despacio (ideal para quien está aprendiendo a leer).</p>
- <details><summary class="nota">Si las letras se ven giradas o desordenadas</summary>
+ <details open><summary class="nota">Si las letras se ven giradas o desordenadas</summary>
+  <label>Asistente de orientación</label>
+  <p class="nota">Pulsa "Siguiente posición" hasta que cada cuadro enseñe su número derecho y bien leído (1, 2, 3, 4). Son 8 posiciones; cada una se guarda sola.</p>
+  <div><button type="button" class="sec" onclick="asistente(-1)">◀ Anterior</button><button type="button" onclick="asistente(1)">Siguiente posición ▶</button></div>
+  <p class="nota"><b id="asisEstado"></b></p>
+  <p class="nota">Si los números salen bien pero en orden 4 3 2 1, marca "Invertir el orden de los módulos", guarda y vuelve a probar.</p>
   <label>Giro de cada módulo</label>
   <select name="rotacion"><option value="0">0°</option><option value="1">90°</option><option value="2">180°</option><option value="3">270°</option></select>
   <label class="check"><input type="checkbox" name="invertirModulos"> Invertir el orden de los módulos</label>
@@ -321,7 +326,11 @@ const EN={
 "La pata elegida debe marcar unos 3,3 V y las otras dos, 0 V. Si marca 0 V, falla el cable, la soldadura o esa pata del Wemos.":"The chosen pin should read about 3.3 V and the other two 0 V. If it reads 0 V, the wire, the solder joint or that Wemos pin is faulty.",
 "Terminar diagnóstico":"End diagnostics","3. Patas del Wemos que usa la pantalla":"3. Wemos pins used by the display",
 "Si una pata del Wemos se ha estropeado, pasa ese cable a otra libre (D1 o D2) y elígela aquí. De fábrica: DIN = D7, CLK = D5, CS = D6.":"If a Wemos pin is damaged, move that wire to a free one (D1 or D2) and choose it here. Factory setting: DIN = D7, CLK = D5, CS = D6.",
-"Señales lentas (para cables largos o soldaduras dudosas)":"Slow signals (for long wires or doubtful solder joints)","Ahora:":"Now:"
+"Señales lentas (para cables largos o soldaduras dudosas)":"Slow signals (for long wires or doubtful solder joints)",
+"Asistente de orientación":"Orientation wizard",
+"Pulsa \"Siguiente posición\" hasta que cada cuadro enseñe su número derecho y bien leído (1, 2, 3, 4). Son 8 posiciones; cada una se guarda sola.":"Press \"Next position\" until each square shows its number upright and readable (1, 2, 3, 4). There are 8 positions; each one is saved automatically.",
+"◀ Anterior":"◀ Previous","Siguiente posición ▶":"Next position ▶",
+"Si los números salen bien pero en orden 4 3 2 1, marca \"Invertir el orden de los módulos\", guarda y vuelve a probar.":"If the numbers look right but read 4 3 2 1, tick \"Reverse the order of the modules\", save and test again.","Ahora:":"Now:"
 };
 const MESES={es:["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"],
  en:["January","February","March","April","May","June","July","August","September","October","November","December"]};
@@ -401,6 +410,18 @@ function guardar(id){
 }
 
 function diag(a,n){post("/api/diagnostico?accion="+a+(n!==undefined?"&n="+n:""),a==="fin"?t("Diagnóstico terminado","Diagnostics ended"):t("¡Hecho! Mira la pantalla","Done! Look at the display"));}
+
+// Asistente de orientación: recorre giro (4) x espejo (2) y lanza la prueba
+let asisPos=-1;
+function asistente(d){
+ if(asisPos<0){const r=+$("[name=rotacion]").value,e=$("[name=espejo]").checked?1:0;asisPos=e*4+r;}
+ asisPos=(asisPos+d+8)%8;const r=asisPos%4,e=asisPos>=4?1:0;
+ $("[name=rotacion]").value=r;$("[name=espejo]").checked=!!e;
+ const inv=$("[name=invertirModulos]").checked?"1":"0";
+ $("#asisEstado").textContent=t("Posición ","Position ")+(asisPos+1)+t(" de 8: giro "," of 8: rotation ")+(r*90)+"°, "+t("espejo ","mirror ")+(e?t("sí","yes"):"no");
+ fetch("/api/ajustes",{method:"POST",body:new URLSearchParams({rotacion:r,espejo:e,invertirModulos:inv})})
+  .then(()=>post("/api/prueba?corta=1",t("Mira la pantalla","Look at the display")));
+}
 
 function mensajeYa(){const x=$("#mensajeYa").value.trim();if(!x)return;
  post("/api/mensaje",t("¡Mensaje enviado!","Message sent!"),new URLSearchParams({texto:x}));$("#mensajeYa").value="";}

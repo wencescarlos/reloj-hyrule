@@ -122,7 +122,7 @@ namespace {
     ok();
   }
 
-  void apiPrueba()        { peticiones.prueba = true; ok(); }
+  void apiPrueba()        { peticiones.prueba = servidor.hasArg("corta") ? 2 : 1; ok(); }
 
   // Diagnóstico de pantalla: /api/diagnostico?accion=todos|modulo|pata|fin&n=...
   void apiDiagnostico() {
