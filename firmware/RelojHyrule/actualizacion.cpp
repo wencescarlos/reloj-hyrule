@@ -20,7 +20,7 @@ namespace {
   // Último resultado de la comprobación (el texto se da en el idioma del reloj)
   enum Estado : uint8_t {
     SIN_COMPROBAR, FALTA_URL, SIN_INTERNET, NO_ABRE, SIN_VERSION_TXT,
-    AL_DIA, ERROR_ACTUALIZAR, SIN_CAMBIOS, ACTUALIZADO, SIN_MEMORIA, COLGADO
+    AL_DIA, ERROR_ACTUALIZAR, SIN_CAMBIOS, ACTUALIZADO, SIN_MEMORIA, COLGADO, RECIEN_ACTUALIZADO
   };
   Estado   ultimoEstado = SIN_COMPROBAR;
   String   detalleEstado;                              // código o error
@@ -32,11 +32,10 @@ namespace {
   // Marca en la memoria RTC (sobrevive a un reinicio, no a un apagón): si el
   // reloj se reinicia en mitad de una comprobación, al arrancar lo sabremos y
   // no se volverá a intentar enseguida (así nunca entra en un bucle de reinicios).
-  const uint32_t MARCA_COMPROBANDO = 0x48595255;   // "HYRU"
-  void marcar(bool si) {
-    uint32_t v = si ? MARCA_COMPROBANDO : 0;
-    ESP.rtcUserMemoryWrite(0, &v, sizeof(v));
-  }
+  const uint32_t MARCA_COMPROBANDO  = 0x48595255;  // "HYRU": comprobando
+  const uint32_t MARCA_ACTUALIZADO  = 0x4F4B4F4B;  // "OKOK": se ha instalado una versión nueva
+  void escribirMarca(uint32_t v) { ESP.rtcUserMemoryWrite(0, &v, sizeof(v)); }
+  void marcar(bool si) { escribirMarca(si ? MARCA_COMPROBANDO : 0); }
   // Memoria que necesita una conexión segura (HTTPS) con GitHub
   const uint32_t MEMORIA_HTTPS = 22000;
 
@@ -74,7 +73,10 @@ namespace Actualizacion {
 void alArrancar() {
   uint32_t v = 0;
   ESP.rtcUserMemoryRead(0, &v, sizeof(v));
-  if (v == MARCA_COMPROBANDO) {
+  if (v == MARCA_ACTUALIZADO) {
+    ultimoEstado = RECIEN_ACTUALIZADO;
+    Serial.println(F("[actualizacion] Versión nueva instalada por internet."));
+  } else if (v == MARCA_COMPROBANDO) {
     ultimoEstado = COLGADO;
     proximaRevision = millis() + UN_DIA;          // nada de reintentar al minuto
     Serial.println(F("[actualizacion] La comprobación anterior no terminó: se aplaza un día."));
@@ -109,6 +111,8 @@ String estado() {
     case ACTUALIZADO:      return tr("Actualizado. Reiniciando...", "Updated. Restarting...");
     case SIN_MEMORIA:      return String(tr("No hay memoria libre suficiente para conectar (", "Not enough free memory to connect ("))
                                   + detalleEstado + tr(" bytes). Reinicia el reloj y vuelve a probar.", " bytes). Restart the clock and try again.");
+    case RECIEN_ACTUALIZADO: return tr("✓ Actualizado por internet a la versión " VERSION_RELOJ ".",
+                                       "✓ Updated over the internet to version " VERSION_RELOJ ".");
     case COLGADO:          return tr("La última comprobación reinició el reloj. Se volverá a intentar mañana; puedes probar a mano.",
                                      "The last check restarted the clock. It will try again tomorrow; you can try by hand.");
   }
@@ -185,7 +189,7 @@ void comprobar() {
   Pantalla::brillo(ajustes.brillo);
   Anim::mensaje(tr("¡NUEVA VERSIÓN! ACTUALIZANDO...", "NEW VERSION! UPDATING..."));
   ESPhttpUpdate.setFollowRedirects(HTTPC_STRICT_FOLLOW_REDIRECTS);
-  ESPhttpUpdate.rebootOnUpdate(true);
+  ESPhttpUpdate.rebootOnUpdate(false);          // reiniciamos nosotros, tras dejar la marca
   ESPhttpUpdate.onProgress([](int hecho, int total) {
     Anim::progreso(total > 0 ? (hecho * 100L) / total : 0);
   });
@@ -200,7 +204,10 @@ void comprobar() {
       ultimoEstado = SIN_CAMBIOS;
       break;
     case HTTP_UPDATE_OK:
-      ultimoEstado = ACTUALIZADO;   // normalmente ya se ha reiniciado
+      ultimoEstado = ACTUALIZADO;
+      escribirMarca(MARCA_ACTUALIZADO);        // al arrancar dirá "actualizado", no "colgado"
+      delay(300);
+      ESP.restart();                           // no vuelve: el destructor no borra la marca
       break;
   }
 }
