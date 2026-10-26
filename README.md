@@ -77,7 +77,21 @@
 > - Usa cables de **menos de 15 cm**.
 > - Alimenta el reloj con un **cargador de 5 V y 1 A** como mínimo.
 >
-> Aun así, desde la versión 1.2.3 el reloj reenvía la configuración a la matriz cada segundo, así que si un módulo se desconfigura, se corrige solo.
+> Además, desde la versión 1.4.1 el reloj reenvía la configuración a la matriz con cada imagen y usa una velocidad de comunicación baja, así que si un bit llega mal se corrige en la imagen siguiente.
+>
+> 🛠️ **Si aun así ves píxeles sueltos al desplazar texto**, la causa es que el Wemos manda señales de 3,3 V y la matriz, a 5 V, pide al menos 3,5 V. Por orden de facilidad:
+> 1. Activa **Señales lentas** en *Diagnóstico de pantalla* y guarda.
+> 2. Suelda el **condensador** de 100–470 µF en la entrada de la matriz y acorta los cables.
+> 3. **Arreglo definitivo:** un adaptador de nivel **74AHCT125** (o 74HCT125) alimentado a 5 V entre el Wemos y la matriz. Pasa las señales de 3,3 V a 5 V.
+>
+> | 74AHCT125 | Conexión |
+> |---|---|
+> | 14 (VCC) | 5V |
+> | 7 (GND), 1, 4, 10 (1OE, 2OE, 3OE) y 12 (4A) | G |
+> | 13 (4OE) | 5V |
+> | 2 (1A) → 3 (1Y) | D7 → DIN |
+> | 5 (2A) → 6 (2Y) | D5 → CLK |
+> | 9 (3A) → 8 (3Y) | D6 → CS |
 | CS | D6 |
 | DIN | D7 |
 

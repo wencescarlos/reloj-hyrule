@@ -77,7 +77,21 @@
 > - Keep the wires **under 15 cm**.
 > - Power the clock with a **5 V, 1 A** charger or better.
 >
-> Even so, since version 1.2.3 the clock resends its setup to the matrix every second, so a module that gets scrambled fixes itself.
+> On top of that, since version 1.4.1 the clock resends its setup to the matrix with every frame and uses a low data speed, so a bit that arrives wrong is fixed on the next frame.
+>
+> 🛠️ **If you still see stray pixels while text scrolls**, the cause is that the Wemos sends 3.3 V signals and the matrix, powered at 5 V, wants at least 3.5 V. From easiest to best:
+> 1. Turn on **Slow signals** in *Display diagnostics* and save.
+> 2. Solder the 100–470 µF **capacitor** at the matrix input and shorten the wires.
+> 3. **Definitive fix:** a **74AHCT125** (or 74HCT125) level shifter powered at 5 V between the Wemos and the matrix. It turns the 3.3 V signals into 5 V.
+>
+> | 74AHCT125 | Connection |
+> |---|---|
+> | 14 (VCC) | 5V |
+> | 7 (GND), 1, 4, 10 (1OE, 2OE, 3OE) and 12 (4A) | G |
+> | 13 (4OE) | 5V |
+> | 2 (1A) → 3 (1Y) | D7 → DIN |
+> | 5 (2A) → 6 (2Y) | D5 → CLK |
+> | 9 (3A) → 8 (3Y) | D6 → CS |
 | CS | D6 |
 | DIN | D7 |
 

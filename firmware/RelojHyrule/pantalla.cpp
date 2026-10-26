@@ -30,7 +30,7 @@ namespace {
   uint32_t ultimaConfig = 0;
   volatile bool cortarYa = false;
 
-  inline void retardo() { if (lento) delayMicroseconds(5); }
+  inline void retardo() { delayMicroseconds(lento ? 5 : 1); }
 
   // Envía un byte, el bit más alto primero (modo 0: el MAX7219 lee al subir CLK)
   void byteSalida(uint8_t b) {
@@ -139,12 +139,15 @@ void pines(uint8_t din, uint8_t clk, uint8_t cs, bool modoLento) {
   dDin = din; dClk = clk; dCs = cs;
   gDin = GPIO_D[din]; gClk = GPIO_D[clk]; gCs = GPIO_D[cs];
   lento = modoLento;
-  spiChip = (din == 7 && clk == 5 && !modoLento);
+  // Con las patas de fábrica siempre se usa el SPI del chip (también en modo
+  // lento: solo baja la velocidad). Con otras patas, las señales van a mano.
+  spiChip = (din == 7 && clk == 5);
 }
 
 String descripcionPines() {
   String r = "DIN=D"; r += dDin; r += " CLK=D"; r += dClk; r += " CS=D"; r += dCs;
-  r += spiChip ? F(" \xC2\xB7 SPI") : (lento ? F(" \xC2\xB7 lento") : F(" \xC2\xB7 manual"));
+  r += spiChip ? F(" \xC2\xB7 SPI") : F(" \xC2\xB7 manual");
+  if (lento) r += F(" \xC2\xB7 lento");
   return r;
 }
 
@@ -152,7 +155,10 @@ void iniciar() {
   if (spiAbierto) { SPI.end(); spiAbierto = false; }
   if (spiChip) {
     SPI.begin();
-    SPI.setFrequency(1000000);          // 1 MHz: seguro con cables largos
+    // Velocidad baja a propósito: con señales de 3,3 V y cables dupont, cada
+    // flanco tiene tiempo de llegar limpio. 500 kHz (lento: 125 kHz) sobra para
+    // 30 imágenes por segundo: una imagen completa tarda 1,7 ms (lento: 7 ms).
+    SPI.setFrequency(lento ? 125000 : 500000);
     SPI.setBitOrder(MSBFIRST);
     SPI.setDataMode(SPI_MODE0);
     spiAbierto = true;
@@ -239,7 +245,10 @@ void guardar(uint8_t* copia)          { memcpy(copia, imagen, sizeof(imagen)); }
 void restaurar(const uint8_t* copia)  { memcpy(imagen, copia, sizeof(imagen)); }
 
 void mostrar() {
-  if (millis() - ultimaConfig >= 1000) reconfigurar();
+  // La configuración viaja con CADA imagen: si un bit llegó mal y desconfiguró
+  // un módulo (decodificar, número de filas, modo prueba, apagado...), se corrige
+  // en la imagen siguiente, antes de que se note. Son 5 órdenes más por imagen.
+  reconfigurar();
   // salida[m][r]: byte del registro r (fila 0..7) del módulo m de la cadena
   uint8_t salida[NUM_MODULOS][8];
   memset(salida, 0, sizeof(salida));
