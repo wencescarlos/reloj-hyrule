@@ -25,7 +25,7 @@
 #     trifuerza_dorada_trasera.stl   Trifuerza dorada de la tapa (30 mm)
 #     trifuerza_dorada_frontal.stl   Trifuerza dorada del pedestal (15 mm)
 #     soporte_wemos.stl              pinza que sujeta el Wemos (sin pegamento)
-#     soporte_wemos_zumbador.stl     soporte para Wemos con pines soldados + guías para la placa del zumbador
+#     soporte_wemos_zumbador.stl     soporte para Wemos con pines soldados + aro para el zumbador
 #     fondo_logo.stl                 fondo verde con el rebaje de las letras
 #     logo_dos_colores.stl           opción B: fondo y letras en una sola pieza, para
 #                                    imprimir en dos colores con una pausa a 2,0 mm
@@ -450,9 +450,9 @@ def soporte_wemos():
 #     por arriba (y > 20,5 mm), lejos de los conectores;
 #   - aprieta la placa con dos patas en sus esquinas libres, a los lados del
 #     módulo ESP;
-#   - lleva a un lado dos guías con ranura para una placa perforada de
-#     26,5 a 29,5 mm de ancho (1,6 mm de grueso), que entra deslizando desde
-#     arriba, en vertical, con el zumbador mirando a la tapa.
+#   - lleva a un lado un aro que sujeta a presión el zumbador de 12 mm (con su
+#     placa soldada detrás). El zumbador mira a la tapa y la placa queda
+#     colgando de él, hacia el frente del reloj.
 #  Se imprime boca abajo (la cara de arriba sobre la cama), sin soportes.
 # ---------------------------------------------------------------------------
 SP_ARRIBA = 24.0                 # cara de arriba (va sobre la cama al imprimir)
@@ -461,10 +461,9 @@ SP_FRENTE_Z = (6.5, 11.5)        # barra delantera, sobre la punta de la antena
 SP_PATA_X = (9.4, 12.2)          # patas: entre el módulo ESP (±8) y los pines (±10,2)
 SP_PATA_Z = (7.5, 11.0)
 SP_PRECARGA = 0.3                # las patas aprietan 0,3 mm la placa del Wemos
-PLACA_Z = 18.4                   # plano de la placa del zumbador (ranuras): detrás de las torretas
-PLACA_GRUESO = 2.0               # ranura para placa de 1,6 mm
-GUIA_X = (27.0, 57.0)            # caras interiores de las dos guías (dejan libre el tornillo)
-GUIA_FONDO = 2.0                 # profundidad de cada ranura
+ZS_X, ZS_Y = 42.0, 15.5          # centro del aro del zumbador (al lado del Wemos)
+ZS_Z = (17.0, 23.0)              # largo del aro (6 mm); el zumbador entra desde delante
+ZS_BLOQUE = 16.0                 # ancho del bloque que lo rodea
 
 def caja3(x0, x1, y0, y1, z0, z1):
     b = trimesh.creation.box(extents=[x1 - x0, y1 - y0, z1 - z0])
@@ -489,18 +488,14 @@ def soporte_wemos_pines(lado=1):
         partes.append(caja3(px0, px1, y_pcb - SP_PRECARGA, SP_BARRA_Y + 0.5, *SP_PATA_Z))
     # barra delantera que une las dos patas por encima de la antena
     partes.append(caja3(-18.0, 18.0, SP_BARRA_Y, SP_ARRIBA, *SP_FRENTE_Z))
-    # guías para la placa del zumbador
-    gz0, gz1 = PLACA_Z - 3.0, PLACA_Z + 3.0
-    suelo = PED_Y0 + PARED + 1.2                  # el suelo del pedestal tiene algún saliente
-    gx0, gx1 = GUIA_X
-    g1 = caja3(gx0 - 4.0, gx0, suelo, SP_ARRIBA, gz0, gz1)
-    g2 = caja3(gx1, gx1 + 4.0, suelo, SP_ARRIBA, gz0, gz1)
-    base = caja3(gx0 - 4.0, gx1 + 4.0, suelo, suelo + 2.0, gz0, gz1)
-    union_oreja = caja3(SOP_X, gx0 - 3.0, SOP_Y, SP_ARRIBA, SOP_Z, zt)
-    guias = U([g1, g2, base, union_oreja])
-    ranuras = [caja3(gx0 - GUIA_FONDO, gx0 + 0.1, suelo + 2.0, SP_ARRIBA + 1, PLACA_Z - PLACA_GRUESO / 2, PLACA_Z + PLACA_GRUESO / 2),
-               caja3(gx1 - 0.1, gx1 + GUIA_FONDO, suelo + 2.0, SP_ARRIBA + 1, PLACA_Z - PLACA_GRUESO / 2, PLACA_Z + PLACA_GRUESO / 2)]
-    guias = R(guias, ranuras)
+    # aro del zumbador: bloque con agujero de 12,4 mm y tres nervios (a presión)
+    z0, z1 = ZS_Z
+    bloque = caja3(ZS_X - ZS_BLOQUE / 2, ZS_X + ZS_BLOQUE / 2, ZS_Y - ZS_BLOQUE / 2 + 0.5, SP_ARRIBA, z0, z1)
+    brazo = caja3(SOP_X + 4.0, ZS_X - ZS_BLOQUE / 2 + 1.0, SOP_Y - 3.0, SP_ARRIBA, SOP_Z, z1)   # no llega al hueco
+    hueco = Point(ZS_X, ZS_Y).buffer(ZUMB_D / 2, resolution=64).difference(unary_union(
+        [Point(ZS_X + (ZUMB_D / 2) * np.cos(a), ZS_Y + (ZUMB_D / 2) * np.sin(a)).buffer(0.45, resolution=16)
+         for a in np.radians([90, 210, 330])]))
+    guias = R(U([bloque, brazo]), ext(hueco, z1 - z0 + 2, z0 - 1))
     if lado < 0:
         guias.apply_transform(np.diag([-1, 1, 1, 1.]))
     p = U(partes + [guias])
