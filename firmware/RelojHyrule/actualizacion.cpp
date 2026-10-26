@@ -9,6 +9,7 @@
 #include <WiFiClientSecureBearSSL.h>
 #include <ArduinoOTA.h>
 #include <memory>
+#include <umm_malloc/umm_heap_select.h>
 #include "actualizacion.h"
 #include "configuracion.h"
 #include "ajustes.h"
@@ -36,8 +37,22 @@ namespace {
   const uint32_t MARCA_ACTUALIZADO  = 0x4F4B4F4B;  // "OKOK": se ha instalado una versión nueva
   void escribirMarca(uint32_t v) { ESP.rtcUserMemoryWrite(0, &v, sizeof(v)); }
   void marcar(bool si) { escribirMarca(si ? MARCA_COMPROBANDO : 0); }
-  // Memoria que necesita una conexión segura (HTTPS) con GitHub
-  const uint32_t MEMORIA_HTTPS = 22000;
+  // Memoria para una conexión segura (HTTPS) con GitHub. El búfer de 16,7 KB va,
+  // si se puede, a la segunda zona de memoria (IRAM, opción MMU "4816H"); el resto
+  // del cifrado (unos 11 KB) va a la memoria normal.
+  const uint32_t BUFER_HTTPS = 16800;
+  const uint32_t RESTO_HTTPS = 12000;
+  uint32_t bloqueIram() {
+  #ifdef MMU_IRAM_HEAP
+    HeapSelectIram iram;
+    return ESP.getMaxFreeBlockSize();
+  #else
+    return 0;
+  #endif
+  }
+  String memoriaTexto() {
+    return String(ESP.getMaxFreeBlockSize()) + " B + IRAM " + bloqueIram() + " B";
+  }
 
   // "1.2.10" -> 1002010 para poder comparar versiones
   uint32_t numeroVersion(const String& v) {
@@ -118,7 +133,8 @@ String estado() {
     case SIN_CAMBIOS:      return tr("El servidor dice que no hay cambios.", "The server says there are no changes.");
     case ACTUALIZADO:      return tr("Actualizado. Reiniciando...", "Updated. Restarting...");
     case SIN_MEMORIA:      return String(tr("No hay memoria libre suficiente para conectar (", "Not enough free memory to connect ("))
-                                  + detalleEstado + tr(" bytes). Reinicia el reloj y vuelve a probar.", " bytes). Restart the clock and try again.");
+                                  + detalleEstado + tr("). Compila con la opción MMU \"16KB cache + 48KB IRAM and 2nd Heap (shared)\" (platformio.ini ya la trae).",
+                                                       "). Build with the MMU option \"16KB cache + 48KB IRAM and 2nd Heap (shared)\" (platformio.ini already has it).");
     case RECIEN_ACTUALIZADO: return tr("✓ Actualizado por internet a la versión " VERSION_RELOJ ".",
                                        "✓ Updated over the internet to version " VERSION_RELOJ ".");
     case COLGADO:          return tr("La última comprobación reinició el reloj. Se volverá a intentar mañana; puedes probar a mano.",
@@ -141,9 +157,13 @@ void comprobar() {
   struct Fin { ~Fin() { comprobando = false; } } fin;     // pase lo que pase, deja de "buscar"
   if (!ajustes.urlActualizacion[0]) { ultimoEstado = FALTA_URL; return; }
   if (!Red::conectado())            { ultimoEstado = SIN_INTERNET; return; }
-  if (ESP.getMaxFreeBlockSize() < MEMORIA_HTTPS) {
-    ultimoEstado = SIN_MEMORIA; detalleEstado = String(ESP.getMaxFreeBlockSize());
-    return;
+  {
+    bool bufEnIram = bloqueIram() >= BUFER_HTTPS;
+    uint32_t necesaria = bufEnIram ? RESTO_HTTPS : BUFER_HTTPS + RESTO_HTTPS;
+    if (ESP.getMaxFreeBlockSize() < necesaria) {
+      ultimoEstado = SIN_MEMORIA; detalleEstado = memoriaTexto();
+      return;
+    }
   }
   marcar(true);
   struct Desmarcar { ~Desmarcar() { marcar(false); } } desmarcar;   // al terminar, pase lo que pase
@@ -153,8 +173,10 @@ void comprobar() {
 
   // Cliente normal o seguro (https) según la dirección
   std::unique_ptr<WiFiClient> cliente;
+  BearSSL::WiFiClientSecure* seguro = nullptr;
   if (segura) {
     auto* c = new BearSSL::WiFiClientSecure();
+    seguro = c;
     c->setInsecure();      // no se comprueba el certificado (un reloj no guarda certificados)
     // Si el servidor lo permite, usar búferes pequeños para ahorrar memoria
     String host = base.substring(base.indexOf("://") + 3);
@@ -177,6 +199,12 @@ void comprobar() {
   int codigo = http.GET();
   if (codigo != HTTP_CODE_OK) {
     ultimoEstado = SIN_VERSION_TXT; detalleEstado = explicarCodigo(codigo);
+    if (seguro) {
+      char err[64] = "";
+      int e = seguro->getLastSSLError(err, sizeof(err));
+      if (e) detalleEstado += String(" [TLS ") + e + ": " + err + "]";
+    }
+    detalleEstado += String(tr(" · memoria: ", " · memory: ")) + memoriaTexto();
     Serial.printf("[actualizacion] version.txt: %d (memoria libre %u)\n", codigo, ESP.getFreeHeap());
     http.end(); return;
   }

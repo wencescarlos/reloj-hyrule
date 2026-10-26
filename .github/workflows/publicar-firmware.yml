@@ -26,7 +26,7 @@ concurrency:
 
 env:
   URL_ESP8266: https://arduino.esp8266.com/stable/package_esp8266com_index.json
-  PLACA: esp8266:esp8266:d1_mini:eesz=4M1M
+  PLACA: esp8266:esp8266:d1_mini:eesz=4M1M,mmu=4816H
 
 jobs:
   compilar:

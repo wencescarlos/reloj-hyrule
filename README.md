@@ -138,6 +138,7 @@ Las instrucciones completas de impresión y montaje, con la lista de tornillerí
 4. Abre `firmware/RelojHyrule/RelojHyrule.ino` y elige:
    - **Placa:** LOLIN(WEMOS) D1 R2 & mini
    - **Flash Size:** 4MB (FS:1MB OTA:~1019KB)
+   - **MMU:** 16KB cache + 48KB IRAM and 2nd Heap (shared) — *necesario para las actualizaciones por internet*
 5. Pulsa **Subir**.
 
 ### Con Visual Studio Code y PlatformIO
