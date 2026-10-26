@@ -70,13 +70,21 @@ namespace {
 
 namespace Actualizacion {
 
+// Solo es un cuelgue si el chip se reinició por un fallo del programa o porque
+// se quedó bloqueado. Los reinicios voluntarios (botón, WiFi, subir un programa
+// por WiFi, instalar una versión) no cuentan.
+static bool reinicioPorFallo() {
+  uint32_t r = ESP.getResetInfoPtr()->reason;
+  return r == REASON_EXCEPTION_RST || r == REASON_SOFT_WDT_RST || r == REASON_WDT_RST;
+}
+
 void alArrancar() {
   uint32_t v = 0;
   ESP.rtcUserMemoryRead(0, &v, sizeof(v));
   if (v == MARCA_ACTUALIZADO) {
     ultimoEstado = RECIEN_ACTUALIZADO;
     Serial.println(F("[actualizacion] Versión nueva instalada por internet."));
-  } else if (v == MARCA_COMPROBANDO) {
+  } else if (v == MARCA_COMPROBANDO && reinicioPorFallo()) {
     ultimoEstado = COLGADO;
     proximaRevision = millis() + UN_DIA;          // nada de reintentar al minuto
     Serial.println(F("[actualizacion] La comprobación anterior no terminó: se aplaza un día."));
