@@ -118,7 +118,7 @@ All parts are in [`modelos_3d/`](modelos_3d/):
 | Gold Triforce for the pedestal | `trifuerza_dorada_frontal.stl` | Silk gold |
 | Matrix holding bars | `barras_sujecion_matriz.stl` | Any |
 | Wemos holder | `soporte_wemos.stl` | Any |
-| **Or:** Wemos holder with a buzzer ring | `soporte_wemos_zumbador.stl` | Any |
+| **Or:** holder for a Wemos **with soldered pin headers** plus guides for a buzzer board | `soporte_wemos_zumbador.stl` | Any |
 | Logo background | `fondo_logo.stl` | Green |
 | Logo letters | `logo_letras_geektoybox.stl` | Silk gold |
 | **Or:** one-piece logo | `logo_dos_colores.stl` | Green and gold, with a pause at 2.0 mm to swap filament |
@@ -187,7 +187,7 @@ The clock **only makes sound when asked**: adventures and the time are silent. T
 
 The buzzer is **optional** and there are two places for it:
 - **In the back cover:** print `tapa_trasera_zumbador.stl` instead of `tapa_trasera.stl`. The buzzer sits behind a vent and is louder.
-- **On the Wemos holder:** print `soporte_wemos_zumbador.stl` instead of `soporte_wemos.stl`. The buzzer sits inside the pedestal next to the Wemos, with very short wires. It sounds a bit more muffled, which can be nicer for a child.
+- **Next to the Wemos, on its own board:** print `soporte_wemos_zumbador.stl` instead of `soporte_wemos.stl`. It works with a Wemos that has **pin headers and dupont connectors**: it only passes over the antenna tip, where there are no pins. On one side it has two guides where a **26.5–29.5 mm wide perfboard** with the buzzer slides in from the top.
 
 It connects to **D1** (diagram in Spanish):
 

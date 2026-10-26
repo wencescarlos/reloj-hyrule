@@ -29,7 +29,7 @@ Carcasa **diseñada desde cero** como dos bloques de piedra antigua de Hyrule:
 | 5 | Trifuerza dorada del pedestal | `trifuerza_dorada_frontal.stl` | Dorado silk | 1 |
 | 6 | Barras de sujeción de la matriz | `barras_sujecion_matriz.stl` | Cualquiera (no se ven) | 1 (2 barras) |
 | 7 | Soporte del Wemos | `soporte_wemos.stl` | Cualquiera (no se ve) | 1 |
-| 7 | **O bien:** soporte del Wemos **con aro para el zumbador** | `soporte_wemos_zumbador.stl` | Cualquiera (no se ve) | 1 |
+| 7 | **O bien:** soporte para Wemos **con pines soldados** y guías para la placa del zumbador | `soporte_wemos_zumbador.stl` | Cualquiera (no se ve) | 1 |
 | 8 | Fondo del logo | `fondo_logo.stl` | Verde | 1 |
 | 9 | Letras del logo | `logo_letras_geektoybox.stl` | Dorado silk | 1 (14 piezas) |
 | 8 + 9 | **O bien:** logo en una sola pieza (opción B) | `logo_dos_colores.stl` | Verde y dorado, con una pausa | 1 |
@@ -92,7 +92,8 @@ Material: PLA, 1,75 mm. Ninguna pieza necesita soportes.
 | Tapa trasera | **Boca abajo**: la cara con el texto sobre la cama, tal como viene | 0,2 mm | 20 % | 5 mm de grosor. El texto y los avellanados quedan en la cara de la cama; los bolsillos de las torretas, arriba. |
 | Ventana difusora | Plana | 0,2 mm | 100 % | 131 × 33 × 1 mm: deja pasar la luz difuminada. Para más contraste, prueba con 0,8 mm. |
 | Barras de sujeción | Tal como vienen: cara de los avellanados sobre la cama y columnas hacia arriba | 0,2 mm | 100 % | Dos barras en el mismo archivo. Mejor en **PETG** (más elástico); en PLA también funcionan. |
-| Soporte del Wemos (con o sin aro) | Plano, tal como viene: avellanados sobre la cama y, si lo tiene, el aro hacia arriba | 0,2 mm | 100 % | Mejor en **PETG**, por la viga elástica; en PLA también funciona. Sin soportes. |
+| Soporte del Wemos | Plano, tal como viene: avellanados sobre la cama | 0,2 mm | 100 % | Mejor en **PETG**, por la viga elástica; en PLA también funciona. |
+| Soporte para Wemos con pines (`soporte_wemos_zumbador.stl`) | Tal como viene: **boca abajo**, con la cara de arriba sobre la cama | 0,2 mm | 100 % | Sin soportes: todo baja recto desde la cama. Entre las dos guías hay un puente de 30 mm. |
 | Trifuerzas doradas | Con la pestaña plana sobre la cama y los triángulos hacia arriba | 0,12–0,16 mm | 100 % | La cara de arriba de los triángulos es la que se ve. |
 | Fondo del logo | Plano, con el rebaje de las letras hacia arriba | 0,2 mm | 100 % | |
 | Letras del logo | Planas, tal como vienen | 0,12–0,16 mm | 100 % | 14 piezas sueltas; usa un *brim* fino si alguna se despega. |
@@ -136,7 +137,7 @@ El logo se monta igual que el de la opción A: con los 2 trozos de filamento en 
 8. **Cables:** conecta los cables a la **entrada (IN)** de la matriz. Hay sitio de sobra entre el pedestal y la matriz.
 9. **Zumbador (opcional):** hay dos sitios; elige uno.
    - **En la tapa (`tapa_trasera_zumbador.stl`):** mete el zumbador de 12 mm a presión en el aro que hay por dentro de la tapa, con el agujero mirando a la rejilla, y saca los cables por la ranura del aro. Es el que más se oye.
-   - **En el soporte del Wemos (`soporte_wemos_zumbador.stl`):** antes de atornillar el soporte, mete el zumbador por detrás, a presión, hasta que quede a ras por delante del aro. Saca los cables por la ranura del aro, que quedan junto a D1 y G. Se oye más apagado, dentro del pedestal.
+   - **Junto al Wemos, en su propia placa (`soporte_wemos_zumbador.stl`):** es el soporte para un Wemos con **tiras de pines y conectores dupont**. No pasa por encima de los pines: cruza solo por la punta de la antena y aprieta la placa con dos patas en sus esquinas libres. Se atornilla igual, desde atrás, con 2 × M3 × 6. A un lado tiene dos guías con ranura: suelda el zumbador en una **placa perforada de 26,5 a 29,5 mm de ancho y hasta 20 mm de alto**, y métela deslizando desde arriba, con el zumbador mirando a la tapa.
 
    ![Zumbador en el soporte del Wemos](../imagenes/soporte_wemos_zumbador.png)
 
