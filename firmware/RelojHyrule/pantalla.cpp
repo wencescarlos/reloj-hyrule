@@ -30,7 +30,7 @@ namespace {
   uint32_t ultimaConfig = 0;
   volatile bool cortarYa = false;
 
-  inline void retardo() { delayMicroseconds(lento ? 5 : 1); }
+  inline void retardo() { if (lento) delayMicroseconds(5); }
 
   // Envía un byte, el bit más alto primero (modo 0: el MAX7219 lee al subir CLK)
   void byteSalida(uint8_t b) {
@@ -155,10 +155,8 @@ void iniciar() {
   if (spiAbierto) { SPI.end(); spiAbierto = false; }
   if (spiChip) {
     SPI.begin();
-    // Velocidad baja a propósito: con señales de 3,3 V y cables dupont, cada
-    // flanco tiene tiempo de llegar limpio. 500 kHz (lento: 125 kHz) sobra para
-    // 30 imágenes por segundo: una imagen completa tarda 1,7 ms (lento: 7 ms).
-    SPI.setFrequency(lento ? 125000 : 500000);
+    // 1 MHz como en las versiones que iban bien; "Señales lentas": 250 kHz
+    SPI.setFrequency(lento ? 250000 : 1000000);
     SPI.setBitOrder(MSBFIRST);
     SPI.setDataMode(SPI_MODE0);
     spiAbierto = true;
@@ -245,10 +243,12 @@ void guardar(uint8_t* copia)          { memcpy(copia, imagen, sizeof(imagen)); }
 void restaurar(const uint8_t* copia)  { memcpy(imagen, copia, sizeof(imagen)); }
 
 void mostrar() {
-  // La configuración viaja con CADA imagen: si un bit llegó mal y desconfiguró
-  // un módulo (decodificar, número de filas, modo prueba, apagado...), se corrige
-  // en la imagen siguiente, antes de que se note. Son 5 órdenes más por imagen.
-  reconfigurar();
+  // Cada 2 segundos se vuelve a enviar la configuración, por si un bit llegó mal
+  // y desconfiguró un módulo. NO se hace en cada imagen: en muchas matrices (con
+  // chips compatibles con el MAX7219) cada orden de configuración reinicia el
+  // barrido de las filas, y repetirla 30 veces por segundo hace que las letras
+  // tiemblen y la pantalla se vea más apagada (fallo de la versión 1.4.1).
+  if (millis() - ultimaConfig >= 2000) reconfigurar();
   // salida[m][r]: byte del registro r (fila 0..7) del módulo m de la cadena
   uint8_t salida[NUM_MODULOS][8];
   memset(salida, 0, sizeof(salida));

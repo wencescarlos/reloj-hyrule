@@ -134,7 +134,7 @@ void valoresPorDefecto() {
   ajustes.nocheApagar = 0;
   ajustes.brilloNoche = 0;
 
-  ajustes.brillo = 2;
+  ajustes.brillo = 6;                    // con la ventana difusora, 5–8 se ve bien
   ajustes.velocidad = 35;
   ajustes.rotacion = 0;
   ajustes.invertirModulos = 0;

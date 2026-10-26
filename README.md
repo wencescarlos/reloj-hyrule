@@ -77,7 +77,7 @@
 > - Usa cables de **menos de 15 cm**.
 > - Alimenta el reloj con un **cargador de 5 V y 1 A** como mínimo.
 >
-> Además, desde la versión 1.4.1 el reloj reenvía la configuración a la matriz con cada imagen y usa una velocidad de comunicación baja, así que si un bit llega mal se corrige en la imagen siguiente.
+> Además, el reloj reenvía la configuración a la matriz cada 2 segundos, así que si un módulo se desconfigura se corrige solo.
 >
 > 🛠️ **Si aun así ves píxeles sueltos al desplazar texto**, la causa es que el Wemos manda señales de 3,3 V y la matriz, a 5 V, pide al menos 3,5 V. Por orden de facilidad:
 > 1. Activa **Señales lentas** en *Diagnóstico de pantalla* y guarda.

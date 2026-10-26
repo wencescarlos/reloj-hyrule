@@ -77,7 +77,7 @@
 > - Keep the wires **under 15 cm**.
 > - Power the clock with a **5 V, 1 A** charger or better.
 >
-> On top of that, since version 1.4.1 the clock resends its setup to the matrix with every frame and uses a low data speed, so a bit that arrives wrong is fixed on the next frame.
+> On top of that, the clock resends its setup to the matrix every 2 seconds, so a module that gets scrambled fixes itself.
 >
 > 🛠️ **If you still see stray pixels while text scrolls**, the cause is that the Wemos sends 3.3 V signals and the matrix, powered at 5 V, wants at least 3.5 V. From easiest to best:
 > 1. Turn on **Slow signals** in *Display diagnostics* and save.

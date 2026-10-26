@@ -196,7 +196,7 @@ footer{text-align:center;color:var(--suave);font-size:.8em;margin:24px 0 40px}
  <h2>Pantalla</h2>
  <label>Brillo de día: <b id="vBrillo"></b></label>
  <input type="range" name="brillo" min="0" max="15">
- <p class="nota">Para que no canse la vista, mejor entre 1 y 4.</p>
+ <p class="nota">Con la ventana difusora delante, entre 5 y 8 se ve bien sin cansar la vista. De noche, mejor 0 o 1.</p>
  <label>Velocidad del texto: <b id="vVelocidad"></b> ms</label>
  <input type="range" name="velocidad" min="10" max="120">
  <p class="nota">Más número = más despacio (ideal para quien está aprendiendo a leer).</p>
@@ -341,7 +341,7 @@ const EN={
 "Modo noche":"Night mode","Activar modo noche (sin aventuras)":"Turn on night mode (no adventures)","Desde":"From","Hasta":"To",
 "Apagar la pantalla del todo por la noche":"Turn the display off completely at night",
 "Brillo por la noche (si no se apaga):":"Night brightness (if not off):",
-"Pantalla":"Display","Brillo de día:":"Daytime brightness:","Para que no canse la vista, mejor entre 1 y 4.":"To keep it easy on the eyes, 1 to 4 is best.",
+"Pantalla":"Display","Brillo de día:":"Daytime brightness:","Con la ventana difusora delante, entre 5 y 8 se ve bien sin cansar la vista. De noche, mejor 0 o 1.":"With the diffuser window in front, 5 to 8 looks good without tiring the eyes. At night, 0 or 1 is best.",
 "Velocidad del texto:":"Text speed:","Más número = más despacio (ideal para quien está aprendiendo a leer).":"Higher number = slower (great for kids learning to read).",
 "Si las letras se ven giradas o desordenadas":"If the letters look rotated or jumbled","Giro de cada módulo":"Rotation of each module",
 "Invertir el orden de los módulos":"Reverse the order of the modules","Efecto espejo en cada módulo":"Mirror each module",
