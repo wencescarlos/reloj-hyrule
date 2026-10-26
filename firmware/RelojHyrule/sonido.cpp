@@ -110,6 +110,19 @@ void parar() { actual = nullptr; finRepetir = 0; silencio(); }
 
 bool sonando() { return actual != nullptr; }
 
+void pitidoPrueba(uint16_t hz, uint16_t ms) {
+  if (pata < 0) return;
+  static Nota prueba[2];                    // en RAM: memcpy_P también la lee
+  prueba[0] = { hz, ms };
+  prueba[1] = { 0, 0 };
+  actual = prueba;
+  indice = 0;
+  finRepetir = 0;
+  finNota = millis();
+  servicio();
+  analogWrite(pata, 512);                   // al 50 %, sea cual sea el volumen
+}
+
 void servicio() {
   if (!actual) return;
   if ((int32_t)(millis() - finNota) < 0) return;

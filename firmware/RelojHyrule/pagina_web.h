@@ -492,6 +492,8 @@ function cargarMelodias(a){fetch("/api/melodias").then(r=>r.json()).then(l=>{
   s.appendChild(new Option(n,i));});
  const p=document.createElement("button");p.type="button";p.className="peligro";p.textContent=t("■ Parar","■ Stop");
  p.onclick=()=>fetch("/api/sonido",{method:"POST"});c.appendChild(p);
+ [[1000,"1 kHz"],[2500,"2,5 kHz"]].forEach(([hz,txt])=>{const q=document.createElement("button");q.type="button";q.className="sec";
+  q.textContent=t("🔧 Pitido ","🔧 Beep ")+txt+" (10 s)";q.onclick=()=>fetch("/api/sonido?pitido="+hz,{method:"POST"}).then(r=>mostrarAviso(r.ok?t("Pitido de 10 s: mide entre D1 y G (≈1,6 V si sale la señal)","10 s beep: measure between D1 and G (≈1.6 V if the signal is there)"):t("Activa el zumbador y guarda los ajustes","Turn the buzzer on and save the settings")));c.appendChild(q);});
  if(a)s.value=a.alarmaMelodia;}).catch(()=>{});}
 function tiempoTexto(s){if(s<0)return t("hasta que la quites","until you turn it off");const h=Math.floor(s/3600),m=Math.ceil((s%3600)/60);return (h?h+" h ":"")+m+" min";}
 

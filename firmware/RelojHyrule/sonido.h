@@ -17,6 +17,8 @@ namespace Sonido {
   // Toca una melodía (0..total()-1). Si segundos > 0, la repite hasta cumplirlos.
   void        tocar(uint8_t melodia, uint16_t segundos = 0);
   void        parar();
+  // Pitido continuo de prueba, al 50 % (lo más fuerte), para oírlo o medirlo
+  void        pitidoPrueba(uint16_t hz, uint16_t ms);
   bool        sonando();
   void        servicio();                 // se llama muy a menudo (desde esperar)
   uint8_t     total();

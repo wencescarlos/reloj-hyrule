@@ -35,7 +35,10 @@ namespace {
   // no se volverá a intentar enseguida (así nunca entra en un bucle de reinicios).
   const uint32_t MARCA_COMPROBANDO  = 0x48595255;  // "HYRU": comprobando
   const uint32_t MARCA_ACTUALIZADO  = 0x4F4B4F4B;  // "OKOK": se ha instalado una versión nueva
-  void escribirMarca(uint32_t v) { ESP.rtcUserMemoryWrite(0, &v, sizeof(v)); }
+  // Bloque 64 de la memoria RTC de usuario: los primeros 128 bytes (bloques 0-31)
+  // los usa el sistema para guardar la orden de instalar una actualización.
+  const uint32_t BLOQUE_MARCA = 64;
+  void escribirMarca(uint32_t v) { ESP.rtcUserMemoryWrite(BLOQUE_MARCA, &v, sizeof(v)); }
   void marcar(bool si) { escribirMarca(si ? MARCA_COMPROBANDO : 0); }
   // Memoria para una conexión segura (HTTPS) con GitHub. El búfer de 16,7 KB va,
   // si se puede, a la segunda zona de memoria (IRAM, opción MMU "4816H"); el resto
@@ -95,7 +98,7 @@ static bool reinicioPorFallo() {
 
 void alArrancar() {
   uint32_t v = 0;
-  ESP.rtcUserMemoryRead(0, &v, sizeof(v));
+  ESP.rtcUserMemoryRead(BLOQUE_MARCA, &v, sizeof(v));
   if (v == MARCA_ACTUALIZADO) {
     ultimoEstado = RECIEN_ACTUALIZADO;
     Serial.println(F("[actualizacion] Versión nueva instalada por internet."));

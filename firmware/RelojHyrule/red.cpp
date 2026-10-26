@@ -161,6 +161,7 @@ namespace {
   void apiSonido() {
     if (!Sonido::disponible()) { responderJson("{\"ok\":false,\"motivo\":\"sin zumbador\"}", 409); return; }
     if (servidor.hasArg("melodia")) Sonido::tocar(servidor.arg("melodia").toInt());
+    else if (servidor.hasArg("pitido")) Sonido::pitidoPrueba(constrain(servidor.arg("pitido").toInt(), 200, 5000), 10000);
     else Sonido::parar();
     ok();
   }
