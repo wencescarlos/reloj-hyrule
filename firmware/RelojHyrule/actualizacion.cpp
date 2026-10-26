@@ -24,6 +24,8 @@ namespace {
   };
   Estado   ultimoEstado = SIN_COMPROBAR;
   String   detalleEstado;                              // código o error
+  String   versionPublicada;                           // la que hay en internet
+  bool     comprobando = false;
   uint32_t proximaRevision = 60UL * 1000UL;          // 1 minuto tras encender
   const uint32_t UN_DIA = 24UL * 60UL * 60UL * 1000UL;
 
@@ -37,6 +39,15 @@ namespace {
       else if (c == '.') parte++;
     }
     return partes[0] * 1000000UL + partes[1] * 1000UL + partes[2];
+  }
+
+  // Explica los códigos de error de la conexión
+  String explicarCodigo(int c) {
+    if (c == 404) return tr("404: todavía no está publicada; revisa GitHub Pages", "404: not published yet; check GitHub Pages");
+    if (c == -1)  return tr("no conecta; revisa la dirección o el WiFi", "can't connect; check the address or the WiFi");
+    if (c == -11) return tr("el servidor tarda demasiado", "the server took too long");
+    if (c < 0)    return String(tr("error de conexión ", "connection error ")) + c;
+    return String(tr("código ", "code ")) + c;
   }
 
   String unirUrl(const char* base, const char* archivo) {
@@ -62,14 +73,15 @@ void iniciarOTA() {
 
 String estado() {
   switch (ultimoEstado) {
-    case SIN_COMPROBAR:    return tr("Todavía no se ha comprobado.", "Not checked yet.");
+    case SIN_COMPROBAR:    return comprobando ? tr("Buscando...", "Checking...") : tr("Todavía no se ha comprobado.", "Not checked yet.");
     case FALTA_URL:        return tr("Falta la dirección de actualizaciones.", "The update address is missing.");
     case SIN_INTERNET:     return tr("Sin conexión a internet.", "No internet connection.");
     case NO_ABRE:          return tr("No se pudo abrir la dirección.", "Could not open the address.");
-    case SIN_VERSION_TXT:  return String(tr("No se encontró version.txt (código ", "version.txt not found (code "))
-                                  + detalleEstado + ").";
-    case AL_DIA:           return tr("Tienes la última versión (" VERSION_RELOJ ").",
-                                     "You have the latest version (" VERSION_RELOJ ").");
+    case SIN_VERSION_TXT:  return String(tr("No se pudo leer la versión publicada: ", "Could not read the published version: "))
+                                  + detalleEstado + ".";
+    case AL_DIA:           return String(tr("Ya tienes la última versión (" VERSION_RELOJ "). En internet: ",
+                                            "You already have the latest version (" VERSION_RELOJ "). Online: "))
+                                  + versionPublicada + ".";
     case ERROR_ACTUALIZAR: return String(tr("Error al actualizar: ", "Update error: ")) + detalleEstado;
     case SIN_CAMBIOS:      return tr("El servidor dice que no hay cambios.", "The server says there are no changes.");
     case ACTUALIZADO:      return tr("Actualizado. Reiniciando...", "Updated. Restarting...");
@@ -86,6 +98,9 @@ void servicio() {
 }
 
 void comprobar() {
+  comprobando = true;
+  ultimoEstado = SIN_COMPROBAR;
+  struct Fin { ~Fin() { comprobando = false; } } fin;     // pase lo que pase, deja de "buscar"
   if (!ajustes.urlActualizacion[0]) { ultimoEstado = FALTA_URL; return; }
   if (!Red::conectado())            { ultimoEstado = SIN_INTERNET; return; }
 
@@ -117,12 +132,15 @@ void comprobar() {
   }
   int codigo = http.GET();
   if (codigo != HTTP_CODE_OK) {
-    ultimoEstado = SIN_VERSION_TXT; detalleEstado = String(codigo);
+    ultimoEstado = SIN_VERSION_TXT; detalleEstado = explicarCodigo(codigo);
+    Serial.printf("[actualizacion] version.txt: %d (memoria libre %u)\n", codigo, ESP.getFreeHeap());
     http.end(); return;
   }
   String publicada = http.getString();
   http.end();
   publicada.trim();
+  versionPublicada = publicada;
+  Serial.printf("[actualizacion] Publicada %s, instalada %s\n", publicada.c_str(), VERSION_RELOJ);
 
   if (numeroVersion(publicada) <= numeroVersion(VERSION_RELOJ)) {
     ultimoEstado = AL_DIA;
