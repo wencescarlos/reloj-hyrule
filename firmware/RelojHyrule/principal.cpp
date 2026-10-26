@@ -268,7 +268,9 @@ void iniciar() {
   Serial.println(F("\n\n=== RELOJ DE HYRULE v" VERSION_RELOJ " ==="));
   randomSeed(ESP.random());
 
+  Serial.printf("[arranque] Motivo del último reinicio: %s\n", ESP.getResetReason().c_str());
   Config::cargar();
+  Actualizacion::alArrancar();
   Pantalla::pines(ajustes.pinDin, ajustes.pinClk, ajustes.pinCs, ajustes.spiLento);
   Pantalla::iniciar();
   Pantalla::orientar(ajustes.rotacion, ajustes.invertirModulos, ajustes.espejo);

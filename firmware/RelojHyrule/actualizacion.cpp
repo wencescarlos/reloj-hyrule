@@ -20,7 +20,7 @@ namespace {
   // Último resultado de la comprobación (el texto se da en el idioma del reloj)
   enum Estado : uint8_t {
     SIN_COMPROBAR, FALTA_URL, SIN_INTERNET, NO_ABRE, SIN_VERSION_TXT,
-    AL_DIA, ERROR_ACTUALIZAR, SIN_CAMBIOS, ACTUALIZADO
+    AL_DIA, ERROR_ACTUALIZAR, SIN_CAMBIOS, ACTUALIZADO, SIN_MEMORIA, COLGADO
   };
   Estado   ultimoEstado = SIN_COMPROBAR;
   String   detalleEstado;                              // código o error
@@ -28,6 +28,17 @@ namespace {
   bool     comprobando = false;
   uint32_t proximaRevision = 60UL * 1000UL;          // 1 minuto tras encender
   const uint32_t UN_DIA = 24UL * 60UL * 60UL * 1000UL;
+
+  // Marca en la memoria RTC (sobrevive a un reinicio, no a un apagón): si el
+  // reloj se reinicia en mitad de una comprobación, al arrancar lo sabremos y
+  // no se volverá a intentar enseguida (así nunca entra en un bucle de reinicios).
+  const uint32_t MARCA_COMPROBANDO = 0x48595255;   // "HYRU"
+  void marcar(bool si) {
+    uint32_t v = si ? MARCA_COMPROBANDO : 0;
+    ESP.rtcUserMemoryWrite(0, &v, sizeof(v));
+  }
+  // Memoria que necesita una conexión segura (HTTPS) con GitHub
+  const uint32_t MEMORIA_HTTPS = 22000;
 
   // "1.2.10" -> 1002010 para poder comparar versiones
   uint32_t numeroVersion(const String& v) {
@@ -60,6 +71,17 @@ namespace {
 
 namespace Actualizacion {
 
+void alArrancar() {
+  uint32_t v = 0;
+  ESP.rtcUserMemoryRead(0, &v, sizeof(v));
+  if (v == MARCA_COMPROBANDO) {
+    ultimoEstado = COLGADO;
+    proximaRevision = millis() + UN_DIA;          // nada de reintentar al minuto
+    Serial.println(F("[actualizacion] La comprobación anterior no terminó: se aplaza un día."));
+  }
+  marcar(false);
+}
+
 void iniciarOTA() {
   ArduinoOTA.setHostname(NOMBRE_EQUIPO);
   if (ajustes.claveAdmin[0]) ArduinoOTA.setPassword(ajustes.claveAdmin);
@@ -85,6 +107,10 @@ String estado() {
     case ERROR_ACTUALIZAR: return String(tr("Error al actualizar: ", "Update error: ")) + detalleEstado;
     case SIN_CAMBIOS:      return tr("El servidor dice que no hay cambios.", "The server says there are no changes.");
     case ACTUALIZADO:      return tr("Actualizado. Reiniciando...", "Updated. Restarting...");
+    case SIN_MEMORIA:      return String(tr("No hay memoria libre suficiente para conectar (", "Not enough free memory to connect ("))
+                                  + detalleEstado + tr(" bytes). Reinicia el reloj y vuelve a probar.", " bytes). Restart the clock and try again.");
+    case COLGADO:          return tr("La última comprobación reinició el reloj. Se volverá a intentar mañana; puedes probar a mano.",
+                                     "The last check restarted the clock. It will try again tomorrow; you can try by hand.");
   }
   return "";
 }
@@ -103,6 +129,12 @@ void comprobar() {
   struct Fin { ~Fin() { comprobando = false; } } fin;     // pase lo que pase, deja de "buscar"
   if (!ajustes.urlActualizacion[0]) { ultimoEstado = FALTA_URL; return; }
   if (!Red::conectado())            { ultimoEstado = SIN_INTERNET; return; }
+  if (ESP.getMaxFreeBlockSize() < MEMORIA_HTTPS) {
+    ultimoEstado = SIN_MEMORIA; detalleEstado = String(ESP.getMaxFreeBlockSize());
+    return;
+  }
+  marcar(true);
+  struct Desmarcar { ~Desmarcar() { marcar(false); } } desmarcar;   // al terminar, pase lo que pase
 
   String base = ajustes.urlActualizacion;
   bool segura = base.startsWith("https");

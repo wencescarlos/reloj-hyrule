@@ -15,6 +15,7 @@
 namespace Actualizacion {
   void   iniciarOTA();              // actualización desde el Arduino IDE
   void   servicio();                // revisión diaria automática
+  void   alArrancar();              // detecta si la última comprobación colgó el reloj
   void   comprobar();               // mirar ahora si hay versión nueva
   String estado();                  // último resultado, para la web
 }

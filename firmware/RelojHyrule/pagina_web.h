@@ -287,6 +287,7 @@ footer{text-align:center;color:var(--suave);font-size:.8em;margin:24px 0 40px}
  <h2>Actualizaciones</h2>
  <p><span>Versión instalada:</span> <b id="version"></b></p>
  <p class="nota" id="estadoAct"></p>
+ <p class="nota" id="sistema"></p>
  <form id="f2" onsubmit="return false">
   <label>Dirección de actualizaciones (donde están version.txt y firmware.bin)</label>
   <input type="text" name="urlActualizacion" placeholder="https://wencescarlos.github.io/reloj-hyrule/">
@@ -516,7 +517,11 @@ function estado(){
   $("#portal").style.display=e.portal?"block":"none";
   $("#wifiActual").textContent=e.conectado?t("Conectado a «"+e.wifi+"» (señal "+e.senal+" dBm)","Connected to “"+e.wifi+"” (signal "+e.senal+" dBm)"):t("No conectado.","Not connected.");
   $("#concEstado").textContent=e.concentracion?("🎓 "+t("Activo","On")+(e.concHorario?t(" (horario de estudio)"," (study schedule)"):"")+" · "+t("queda ","left: ")+tiempoTexto(e.concQueda)):t("Ahora no está activo.","Not active right now.");
-  $("#version").textContent=e.version;$("#pinesActual").textContent=e.pines||"";
+  $("#version").textContent=e.version;
+  const R={"Power On":t("encendido","power on"),"External System":t("botón de reinicio","reset button"),"Software/System restart":t("reinicio normal (ajustes o actualización)","normal restart (settings or update)"),
+   "Exception":t("⚠️ fallo del programa","⚠️ program crash"),"Hardware Watchdog":t("⚠️ el programa se quedó bloqueado","⚠️ the program froze"),"Software Watchdog":t("⚠️ el programa se quedó bloqueado","⚠️ the program froze"),"Deep-Sleep Wake":t("despertar","wake up")};
+  const enc=e.encendido||0;
+  $("#sistema").textContent=t("Último reinicio: ","Last restart: ")+(R[e.reinicio]||e.reinicio||"?")+" · "+t("encendido hace ","on for ")+(enc>=3600?Math.floor(enc/3600)+" h ":"")+Math.floor(enc%3600/60)+" min · "+t("memoria libre: ","free memory: ")+e.memoria+" B";$("#pinesActual").textContent=e.pines||"";
   $("#diagEstado").textContent=e.diagnostico?("🔧 "+e.diagnostico):"";$("#estadoAct").textContent=e.actualizacion;
   $("#faltan").textContent=e.diasCumple>0?t("¡Faltan "+e.diasCumple+" días para el cumpleaños!",(e.diasCumple==1?"Only 1 day":"Only "+e.diasCumple+" days")+" until the birthday!")
    :(e.diasCumple==0?t("¡HOY ES EL CUMPLEAÑOS! 🎂","IT'S BIRTHDAY TODAY! 🎂"):"");

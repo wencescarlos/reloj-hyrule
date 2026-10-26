@@ -76,6 +76,7 @@ namespace {
     j += ",\"senal\":"; j += WiFi.RSSI();
     j += ",\"ip\":\""; j += Red::ip(); j += '"';
     j += ",\"memoria\":"; j += ESP.getFreeHeap();
+    j += ",\"reinicio\":\""; j += escapar(ESP.getResetReason()); j += '"';
     j += ",\"encendido\":"; j += millis() / 1000;
     j += ",\"diasCumple\":"; j += hayHora ? Tiempo::diasParaCumple(t) : -1;
     j += ",\"actualizacion\":\""; j += escapar(Actualizacion::estado()); j += '"';
