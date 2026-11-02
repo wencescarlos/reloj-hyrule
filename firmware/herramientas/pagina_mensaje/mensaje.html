@@ -90,11 +90,10 @@ select{width:100%;margin-top:8px;padding:9px;border-radius:10px;border:1px solid
  <p class="consejo" id="consejo">Para quien está aprendiendo a leer: despacio y 1 minuto o más.</p>
 </section>
 
-<section>
+<section id="secSonido" style="display:none">
  <h2 id="tSonido">Sonido del aviso</h2>
  <div class="chips envolver" id="sonidos"></div>
  <button type="button" class="chip peque" id="probarSonido" style="margin-top:6px">♪ Probar en el reloj</button>
- <p class="consejo" id="sinZumbador" style="display:none">El reloj no tiene zumbador activado (Ajustes del reloj → Sonido).</p>
 </section>
 
 <section id="secConc">
@@ -197,7 +196,6 @@ function construir(){
  chips("#velocidades",VELOCIDADES,est.vel,v=>est.vel=v);
  rapidos();
  $("#tSonido").textContent=t("Sonido del aviso","Alert sound");$("#probarSonido").textContent=t("♪ Probar en el reloj","♪ Try it on the clock");
- $("#sinZumbador").textContent=t("El reloj no tiene zumbador activado (Ajustes del reloj → Sonido).","The clock has no buzzer turned on (Clock settings → Sound).");
  $("#tConc").textContent=t("Modo concentración","Focus mode");
  $("#concTexto").textContent=t("Solo la hora, quieta: sin segundos, sin fecha y sin aventuras.","Just the time, still: no seconds, no date, no adventures.");
  const cb=$("#concBotones");cb.innerHTML="";
@@ -216,7 +214,7 @@ function sonidos(){
  const lista=[[0,t("🔇 Sin sonido","🔇 No sound"),t("🔇 Sin sonido","🔇 No sound")],...MELODIAS.map((n,i)=>[i+1,"♪ "+n,"♪ "+n])];
  if(est.son>MELODIAS.length)est.son=0;
  chips("#sonidos",lista,est.son,v=>est.son=v);
- $("#sinZumbador").style.display=HAY_SONIDO?"none":"block";}
+ $("#secSonido").style.display=HAY_SONIDO?"block":"none";}   // el sonido es opcional: sin zumbador no se ve
 $("#probarSonido").onclick=()=>{if(!est.son){mostrarAviso(t("Elige una melodía","Pick a tune"));return;}
  fetch("/api/sonido?melodia="+(est.son-1),{method:"POST"}).then(r=>mostrarAviso(r.ok?t("♪ Sonando en el reloj","♪ Playing on the clock"):t("Sin zumbador","No buzzer")));};
 function rapidos(){const c=$("#rapidos");c.innerHTML="";

@@ -37,7 +37,8 @@
 | 📱 **Configuración desde el móvil** | En http://reloj-hyrule.local, sin instalar ninguna app |
 | 🌍 **En español o en inglés** | Se elige en la página del reloj: cambia los textos del reloj y de la página |
 | 🎓 **Modo concentración** | Para estudiar: solo la hora, quieta, sin fecha ni aventuras. A mano o con horario |
-| 🔔 **Avisos y alarma con sonido** | Con un zumbador opcional: melodías originales, volumen regulable, alarma de la mañana programable |
+| ⏰ **Alarma de la mañana** | A la hora y los días que elijas, con su mensaje de buenos días |
+| 🔔 **Sonido (opcional, en desarrollo)** | Con un zumbador: avisos y alarma con melodías originales y volumen regulable |
 | 🔄 **Se actualiza solo** | Descarga las versiones nuevas desde este repositorio |
 
 <p align="center">
@@ -57,7 +58,7 @@
 | Tornillo M3 × 6 autorroscante de cabeza avellanada allen, inox (todos iguales, sin insertos) | 10 |
 | Cables dupont o cable fino | 5 |
 | Cargador USB de 5 V y cable micro-USB | 1 |
-| *Opcional:* zumbador pasivo de 12 mm (el «speaker» de placa base vale) + transistor NPN, resistencia de 1 kΩ y diodo 1N4148 | 1 |
+| *Opcional, en desarrollo:* zumbador pasivo de 12 mm (el «speaker» de placa base vale) + transistor NPN, resistencia de 1 kΩ y diodo 1N4148 | 1 |
 | Filamento PLA: gris piedra, blanco, verde y dorado | — |
 
 ### Conexiones
@@ -69,6 +70,8 @@
 | VCC | 5V |
 | GND | G |
 | CLK | D5 |
+| CS | D6 |
+| DIN | D7 |
 
 > ⚠️ **Suelda los cables en la ENTRADA de la matriz**, el lado donde pone **DIN** (o IN). Si los pones en la salida (OUT o DOUT), la pantalla se queda apagada o enciende puntos sin sentido.
 >
@@ -80,7 +83,7 @@
 > Además, el reloj reenvía la configuración a la matriz cada 2 segundos, así que si un módulo se desconfigura se corrige solo.
 >
 > 🛠️ **Si aun así ves píxeles sueltos al desplazar texto**, la causa es que el Wemos manda señales de 3,3 V y la matriz, a 5 V, pide al menos 3,5 V. Por orden de facilidad:
-> 1. Activa **Señales lentas** en *Diagnóstico de pantalla* y guarda.
+> 1. Activa **Señales lentas** en el *Menú de pruebas* de la página del reloj y guarda.
 > 2. Suelda el **condensador** de 100–470 µF en la entrada de la matriz y acorta los cables.
 > 3. **Arreglo definitivo:** un adaptador de nivel **74AHCT125** (o 74HCT125) alimentado a 5 V entre el Wemos y la matriz. Pasa las señales de 3,3 V a 5 V.
 >
@@ -92,8 +95,6 @@
 > | 2 (1A) → 3 (1Y) | D7 → DIN |
 > | 5 (2A) → 6 (2Y) | D5 → CLK |
 > | 9 (3A) → 8 (3Y) | D6 → CS |
-| CS | D6 |
-| DIN | D7 |
 
 ---
 
@@ -154,16 +155,18 @@ Las instrucciones completas de impresión y montaje, con la lista de tornillerí
 
 1. Conéctate con el móvil al WiFi **Reloj-Hyrule** (clave: **trifuerza**).
 2. Se abre la página del reloj (si no se abre, entra en http://192.168.4.1).
-3. Elige el WiFi de casa, escribe la clave y pulsa **Conectar**.
+3. Elige el WiFi de casa, escribe la clave y pulsa **Conectar y reiniciar**.
 4. Ya está: el reloj está en **http://reloj-hyrule.local**. Escribe ahí el nombre del niño y su cumpleaños.
 5. Arriba de la página puedes elegir el idioma: **Español** o **English**.
 
 > Si las letras salen giradas o desordenadas, ve a **Pantalla** en la página del reloj, cambia el giro o el orden de los módulos y pulsa **Probar pantalla**: debe verse 1 2 3 4.
 >
-> Si la pantalla no se enciende o hace cosas raras, usa el **Diagnóstico de pantalla** de la misma página. Tiene tres pasos:
+> Si la pantalla no se enciende o hace cosas raras, abre el **🔧 Menú de pruebas (avanzado)**, al final de la página. Está cerrado para no confundir a quien solo quiere usar el reloj. Su **Diagnóstico de pantalla** tiene tres pasos:
 > - **Encender LED:** enciende todos los LED, o un módulo cada vez, con el modo de prueba de la propia matriz.
 > - **Medir patas:** deja cada pata a 3,3 V para medirla con el polímetro.
 > - **Cambiar patas:** si una pata del Wemos se ha estropeado, puedes pasar ese cable a otra.
+>
+> En ese menú también están el estado del sistema (motivo del último reinicio, tiempo encendido y memoria libre) y, si tienes zumbador, sus pruebas.
 
 <p align="center"><img src="imagenes/portal_configuracion.png" alt="Portal de configuración" width="700"></p>
 
@@ -174,14 +177,23 @@ Las instrucciones completas de impresión y montaje, con la lista de tornillerí
 Para hacer los deberes sin distraerse, el reloj enseña **solo la hora, quieta**: sin parpadeo, sin segundos, sin fecha, sin aventuras ni saludos. Los mensajes que envíes tú sí aparecen.
 - **A mano:** desde la página del reloj o la del móvil, durante 25 min, 45 min, 1 h, 2 h o sin límite.
 - **Con horario:** por ejemplo, de lunes a viernes de 17:00 a 18:00 se pone solo.
-- **Al terminar:** si quieres, suena una melodía y sale "¡BUEN TRABAJO, {nombre}! ¡A DESCANSAR!".
+- **Al terminar:** si quieres, sale "¡BUEN TRABAJO, {nombre}! ¡A DESCANSAR!" (y suena una melodía, si tienes zumbador).
 
-## 🔔 Sonido y alarma (opcional)
+## ⏰ Alarma de la mañana
 
-Con un **zumbador pasivo de 12 mm**, como el «speaker» de las placas base, el reloj puede:
-- **Tocar avisos:** una melodía cuando envías un mensaje, si la eliges.
-- **Alarma de la mañana:** a la hora y los días que quieras, durante unos segundos, con su mensaje.
-- **Volumen:** se regula de 1 a 10 desde la página.
+A la hora y los días de la semana que elijas, el reloj se enciende y muestra un mensaje de buenos días durante los segundos que marques. Puedes escribir tu propio mensaje. Si tienes zumbador, además suena la melodía que elijas.
+
+## 🔔 Sonido (opcional, en desarrollo)
+
+> 🚧 **Esta parte está en desarrollo.** Funciona, pero todavía se está probando con distintos zumbadores, y el sonido o el montaje pueden cambiar en próximas versiones. El reloj funciona perfectamente sin zumbador.
+
+Viene **desactivado de fábrica**. Mientras no lo actives, las opciones de sonido no aparecen en ninguna página. Para usarlo, monta el zumbador y, en la página del reloj, ve a **Sonido**, marca **Tengo un zumbador conectado** y pulsa **Guardar ajustes**. Entonces aparecen:
+- **Volumen** de 1 a 10 y botones para probar cada melodía.
+- **Sonido del aviso** en la página de mensajes del móvil.
+- **Melodía** de la alarma de la mañana.
+- **Pruebas del zumbador** en el menú de pruebas: la pata (D1 de fábrica) y un pitido continuo para medirlo con el polímetro.
+
+Con un **zumbador pasivo de 12 mm**, como el «speaker» de las placas base, el reloj toca un aviso cuando envías un mensaje (si eliges una melodía) y suena con la alarma.
 
 El reloj **solo suena cuando se pide**: las aventuras y la hora son silenciosas. Las 8 melodías (Aventura, Campanitas, Amanecer, Victoria, Aviso, Misterio, Marcha y Nana) son **composiciones originales** de este proyecto; el reloj no reproduce música de los juegos.
 
@@ -200,6 +212,8 @@ En **http://reloj-hyrule.local/mensaje** hay una página hecha para el móvil:
 - **¿Quién lo trae?:** el héroe, el hada, un cofre, corazones, la Trifuerza, una bomba, sorpresa o una aventura completa.
 - **Tiempo en pantalla:** una vez, o repetido durante 30 s, 1, 2, 5 o 10 minutos.
 - **Velocidad:** despacio es ideal para quien está aprendiendo a leer.
+- **Sonido del aviso:** solo aparece si tienes el sonido activado.
+- **Modo concentración:** ponerlo o quitarlo desde el móvil.
 - **Vista previa:** se ve cómo quedará en la pantalla del reloj, y el botón ■ para el mensaje antes de tiempo.
 
 **Para tenerla como una app en el iPhone:** abre la página en **Safari**, pulsa **Compartir** (el cuadrado con la flecha) y elige **Añadir a pantalla de inicio**. Aparecerá el icono de la Trifuerza y se abrirá a pantalla completa. En Android, en Chrome: menú ⋮ → **Añadir a pantalla de inicio**.
@@ -234,6 +248,7 @@ reloj-hyrule/
 │   ├── RelojHyrule/        ← programa del reloj (Arduino IDE)
 │   └── herramientas/       ← dibujar letras/sprites, simulador en PC y grabación de animaciones
 ├── modelos_3d/             ← carcasa v2 (STL), generador e instrucciones
+├── platformio.ini          ← compilar con Visual Studio Code y PlatformIO
 ├── docs/                   ← web del proyecto (GitHub Pages)
 ├── imagenes/               ← capturas y animaciones (en/ = en inglés)
 ├── .github/workflows/      ← compilación y publicación automática

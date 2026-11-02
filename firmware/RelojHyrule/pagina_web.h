@@ -58,6 +58,9 @@ button.peligro{background:#5a1d1b;color:#ffd7d4;border:1px solid var(--rojo)}
 .dias{display:flex;gap:6px;margin:10px 0}.dias label{margin:0;flex:1;text-align:center;border:1px solid #5d7a4f;border-radius:9px;padding:8px 0;cursor:pointer;color:var(--texto)}
 .dias input{display:none}.dias label:has(input:checked){background:var(--oro);color:#1d1606;font-weight:700;border-color:var(--oro)}
 .botonesConc button{margin:3px 3px 3px 0}
+.solo-sonido{display:none}html.sonido .solo-sonido{display:block}html.sonido section.solo-sonido{display:block}
+details.pruebas{margin:24px 0}details.pruebas>summary{cursor:pointer;color:var(--suave);font-size:1.05em;text-align:center;padding:10px;border:1px dashed #5d7a4f;border-radius:12px;list-style:none}
+details.pruebas[open]>summary{color:var(--oro);border-color:var(--oro)}.aviso{color:#ffcf9a}
 footer{text-align:center;color:var(--suave);font-size:.8em;margin:24px 0 40px}
 </style></head><body><main>
 
@@ -163,30 +166,32 @@ footer{text-align:center;color:var(--suave);font-size:.8em;margin:24px 0 40px}
   <div><label>Hasta</label><input type="time" data-h="estudioFinH" data-m="estudioFinM"></div>
  </div>
  <div class="dias" data-campo="estudioDias"><label><input type="checkbox" data-bit="1"><span>L</span></label><label><input type="checkbox" data-bit="2"><span>M</span></label><label><input type="checkbox" data-bit="3"><span>X</span></label><label><input type="checkbox" data-bit="4"><span>J</span></label><label><input type="checkbox" data-bit="5"><span>V</span></label><label><input type="checkbox" data-bit="6"><span>S</span></label><label><input type="checkbox" data-bit="0"><span>D</span></label></div>
- <label class="check"><input type="checkbox" name="estudioAviso"> Al terminar: melodía y "¡BUEN TRABAJO!"</label>
+ <label class="check"><input type="checkbox" name="estudioAviso"> Al terminar: "¡BUEN TRABAJO!" (con melodía, si tienes zumbador)</label>
 </section>
+
 
 <section>
  <h2>Sonido</h2>
- <p class="nota">El reloj solo suena cuando tú lo pides: un aviso con un mensaje o la alarma. Melodías originales de este proyecto.</p>
- <label class="check"><input type="checkbox" name="sonidoActivo"> Zumbador conectado</label>
- <label>Volumen: <b id="vVolumen"></b></label>
- <input type="range" name="volumen" min="1" max="10">
- <label>Pata del zumbador</label>
- <select name="pinSonido"><option value="0">D0</option><option value="1">D1</option><option value="2">D2</option><option value="3">D3</option><option value="4">D4</option><option value="5">D5</option><option value="6">D6</option><option value="7">D7</option></select>
- <p class="nota">Guarda los ajustes y prueba una melodía:</p>
- <div class="aventuras" id="melodias"></div>
+ <p class="nota"><b>Añadido opcional, en desarrollo.</b> Solo si has montado un zumbador: el reloj suena únicamente cuando tú lo pides (un aviso con un mensaje o la alarma). Melodías originales de este proyecto.</p>
+ <label class="check"><input type="checkbox" name="sonidoActivo" onchange="verSonido(this.checked)"> Tengo un zumbador conectado</label>
+ <div class="solo-sonido">
+  <label>Volumen: <b id="vVolumen"></b></label>
+  <input type="range" name="volumen" min="1" max="10">
+  <p class="nota">Guarda los ajustes y prueba una melodía:</p>
+  <div class="aventuras" id="melodias"></div>
+ </div>
 </section>
 
 <section>
  <h2>Alarma de la mañana</h2>
  <label class="check"><input type="checkbox" name="alarmaActiva"> Activar la alarma</label>
+ <p class="nota">A la hora elegida sale el mensaje de buenos días durante el tiempo que marques (y suena la melodía, si tienes zumbador).</p>
  <div class="fila">
   <div><label>Hora</label><input type="time" data-h="alarmaH" data-m="alarmaM"></div>
-  <div><label>Melodía</label><select name="alarmaMelodia" id="alarmaMelodia"></select></div>
+  <div class="solo-sonido"><label>Melodía</label><select name="alarmaMelodia" id="alarmaMelodia"></select></div>
  </div>
  <div class="dias" data-campo="alarmaDias"><label><input type="checkbox" data-bit="1"><span>L</span></label><label><input type="checkbox" data-bit="2"><span>M</span></label><label><input type="checkbox" data-bit="3"><span>X</span></label><label><input type="checkbox" data-bit="4"><span>J</span></label><label><input type="checkbox" data-bit="5"><span>V</span></label><label><input type="checkbox" data-bit="6"><span>S</span></label><label><input type="checkbox" data-bit="0"><span>D</span></label></div>
- <label>Cuánto suena: <b id="vAlarmaSegundos"></b> s</label>
+ <label>Cuánto dura: <b id="vAlarmaSegundos"></b> s</label>
  <input type="range" name="alarmaSegundos" min="3" max="60">
  <label>Mensaje (vacío = "¡BUENOS DÍAS, {N}!")</label>
  <input type="text" name="alarmaTexto" maxlength="46" placeholder="¡BUENOS DÍAS, {N}!">
@@ -238,8 +243,49 @@ footer{text-align:center;color:var(--suave);font-size:.8em;margin:24px 0 40px}
 <p style="text-align:center"><button type="button" onclick="guardar()" style="font-size:1.15em;padding:12px 28px">Guardar ajustes</button></p>
 </form>
 
+
 <section>
- <h2>Diagnóstico de pantalla</h2>
+ <h2>WiFi de casa</h2>
+ <p class="nota" id="wifiActual"></p>
+ <button type="button" class="sec" onclick="buscarRedes()">Buscar redes WiFi</button>
+ <div id="redes"></div>
+ <label>Nombre de la red</label><input type="text" id="wNombre">
+ <label>Clave</label><input type="password" id="wClave">
+ <button type="button" onclick="conectarWifi()">Conectar y reiniciar</button>
+</section>
+
+<section>
+ <h2>Actualizaciones</h2>
+ <p><span>Versión instalada:</span> <b id="version"></b></p>
+ <p class="nota" id="estadoAct"></p>
+ <form id="f2" onsubmit="return false">
+  <label>Dirección de actualizaciones (donde están version.txt y firmware.bin)</label>
+  <input type="text" name="urlActualizacion" placeholder="https://wencescarlos.github.io/reloj-hyrule/">
+  <label class="check"><input type="checkbox" name="autoActualizar"> Buscar e instalar versiones nuevas cada día</label>
+  <label>Nueva clave de administrador (déjala vacía para no cambiarla)</label>
+  <input type="password" name="claveAdmin" placeholder="••••••">
+  <button type="button" onclick="guardar('f2')">Guardar</button>
+ </form>
+ <button type="button" class="sec" onclick="post('/api/buscar-version',t('Buscando versión nueva...','Checking for a new version...'))">Buscar versión nueva ahora</button>
+ <a class="boton" href="/actualizar">Subir archivo .bin</a>
+ <p class="nota">Para subir un archivo: usuario <b>admin</b> y tu clave de administrador (de fábrica: hyrule).</p>
+ <hr style="border-color:#2c4a37">
+ <button type="button" class="sec" onclick="post('/api/reiniciar',t('Reiniciando...','Restarting...'))">Reiniciar el reloj</button>
+ <button type="button" class="peligro" onclick="if(confirm(t('¿Borrar todos los ajustes?','Erase all settings?')))post('/api/fabrica',t('Volviendo a los ajustes de fábrica...','Restoring factory settings...'))">Ajustes de fábrica</button>
+</section>
+
+
+<details class="pruebas" id="menuPruebas">
+ <summary>🔧 Menú de pruebas (avanzado)</summary>
+ <p class="nota aviso">Solo para montar o reparar el reloj. Si todo funciona bien, no hace falta tocar nada de aquí.</p>
+
+ <section>
+  <h2>Estado del sistema</h2>
+  <p class="nota" id="sistema"></p>
+ </section>
+
+ <section>
+  <h2>Diagnóstico de pantalla</h2>
  <p class="nota">Para encontrar averías en los cables o en la matriz. Mientras dura, el reloj no enseña la hora; se cierra solo a los 10 minutos.</p>
  <p class="nota"><b id="diagEstado"></b></p>
  <label>1. Encender los LED (con el modo de prueba de la propia matriz)</label>
@@ -271,38 +317,16 @@ footer{text-align:center;color:var(--suave);font-size:.8em;margin:24px 0 40px}
   <p class="nota">Ahora: <b id="pinesActual"></b></p>
   <button type="button" onclick="guardar('fPines')">Guardar</button>
  </form>
-</section>
+ </section>
 
-<section>
- <h2>WiFi de casa</h2>
- <p class="nota" id="wifiActual"></p>
- <button type="button" class="sec" onclick="buscarRedes()">Buscar redes WiFi</button>
- <div id="redes"></div>
- <label>Nombre de la red</label><input type="text" id="wNombre">
- <label>Clave</label><input type="password" id="wClave">
- <button type="button" onclick="conectarWifi()">Conectar y reiniciar</button>
-</section>
-
-<section>
- <h2>Actualizaciones</h2>
- <p><span>Versión instalada:</span> <b id="version"></b></p>
- <p class="nota" id="estadoAct"></p>
- <p class="nota" id="sistema"></p>
- <form id="f2" onsubmit="return false">
-  <label>Dirección de actualizaciones (donde están version.txt y firmware.bin)</label>
-  <input type="text" name="urlActualizacion" placeholder="https://wencescarlos.github.io/reloj-hyrule/">
-  <label class="check"><input type="checkbox" name="autoActualizar"> Buscar e instalar versiones nuevas cada día</label>
-  <label>Nueva clave de administrador (déjala vacía para no cambiarla)</label>
-  <input type="password" name="claveAdmin" placeholder="••••••">
-  <button type="button" onclick="guardar('f2')">Guardar</button>
- </form>
- <button type="button" class="sec" onclick="post('/api/buscar-version',t('Buscando versión nueva...','Checking for a new version...'))">Buscar versión nueva ahora</button>
- <a class="boton" href="/actualizar">Subir archivo .bin</a>
- <p class="nota">Para subir un archivo: usuario <b>admin</b> y tu clave de administrador (de fábrica: hyrule).</p>
- <hr style="border-color:#2c4a37">
- <button type="button" class="sec" onclick="post('/api/reiniciar',t('Reiniciando...','Restarting...'))">Reiniciar el reloj</button>
- <button type="button" class="peligro" onclick="if(confirm(t('¿Borrar todos los ajustes?','Erase all settings?')))post('/api/fabrica',t('Volviendo a los ajustes de fábrica...','Restoring factory settings...'))">Ajustes de fábrica</button>
-</section>
+ <section class="solo-sonido">
+  <h2>Pruebas del zumbador</h2>
+ <label>Pata del zumbador</label>
+  <select name="pinSonido"><option value="0">D0</option><option value="1">D1</option><option value="2">D2</option><option value="3">D3</option><option value="4">D4</option><option value="5">D5</option><option value="6">D6</option><option value="7">D7</option></select>
+  <p class="nota">Pitido continuo de 10 s al máximo: mide entre la pata del zumbador y G (unos 1,6 V si sale la señal).</p>
+  <div id="pitidos"></div>
+ </section>
+</details>
 
 <footer><span data-l="es">Proyecto de fans <b>sin ánimo de lucro</b>, hecho con cariño como homenaje a <i>The Legend of Zelda</i>.<br>
 No oficial y sin relación con Nintendo. The Legend of Zelda es una marca de Nintendo.<br>
@@ -361,10 +385,16 @@ const EN={
 "Reiniciar el reloj":"Restart the clock",
 "Modo concentración":"Focus mode","Para estudiar sin distracciones: solo la hora, quieta. Sin parpadeo, sin segundos, sin fecha, sin aventuras ni saludos. Los mensajes que envíes tú sí se ven.":"To study without distractions: just the time, still. No blinking, no seconds, no date, no adventures or greetings. Messages you send still show up.",
 "Hasta que la quite":"Until I turn it off","Quitar":"Turn off","Horario de estudio (se pone solo)":"Study schedule (turns on by itself)",
-"Al terminar: melodía y \"¡BUEN TRABAJO!\"":"When it ends: a tune and \"WELL DONE!\"",
-"Sonido":"Sound","El reloj solo suena cuando tú lo pides: un aviso con un mensaje o la alarma. Melodías originales de este proyecto.":"The clock only makes sound when you ask: a message alert or the alarm. Original tunes made for this project.",
-"Zumbador conectado":"Buzzer connected","Volumen:":"Volume:","Pata del zumbador":"Buzzer pin","Guarda los ajustes y prueba una melodía:":"Save the settings and try a tune:",
-"Alarma de la mañana":"Morning alarm","Activar la alarma":"Turn the alarm on","Hora":"Time","Melodía":"Tune","Cuánto suena:":"How long it plays:",
+
+"Sonido":"Sound","Añadido opcional, en desarrollo.":"Optional add-on, in development.",
+"Solo si has montado un zumbador: el reloj suena únicamente cuando tú lo pides (un aviso con un mensaje o la alarma). Melodías originales de este proyecto.":"Only if you have fitted a buzzer: the clock makes sound only when you ask (a message alert or the alarm). Original tunes made for this project.",
+"Tengo un zumbador conectado":"I have a buzzer connected",
+"A la hora elegida sale el mensaje de buenos días durante el tiempo que marques (y suena la melodía, si tienes zumbador).":"At the chosen time the good-morning message shows for as long as you set (and the tune plays, if you have a buzzer).",
+"Cuánto dura:":"How long it lasts:","Al terminar: \"¡BUEN TRABAJO!\" (con melodía, si tienes zumbador)":"When it ends: \"WELL DONE!\" (with a tune, if you have a buzzer)",
+"🔧 Menú de pruebas (avanzado)":"🔧 Test menu (advanced)","Solo para montar o reparar el reloj. Si todo funciona bien, no hace falta tocar nada de aquí.":"Only for building or repairing the clock. If everything works, there is no need to touch anything here.",
+"Estado del sistema":"System status","Pruebas del zumbador":"Buzzer tests",
+"Pitido continuo de 10 s al máximo: mide entre la pata del zumbador y G (unos 1,6 V si sale la señal).":"Continuous 10 s beep at full strength: measure between the buzzer pin and G (about 1.6 V if the signal is there).","Volumen:":"Volume:","Pata del zumbador":"Buzzer pin","Guarda los ajustes y prueba una melodía:":"Save the settings and try a tune:",
+"Alarma de la mañana":"Morning alarm","Activar la alarma":"Turn the alarm on","Hora":"Time","Melodía":"Tune",
 "Mensaje (vacío = \"¡BUENOS DÍAS, {N}!\")":"Message (empty = \"GOOD MORNING, {N}!\")","📱 Página de mensajes para el móvil":"📱 Message page for your phone","(con personaje, duración y velocidad; se puede añadir a la pantalla de inicio)":"(with a character, duration and speed; you can add it to your home screen)","Ajustes de fábrica":"Factory reset",
 "Diagnóstico de pantalla":"Display diagnostics",
 "Para encontrar averías en los cables o en la matriz. Mientras dura, el reloj no enseña la hora; se cierra solo a los 10 minutos.":"To find faults in the wires or the matrix. While it runs, the clock doesn't show the time; it ends by itself after 10 minutes.",
@@ -448,11 +478,12 @@ function cargar(){
   $("#nocheIni").value=dos(a.nocheIniH)+":"+dos(a.nocheIniM);
   document.querySelectorAll("[data-h]").forEach(e=>{if(e.dataset.h in a)e.value=dos(a[e.dataset.h])+":"+dos(a[e.dataset.m]);});
   document.querySelectorAll(".dias").forEach(d=>{const v=a[d.dataset.campo]||0;d.querySelectorAll("input").forEach(c=>c.checked=!!(v>>c.dataset.bit&1));});
-  cargarMelodias(a);
   $("#nocheFin").value=dos(a.nocheFinH)+":"+dos(a.nocheFinM);
   const zl=$("#zonaLista");zl.value=[...zl.options].some(o=>o.value===a.zona)?a.zona:"otra";zonaElegida();
   rangos();
   L=a.idioma==1?"en":"es";aplicarIdioma();
+  verSonido(a.sonidoActivo==1);
+  cargarMelodias(a);
   cargarAventuras();
  });
 }
@@ -485,15 +516,20 @@ function asistente(d){
 }
 
 function conc(m){post("/api/concentracion?minutos="+m,m?t("Modo concentración puesto","Focus mode on"):t("Modo concentración quitado","Focus mode off")).then(()=>setTimeout(estado,300));}
+// El sonido es un añadido opcional: sus opciones solo se ven si está activado
+function verSonido(si){document.documentElement.classList.toggle("sonido",!!si);}
 function cargarMelodias(a){fetch("/api/melodias").then(r=>r.json()).then(l=>{
  const c=$("#melodias");c.innerHTML="";const s=$("#alarmaMelodia");s.innerHTML="";
+ const sinZumbador=()=>mostrarAviso(t("Marca «Tengo un zumbador conectado» y guarda los ajustes","Tick “I have a buzzer connected” and save the settings"));
  l.forEach((n,i)=>{const b=document.createElement("button");b.type="button";b.className="sec";b.textContent="♪ "+n;
-  b.onclick=()=>fetch("/api/sonido?melodia="+i,{method:"POST"}).then(r=>mostrarAviso(r.ok?t("♪ Sonando: ","♪ Playing: ")+n:t("Activa el zumbador y guarda los ajustes","Turn the buzzer on and save the settings")));c.appendChild(b);
+  b.onclick=()=>fetch("/api/sonido?melodia="+i,{method:"POST"}).then(r=>r.ok?mostrarAviso(t("♪ Sonando: ","♪ Playing: ")+n):sinZumbador());c.appendChild(b);
   s.appendChild(new Option(n,i));});
  const p=document.createElement("button");p.type="button";p.className="peligro";p.textContent=t("■ Parar","■ Stop");
  p.onclick=()=>fetch("/api/sonido",{method:"POST"});c.appendChild(p);
+ const z=$("#pitidos");z.innerHTML="";
  [[1000,"1 kHz"],[2500,"2,5 kHz"]].forEach(([hz,txt])=>{const q=document.createElement("button");q.type="button";q.className="sec";
-  q.textContent=t("🔧 Pitido ","🔧 Beep ")+txt+" (10 s)";q.onclick=()=>fetch("/api/sonido?pitido="+hz,{method:"POST"}).then(r=>mostrarAviso(r.ok?t("Pitido de 10 s: mide entre D1 y G (≈1,6 V si sale la señal)","10 s beep: measure between D1 and G (≈1.6 V if the signal is there)"):t("Activa el zumbador y guarda los ajustes","Turn the buzzer on and save the settings")));c.appendChild(q);});
+  q.textContent=t("Pitido ","Beep ")+txt+" (10 s)";q.onclick=()=>fetch("/api/sonido?pitido="+hz,{method:"POST"}).then(r=>r.ok?mostrarAviso(t("Pitido de 10 s","10 s beep")):sinZumbador());z.appendChild(q);});
+ const q=document.createElement("button");q.type="button";q.className="peligro";q.textContent=t("■ Parar","■ Stop");q.onclick=()=>fetch("/api/sonido",{method:"POST"});z.appendChild(q);
  if(a)s.value=a.alarmaMelodia;}).catch(()=>{});}
 function tiempoTexto(s){if(s<0)return t("hasta que la quites","until you turn it off");const h=Math.floor(s/3600),m=Math.ceil((s%3600)/60);return (h?h+" h ":"")+m+" min";}
 

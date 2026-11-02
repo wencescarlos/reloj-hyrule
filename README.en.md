@@ -37,7 +37,8 @@
 | 📱 **Setup from your phone** | At http://reloj-hyrule.local, no app to install |
 | 🌍 **English or Spanish** | Chosen on the clock's page: it changes the clock's texts and the page itself |
 | 🎓 **Focus mode** | For studying: just the time, still, no date or adventures. By hand or on a schedule |
-| 🔔 **Alerts and alarm with sound** | With an optional buzzer: original tunes, adjustable volume, programmable morning alarm |
+| ⏰ **Morning alarm** | At the time and on the days you choose, with its good-morning message |
+| 🔔 **Sound (optional, in development)** | With a buzzer: alerts and alarm with original tunes and adjustable volume |
 | 🔄 **Updates itself** | Downloads new versions from this repository |
 
 <p align="center">
@@ -57,7 +58,7 @@
 | M3 × 6 self-tapping countersunk hex socket screw, stainless (all the same, no inserts) | 10 |
 | Dupont wires or thin wire | 5 |
 | 5 V USB charger and micro-USB cable | 1 |
-| *Optional:* 12 mm passive buzzer (a PC motherboard speaker works) + NPN transistor, 1 kΩ resistor and 1N4148 diode | 1 |
+| *Optional, in development:* 12 mm passive buzzer (a PC motherboard speaker works) + NPN transistor, 1 kΩ resistor and 1N4148 diode | 1 |
 | PLA filament: stone grey, white, green and gold | — |
 
 ### Wiring
@@ -69,6 +70,8 @@
 | VCC | 5V |
 | GND | G |
 | CLK | D5 |
+| CS | D6 |
+| DIN | D7 |
 
 > ⚠️ **Solder the wires to the matrix INPUT**, the side marked **DIN** (or IN). If you use the output (OUT or DOUT), the display stays dark or shows random dots.
 >
@@ -80,7 +83,7 @@
 > On top of that, the clock resends its setup to the matrix every 2 seconds, so a module that gets scrambled fixes itself.
 >
 > 🛠️ **If you still see stray pixels while text scrolls**, the cause is that the Wemos sends 3.3 V signals and the matrix, powered at 5 V, wants at least 3.5 V. From easiest to best:
-> 1. Turn on **Slow signals** in *Display diagnostics* and save.
+> 1. Turn on **Slow signals** in the *Test menu* of the clock's page and save.
 > 2. Solder the 100–470 µF **capacitor** at the matrix input and shorten the wires.
 > 3. **Definitive fix:** a **74AHCT125** (or 74HCT125) level shifter powered at 5 V between the Wemos and the matrix. It turns the 3.3 V signals into 5 V.
 >
@@ -92,8 +95,6 @@
 > | 2 (1A) → 3 (1Y) | D7 → DIN |
 > | 5 (2A) → 6 (2Y) | D5 → CLK |
 > | 9 (3A) → 8 (3Y) | D6 → CS |
-| CS | D6 |
-| DIN | D7 |
 
 ---
 
@@ -155,15 +156,17 @@ The logo letters are by **geektoybox** ([Printables](https://www.printables.com/
 1. Connect your phone to the **Reloj-Hyrule** WiFi (password: **trifuerza**).
 2. The clock's page opens (if it doesn't, go to http://192.168.4.1).
 3. Tap **English** at the top of the page to switch the clock and the page to English.
-4. Choose your home WiFi, type the password and press **Connect**.
+4. Choose your home WiFi, type the password and press **Connect and restart**.
 5. Done: the clock is at **http://reloj-hyrule.local**. Type the child's name and birthday there.
 
 > If the letters look rotated or jumbled, go to **Display** on the clock's page, change the rotation or the order of the modules and press **Test display**: you should see 1 2 3 4.
 >
-> If the display stays dark or does odd things, use **Display diagnostics** on the same page. It has three steps:
+> If the display stays dark or does odd things, open the **🔧 Test menu (advanced)** at the end of the page. It is closed so it doesn't confuse people who only want to use the clock. Its **Display diagnostics** has three steps:
 > - **Light the LEDs:** lights every LED, or one module at a time, using the matrix's own test mode.
 > - **Measure the pins:** holds each pin at 3.3 V so you can check it with a multimeter.
 > - **Change pins:** if a Wemos pin is damaged, you can move that wire to another pin.
+>
+> That menu also shows the system status (reason for the last restart, time on and free memory) and, if you have a buzzer, its tests.
 
 <p align="center"><img src="imagenes/en/portal_configuracion.png" alt="Settings page" width="700"></p>
 
@@ -174,14 +177,23 @@ The logo letters are by **geektoybox** ([Printables](https://www.printables.com/
 For homework without distractions, the clock shows **just the time, still**: no blinking, no seconds, no date, no adventures or greetings. Messages you send still show up.
 - **By hand:** from the clock's page or the phone page, for 25 min, 45 min, 1 h, 2 h or no limit.
 - **On a schedule:** for example, Monday to Friday from 17:00 to 18:00 it turns on by itself.
-- **When it ends:** optionally, a tune plays and "WELL DONE, {name}! TIME FOR A BREAK!" scrolls by.
+- **When it ends:** optionally, "WELL DONE, {name}! TIME FOR A BREAK!" scrolls by (and a tune plays, if you have a buzzer).
 
-## 🔔 Sound and alarm (optional)
+## ⏰ Morning alarm
 
-With a **12 mm passive buzzer**, like a PC motherboard speaker, the clock can:
-- **Play alerts:** a tune when you send a message, if you choose one.
-- **Morning alarm:** at the time and on the days you choose, for a few seconds, with its own message.
-- **Volume:** adjustable from 1 to 10 on the page.
+At the time and on the weekdays you choose, the clock wakes up and shows a good-morning message for the number of seconds you set. You can write your own message. If you have a buzzer, the tune you pick plays too.
+
+## 🔔 Sound (optional, in development)
+
+> 🚧 **This part is in development.** It works, but it is still being tested with different buzzers, and the sound or the assembly may change in future versions. The clock works perfectly without a buzzer.
+
+It comes **turned off from the factory**. Until you turn it on, the sound options don't appear on any page. To use it, fit the buzzer and, on the clock's page, go to **Sound**, tick **I have a buzzer connected** and press **Save settings**. Then you get:
+- **Volume** from 1 to 10 and buttons to try each tune.
+- **Alert sound** on the phone message page.
+- **Tune** for the morning alarm.
+- **Buzzer tests** in the test menu: the pin (D1 from the factory) and a continuous beep to check it with a multimeter.
+
+With a **12 mm passive buzzer**, like a PC motherboard speaker, the clock plays an alert when you send a message (if you pick a tune) and sounds with the alarm.
 
 The clock **only makes sound when asked**: adventures and the time are silent. The 8 tunes (Adventure, Little bells, Sunrise, Victory, Alert, Mystery, March and Lullaby) are **original compositions** made for this project; the clock does not play music from the games.
 
@@ -200,6 +212,8 @@ At **http://reloj-hyrule.local/mensaje** there is a page made for phones:
 - **Who brings it:** the hero, the fairy, a chest, hearts, the Triforce, a bomb, a surprise or a full adventure.
 - **Time on the display:** once, or repeated for 30 s, 1, 2, 5 or 10 minutes.
 - **Speed:** slow is ideal for early readers.
+- **Alert sound:** only shows up if sound is turned on.
+- **Focus mode:** turn it on or off from your phone.
 - **Preview:** shows how it will look on the clock's display, and the ■ button stops the message early.
 
 **To use it like an app on an iPhone:** open the page in **Safari**, tap **Share** (the square with the arrow) and choose **Add to Home Screen**. The Triforce icon appears and the page opens full screen. On Android, in Chrome: menu ⋮ → **Add to Home screen**.
@@ -234,6 +248,7 @@ reloj-hyrule/
 │   ├── RelojHyrule/        ← clock firmware (Arduino IDE)
 │   └── herramientas/       ← font/sprite drawing, PC simulator and animation recording
 ├── modelos_3d/             ← v2 case (STL), generator script and instructions
+├── platformio.ini          ← build with Visual Studio Code and PlatformIO
 ├── docs/                   ← project website (GitHub Pages)
 ├── imagenes/               ← screenshots and animations (en/ = in English)
 ├── .github/workflows/      ← automatic build and publishing

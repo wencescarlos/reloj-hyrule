@@ -154,7 +154,7 @@ void valoresPorDefecto() {
   ajustes.pinCs  = PIN_CS_FABRICA;
   ajustes.spiLento = 0;
 
-  ajustes.sonidoActivo = 1;
+  ajustes.sonidoActivo = 0;              // añadido opcional (en desarrollo): de fábrica, apagado
   ajustes.volumen = 5;
   ajustes.pinSonido = 1;                 // D1
 
