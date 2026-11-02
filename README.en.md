@@ -201,7 +201,7 @@ The clock **only makes sound when asked**: adventures and the time are silent. T
 
 The buzzer is **optional** and there are two places for it:
 - **In the back cover:** print `tapa_trasera_zumbador.stl` instead of `tapa_trasera.stl`. The buzzer sits behind a vent and is louder.
-- **Next to the Wemos:** print `soporte_wemos_zumbador.stl` instead of `soporte_wemos.stl`. It works with a Wemos that has **pin headers and dupont connectors**: it only passes over the antenna tip, where there are no pins. On one side it has a **ring the buzzer press-fits into**; if the buzzer is soldered on a small board, the board hangs from it.
+- **Next to the Wemos:** print `soporte_wemos_zumbador.stl` instead of `soporte_wemos.stl`. It works with a Wemos that has **pin headers and dupont connectors**: it only passes over the antenna tip, where there are no pins. On one side it has a **loose ring for the buzzer** (it must not squeeze it: a squeezed buzzer barely sounds); if the buzzer is soldered on a small board, the board hangs from it.
 
 It connects to **D1** (diagram in Spanish):
 

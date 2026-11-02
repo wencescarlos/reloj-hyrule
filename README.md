@@ -201,7 +201,7 @@ El reloj **solo suena cuando se pide**: las aventuras y la hora son silenciosas.
 
 El zumbador es **opcional** y hay dos sitios para ponerlo:
 - **En la tapa:** imprime `tapa_trasera_zumbador.stl` en lugar de `tapa_trasera.stl`. El zumbador queda detrás de una rejilla y se oye más.
-- **Junto al Wemos:** imprime `soporte_wemos_zumbador.stl` en lugar de `soporte_wemos.stl`. Sirve para un Wemos con **tiras de pines y conectores dupont**: solo pasa por encima de la punta de la antena, donde no hay pines. A un lado lleva un **aro donde el zumbador entra a presión**; si el zumbador va soldado en una placa pequeña, la placa queda colgando de él.
+- **Junto al Wemos:** imprime `soporte_wemos_zumbador.stl` en lugar de `soporte_wemos.stl`. Sirve para un Wemos con **tiras de pines y conectores dupont**: solo pasa por encima de la punta de la antena, donde no hay pines. A un lado lleva un **aro holgado para el zumbador** (no debe apretarlo: si se estruja, apenas suena); si el zumbador va soldado en una placa pequeña, la placa queda colgando de él.
 
 Se conecta a **D1**:
 

@@ -340,16 +340,25 @@ def cuerpo(L0):
 # va en un aro por dentro de la tapa, justo detrás de una rejilla, para que se oiga.
 ZUMB_X, ZUMB_Y = 49.0, 40.0          # en coordenadas de la tapa (impresa boca abajo)
 ZUMB_D, ZUMB_ALTO = 12.4, 6.0         # hueco para el zumbador y altura del aro
+# El zumbador NO se puede apretar: si el aro estruja el cilindro, el disco de dentro
+# queda frenado y apenas suena. Hueco holgado y tres nervios que solo lo rozan.
+ZUMB_HUECO = 12.8                     # hueco holgado (el zumbador mide 12 mm)
+ZUMB_AGARRE = 12.1                    # diámetro entre las puntas de los nervios (roce, sin apretar)
+ZUMB_NERVIO = 0.6                     # radio de cada nervio
+
+def nervios_zumbador(cx, cy):
+    rc = ZUMB_AGARRE / 2 + ZUMB_NERVIO                     # la punta queda a ZUMB_AGARRE/2 del centro
+    return unary_union([Point(cx + rc * np.cos(a), cy + rc * np.sin(a)).buffer(ZUMB_NERVIO, resolution=16)
+                        for a in np.radians([90, 210, 330])])
 
 def aro_zumbador():
     exterior = Point(ZUMB_X, ZUMB_Y).buffer(ZUMB_D / 2 + 1.6, resolution=64)
-    hueco = Point(ZUMB_X, ZUMB_Y).buffer(ZUMB_D / 2, resolution=64)
-    nervios = unary_union([Point(ZUMB_X + (ZUMB_D / 2) * np.cos(a), ZUMB_Y + (ZUMB_D / 2) * np.sin(a)).buffer(0.45, resolution=16)
-                           for a in np.radians([90, 210, 330])])          # tres nervios: entra a presión
-    aro = exterior.difference(hueco).union(nervios.intersection(exterior))
+    hueco = Point(ZUMB_X, ZUMB_Y).buffer(ZUMB_HUECO / 2, resolution=64)
+    anillo = exterior.difference(hueco)
+    aro = anillo.union(nervios_zumbador(ZUMB_X, ZUMB_Y).intersection(Point(ZUMB_X, ZUMB_Y).buffer(ZUMB_HUECO / 2 + 0.5)))
     ranura = box(ZUMB_X - ZUMB_D / 2 - 3, ZUMB_Y - 1.6, ZUMB_X - ZUMB_D / 2 + 0.5, ZUMB_Y + 1.6)  # paso de los cables
-    base = ext(aro, 2.0, TAPA)
-    alto = ext(aro.difference(ranura), ZUMB_ALTO - 2.0, TAPA + 2.0)
+    base = ext(anillo, 2.0, TAPA)                       # junto a la tapa (donde sale el sonido): sin nervios
+    alto = ext(aro.difference(ranura), ZUMB_ALTO - 2.0, TAPA + 2.0)   # nervios solo junto a la base del zumbador
     return U([base, alto])
 
 def tapa(con_zumbador=False):
@@ -450,7 +459,7 @@ def soporte_wemos():
 #     por arriba (y > 20,5 mm), lejos de los conectores;
 #   - aprieta la placa con dos patas en sus esquinas libres, a los lados del
 #     módulo ESP;
-#   - lleva a un lado un aro que sujeta a presión el zumbador de 12 mm (con su
+#   - lleva a un lado un aro holgado que sujeta sin apretar el zumbador de 12 mm (con su
 #     placa soldada detrás). El zumbador mira a la tapa y la placa queda
 #     colgando de él, hacia el frente del reloj.
 #  Se imprime boca abajo (la cara de arriba sobre la cama), sin soportes.
@@ -488,14 +497,16 @@ def soporte_wemos_pines(lado=1):
         partes.append(caja3(px0, px1, y_pcb - SP_PRECARGA, SP_BARRA_Y + 0.5, *SP_PATA_Z))
     # barra delantera que une las dos patas por encima de la antena
     partes.append(caja3(-18.0, 18.0, SP_BARRA_Y, SP_ARRIBA, *SP_FRENTE_Z))
-    # aro del zumbador: bloque con agujero de 12,4 mm y tres nervios (a presión)
+    # aro del zumbador: hueco holgado de 12,8 mm. Solo en los 3 mm de delante (junto a la
+    # base del zumbador, donde salen las patas) hay tres nervios que lo rozan sin apretar.
+    # Si se aprieta el cilindro, el disco de dentro queda frenado y casi no suena.
     z0, z1 = ZS_Z
     bloque = caja3(ZS_X - ZS_BLOQUE / 2, ZS_X + ZS_BLOQUE / 2, ZS_Y - ZS_BLOQUE / 2 + 0.5, SP_ARRIBA, z0, z1)
     brazo = caja3(SOP_X + 4.0, ZS_X - ZS_BLOQUE / 2 + 1.0, SOP_Y - 3.0, SP_ARRIBA, SOP_Z, z1)   # no llega al hueco
-    hueco = Point(ZS_X, ZS_Y).buffer(ZUMB_D / 2, resolution=64).difference(unary_union(
-        [Point(ZS_X + (ZUMB_D / 2) * np.cos(a), ZS_Y + (ZUMB_D / 2) * np.sin(a)).buffer(0.45, resolution=16)
-         for a in np.radians([90, 210, 330])]))
-    guias = R(U([bloque, brazo]), ext(hueco, z1 - z0 + 2, z0 - 1))
+    holgado = Point(ZS_X, ZS_Y).buffer(ZUMB_HUECO / 2, resolution=64)
+    con_nervios = holgado.difference(nervios_zumbador(ZS_X, ZS_Y))
+    guias = R(U([bloque, brazo]), [ext(con_nervios, 3.0 + 1, z0 - 1),          # z0-1 .. z0+3
+                                   ext(holgado, z1 - (z0 + 3.0) + 1, z0 + 3.0)])  # z0+3 .. z1+1
     if lado < 0:
         guias.apply_transform(np.diag([-1, 1, 1, 1.]))
     p = U(partes + [guias])
