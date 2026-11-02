@@ -9,7 +9,7 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y l
 
 ### Añadido
 - **Menú de pruebas (avanzado)** en el portal, cerrado por defecto: estado del sistema, diagnóstico de pantalla y pruebas del zumbador.
-- Interruptor **«Tengo zumbador»** en los ajustes. Si está apagado, nada del sonido aparece en el portal ni en la página de mensajes.
+- Interruptor **«Tengo un zumbador conectado»** en los ajustes. Si está apagado, nada del sonido aparece en el portal ni en la página de mensajes.
 
 ### Cambiado
 - El sonido pasa a ser un **añadido opcional (en desarrollo)**: viene apagado de fábrica.
