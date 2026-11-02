@@ -1,0 +1,73 @@
+# Crea una release en GitHub con el firmware compilado y las piezas 3D
+# cada vez que se sube una etiqueta de versión, por ejemplo:
+#   git tag v1.5.0 && git push origin v1.5.0
+# Las notas salen de la sección de esa versión en CHANGELOG.md.
+
+name: Crear release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+env:
+  URL_ESP8266: https://arduino.esp8266.com/stable/package_esp8266com_index.json
+  PLACA: esp8266:esp8266:d1_mini:eesz=4M1M,mmu=4816H
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v5
+
+      - name: Comprobar que la etiqueta coincide con VERSION_RELOJ
+        run: |
+          VERSION=$(sed -n 's/^#define VERSION_RELOJ[[:space:]]*"\([^"]*\)".*/\1/p' firmware/RelojHyrule/configuracion.h)
+          if [ "v$VERSION" != "$GITHUB_REF_NAME" ]; then
+            echo "La etiqueta $GITHUB_REF_NAME no coincide con VERSION_RELOJ ($VERSION)"; exit 1
+          fi
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+
+      - name: Instalar Arduino CLI
+        uses: arduino/setup-arduino-cli@v2
+
+      - name: Instalar el núcleo ESP8266
+        run: |
+          arduino-cli core update-index --additional-urls "$URL_ESP8266"
+          arduino-cli core install esp8266:esp8266@3.1.2 --additional-urls "$URL_ESP8266"
+
+      - name: Compilar
+        run: |
+          arduino-cli compile --fqbn "$PLACA" --additional-urls "$URL_ESP8266" \
+            --output-dir build firmware/RelojHyrule
+
+      - name: Preparar los ficheros
+        run: |
+          mkdir -p dist
+          cp build/RelojHyrule.ino.bin "dist/reloj-hyrule-$VERSION.bin"
+          (cd modelos_3d && zip -q "../dist/reloj-hyrule-stl.zip" *.stl LEEME.md)
+          # Notas: la sección de esta versión en CHANGELOG.md
+          awk -v v="$VERSION" '
+            $0 ~ "^## \\[" v "\\]" {dentro=1; next}
+            dentro && /^## / {exit}
+            dentro {print}
+          ' CHANGELOG.md > notas.md
+          {
+            echo
+            echo "**Instalar:** los relojes ya montados se actualizan solos. Para grabarlo a mano usa \`reloj-hyrule-$VERSION.bin\` en un Wemos D1 mini. Las piezas 3D están en \`reloj-hyrule-stl.zip\`."
+            echo
+            echo "**Install:** clocks already built update themselves. To flash by hand, write \`reloj-hyrule-$VERSION.bin\` to a Wemos D1 mini. 3D parts are in \`reloj-hyrule-stl.zip\`."
+            echo
+            echo "> Proyecto de fans sin ánimo de lucro, no oficial ni relacionado con Nintendo · CC BY-NC-SA 4.0"
+          } >> notas.md
+          cat notas.md
+
+      - name: Publicar la release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" dist/* \
+            --title "Reloj de Hyrule $VERSION" --notes-file notas.md --verify-tag
