@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📖 Guía de montaje / Build guide
+    url: https://github.com/wencescarlos/reloj-hyrule#readme
+    about: Lee primero la guía y la sección de problemas / Read the guide and troubleshooting first

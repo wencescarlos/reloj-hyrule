@@ -1,0 +1,14 @@
+name: 💡 Idea
+description: Propón una mejora / Suggest an improvement
+labels: ["idea"]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: ¿Qué te gustaría? / What would you like?
+    validations:
+      required: true
+  - type: textarea
+    id: para
+    attributes:
+      label: ¿Para qué sirve? / Why is it useful?

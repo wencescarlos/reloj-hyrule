@@ -2,6 +2,8 @@
 
 [Español](README.md) · **English**
 
+[![Firmware](https://img.shields.io/github/v/release/wencescarlos/reloj-hyrule?label=firmware&color=2e7d32)](https://github.com/wencescarlos/reloj-hyrule/releases/latest) [![Build](https://github.com/wencescarlos/reloj-hyrule/actions/workflows/publicar-firmware.yml/badge.svg)](https://github.com/wencescarlos/reloj-hyrule/actions/workflows/publicar-firmware.yml) [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/license-CC%20BY--NC--SA%204.0-lightgrey.svg)](LICENSE) ![ESP8266](https://img.shields.io/badge/board-Wemos%20D1%20mini-blue)
+
 **A clock with adventures for little heroes.** Made with 3D printing, a Wemos D1 mini and 4 LED matrices, as a tribute to *The Legend of Zelda*.
 
 > ## ⚠️ NON-PROFIT fan project
@@ -238,6 +240,8 @@ To publish a new version:
 2. Push the change to GitHub (*commit* and *push*).
 3. Wait for the **"Compilar y publicar el firmware"** action to finish (*Actions* tab).
 
+You can also download each version's `firmware.bin` from [Releases](https://github.com/wencescarlos/reloj-hyrule/releases) and read what changed in the [changelog](CHANGELOG.md).
+
 ---
 
 ## 📁 Structure
@@ -251,8 +255,10 @@ reloj-hyrule/
 ├── platformio.ini          ← build with Visual Studio Code and PlatformIO
 ├── docs/                   ← project website (GitHub Pages)
 ├── imagenes/               ← screenshots and animations (en/ = in English)
-├── .github/workflows/      ← automatic build and publishing
+├── .github/               ← automatic build and issue templates
 ├── README.md               ← this document in Spanish
+├── CHANGELOG.md            ← changes by version
+├── CONTRIBUTING.md         ← how to contribute
 ├── AVISO_LEGAL.md          ← non-profit project, trademarks and credits
 └── LICENSE                 ← CC BY-NC-SA 4.0
 ```

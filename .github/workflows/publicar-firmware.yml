@@ -1,4 +1,5 @@
 # Compila el firmware del Reloj de Hyrule y lo publica en GitHub Pages.
+# En los pull requests solo compila, para comprobar que no se rompe nada.
 # Los relojes consultan https://wencescarlos.github.io/reloj-hyrule/version.txt
 # una vez al día y descargan firmware.bin si hay una versión nueva.
 #
@@ -13,6 +14,9 @@ on:
       - "firmware/RelojHyrule/**"
       - "docs/**"
       - ".github/workflows/publicar-firmware.yml"
+  pull_request:
+    paths:
+      - "firmware/RelojHyrule/**"
   workflow_dispatch:
 
 permissions:
@@ -21,7 +25,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: pages-${{ github.ref }}
   cancel-in-progress: true
 
 env:
@@ -33,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Descargar el código
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Instalar Arduino CLI
         uses: arduino/setup-arduino-cli@v2
@@ -60,12 +64,14 @@ jobs:
           ls -la sitio
 
       - name: Subir la web
-        uses: actions/upload-pages-artifact@v3
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v4
         with:
           path: sitio
 
   publicar:
     needs: compilar
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -73,4 +79,4 @@ jobs:
     steps:
       - name: Publicar en GitHub Pages
         id: despliegue
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

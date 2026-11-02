@@ -1,0 +1,39 @@
+name: 🐞 Fallo / Bug
+description: Algo no funciona como debería / Something doesn't work as expected
+labels: ["fallo"]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Versión del firmware / Firmware version
+      description: Sale en el portal del reloj, arriba / Shown at the top of the clock's portal
+      placeholder: "1.5.0"
+    validations:
+      required: true
+  - type: dropdown
+    id: parte
+    attributes:
+      label: Parte / Area
+      options:
+        - Pantalla / Display
+        - Portal web / Web portal
+        - Página de mensajes / Message page
+        - Actualizaciones / Updates
+        - Sonido / Sound
+        - Carcasa 3D / 3D case
+        - Otra / Other
+    validations:
+      required: true
+  - type: textarea
+    id: que
+    attributes:
+      label: ¿Qué pasa? / What happens?
+      description: Qué esperabas y qué ocurre. Fotos o vídeos ayudan mucho. / What you expected and what happens. Photos help a lot.
+    validations:
+      required: true
+  - type: textarea
+    id: estado
+    attributes:
+      label: Estado del sistema / System status
+      description: Copia lo que sale en «Menú de pruebas → Estado del sistema» / Paste "Test menu → System status"
+      render: text

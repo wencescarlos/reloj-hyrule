@@ -1,0 +1,8 @@
+* text=auto eol=lf
+*.stl binary
+*.png binary
+*.gif binary
+*.bin binary
+# Las páginas web van incrustadas en .h: que no cuenten como C++ en las estadísticas
+firmware/RelojHyrule/pagina_*.h linguist-generated
+docs/** linguist-documentation
