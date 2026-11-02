@@ -94,6 +94,7 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y l
 
 ## Carcasa 3D
 
+- **2026-11-02** · Vuelve, corregido, el soporte para Wemos **sin pines** con aro para el zumbador: `soporte_wemos_zumbador_sin_pines.stl`.
 - **2026-11-02** · Aro del zumbador holgado (12,8 mm, nervios que solo rozan) en `soporte_wemos_zumbador.stl` y `tapa_trasera_zumbador.stl`: el aro anterior estrujaba el zumbador y casi no se oía.
 - **2026-10-26** · `soporte_wemos_zumbador.stl`: Wemos con pines soldados y aro que sujeta el propio zumbador.
 - **2026-10-25** · Dos tapas traseras (con y sin zumbador). Cabe la matriz de 130 mm y la ventana difusora se puede colocar.

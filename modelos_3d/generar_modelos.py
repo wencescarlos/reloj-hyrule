@@ -26,6 +26,7 @@
 #     trifuerza_dorada_frontal.stl   Trifuerza dorada del pedestal (15 mm)
 #     soporte_wemos.stl              pinza que sujeta el Wemos (sin pegamento)
 #     soporte_wemos_zumbador.stl     soporte para Wemos con pines soldados + aro para el zumbador
+#     soporte_wemos_zumbador_sin_pines.stl  la pinza normal (Wemos sin pines) + aro para el zumbador
 #     fondo_logo.stl                 fondo verde con el rebaje de las letras
 #     logo_dos_colores.stl           opción B: fondo y letras en una sola pieza, para
 #                                    imprimir en dos colores con una pausa a 2,0 mm
@@ -426,7 +427,7 @@ def barras():
         piezas.append(b)
     return trimesh.util.concatenate(piezas)
 
-def soporte_wemos():
+def soporte_wemos(con_zumbador=False):
     """Pinza del Wemos. Se apoya en la cara trasera de sus dos torretas y se atornilla
     desde atrás con 2 tornillos M3 x 6 (igual que la tapa). Una viga fina de borde a borde
     lleva en el centro una zapata que aprieta el blindaje del ESP: al atornillar, la viga
@@ -445,7 +446,28 @@ def soporte_wemos():
     tri, _ = triforce(0, SOP_Y + 6.2, 4.2, 0.5)
     p = ext(plano, T)
     p = R(p, [ext(tri, T + 2, -1)] + [avellanado(s * SOP_X, SOP_Y, 0.0, T) for s in (1, -1)])
+    if con_zumbador:
+        p = U([p, aro_soporte()])
+        # el zumbador se mete por detrás, a través del soporte: hueco holgado con
+        # nervios solo en el grosor del soporte (junto a la base del zumbador)
+        p = R(p, [ext(Point(0, SZ_Y).buffer(ZUMB_HUECO / 2, resolution=64).difference(nervios_zumbador(0, SZ_Y)), T + 1, -1),
+                  ext(Point(0, SZ_Y).buffer(ZUMB_HUECO / 2, resolution=64), SZ_FONDO - T + 1, T)])
     return p
+
+# Variante del soporte normal (Wemos SIN pines) con un aro para el zumbador encima del
+# larguero (soporte_wemos_zumbador_sin_pines.stl). El aro sale hacia el frente del reloj
+# (se imprime hacia arriba, sin soportes); el zumbador se mete por detrás, a través del
+# soporte. El aro es holgado: si estruja el cilindro, el zumbador casi no suena.
+SZ_Y = SOP_Y + 6.0 + 2.5 + ZUMB_D / 2 + 1.6 - 1.0     # centro del aro (justo encima del larguero)
+SZ_FONDO = 7.5                                          # largo total del aro (soporte incluido): no llega al marco de la matriz
+
+def aro_soporte():
+    exterior = Point(0, SZ_Y).buffer(ZUMB_HUECO / 2 + 1.4, resolution=64)
+    union_larguero = box(-5.0, SOP_Y + 6.0, 5.0, SZ_Y)                 # pie que lo une al larguero
+    ranura = box(ZUMB_HUECO / 2 - 0.5, SZ_Y - 1.6, ZUMB_HUECO / 2 + 3, SZ_Y + 1.6)   # salida de los cables
+    base = ext(unary_union([exterior, union_larguero]), PIEZA_T)
+    resto = ext(exterior.difference(ranura), SZ_FONDO - PIEZA_T, PIEZA_T)
+    return U([base, resto])
 
 # ---------------------------------------------------------------------------
 #  Soporte del Wemos CON PINES SOLDADOS y placa del zumbador al lado
@@ -569,6 +591,7 @@ def main():
     out(barras(), "barras_sujecion_matriz.stl")
     out(soporte_wemos(), "soporte_wemos.stl")
     out(soporte_wemos_pines_imprimir(), "soporte_wemos_zumbador.stl")
+    out(soporte_wemos(con_zumbador=True), "soporte_wemos_zumbador_sin_pines.stl")
     out(fondo_logo(L0), "fondo_logo.stl")
     out(logo_dos_colores(L0, logo), "logo_dos_colores.stl")
 

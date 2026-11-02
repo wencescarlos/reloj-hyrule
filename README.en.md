@@ -122,6 +122,7 @@ All parts are in [`modelos_3d/`](modelos_3d/):
 | Matrix holding bars | `barras_sujecion_matriz.stl` | Any |
 | Wemos holder | `soporte_wemos.stl` | Any |
 | **Or:** holder for a Wemos **with soldered pin headers** plus a buzzer ring | `soporte_wemos_zumbador.stl` | Any |
+| **Or:** holder for a Wemos **without pin headers** plus a buzzer ring | `soporte_wemos_zumbador_sin_pines.stl` | Any |
 | Logo background | `fondo_logo.stl` | Green |
 | Logo letters | `logo_letras_geektoybox.stl` | Silk gold |
 | **Or:** one-piece logo | `logo_dos_colores.stl` | Green and gold, with a pause at 2.0 mm to swap filament |
@@ -201,7 +202,7 @@ The clock **only makes sound when asked**: adventures and the time are silent. T
 
 The buzzer is **optional** and there are two places for it:
 - **In the back cover:** print `tapa_trasera_zumbador.stl` instead of `tapa_trasera.stl`. The buzzer sits behind a vent and is louder.
-- **Next to the Wemos:** print `soporte_wemos_zumbador.stl` instead of `soporte_wemos.stl`. It works with a Wemos that has **pin headers and dupont connectors**: it only passes over the antenna tip, where there are no pins. On one side it has a **loose ring for the buzzer** (it must not squeeze it: a squeezed buzzer barely sounds); if the buzzer is soldered on a small board, the board hangs from it.
+- **Next to the Wemos:** print `soporte_wemos_zumbador.stl` instead of `soporte_wemos.stl`. It works with a Wemos that has **pin headers and dupont connectors**: it only passes over the antenna tip, where there are no pins. On one side it has a **loose ring for the buzzer** (it must not squeeze it: a squeezed buzzer barely sounds); if the buzzer is soldered on a small board, the board hangs from it. If your Wemos has **no pin headers**, use `soporte_wemos_zumbador_sin_pines.stl`: the normal holder with the ring on top.
 
 It connects to **D1** (diagram in Spanish):
 

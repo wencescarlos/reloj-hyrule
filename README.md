@@ -122,6 +122,7 @@ Todas las piezas están en [`modelos_3d/`](modelos_3d/):
 | Barras de sujeción de la matriz | `barras_sujecion_matriz.stl` | Cualquiera |
 | Soporte del Wemos | `soporte_wemos.stl` | Cualquiera |
 | **O bien:** soporte para Wemos **con pines soldados** y aro para el zumbador | `soporte_wemos_zumbador.stl` | Cualquiera |
+| **O bien:** soporte para Wemos **sin pines** y aro para el zumbador | `soporte_wemos_zumbador_sin_pines.stl` | Cualquiera |
 | Fondo del logo | `fondo_logo.stl` | Verde |
 | Letras del logo | `logo_letras_geektoybox.stl` | Dorado silk |
 | **O bien:** logo en una sola pieza | `logo_dos_colores.stl` | Verde y dorado, con una pausa a 2,0 mm para cambiar el filamento |
@@ -201,7 +202,7 @@ El reloj **solo suena cuando se pide**: las aventuras y la hora son silenciosas.
 
 El zumbador es **opcional** y hay dos sitios para ponerlo:
 - **En la tapa:** imprime `tapa_trasera_zumbador.stl` en lugar de `tapa_trasera.stl`. El zumbador queda detrás de una rejilla y se oye más.
-- **Junto al Wemos:** imprime `soporte_wemos_zumbador.stl` en lugar de `soporte_wemos.stl`. Sirve para un Wemos con **tiras de pines y conectores dupont**: solo pasa por encima de la punta de la antena, donde no hay pines. A un lado lleva un **aro holgado para el zumbador** (no debe apretarlo: si se estruja, apenas suena); si el zumbador va soldado en una placa pequeña, la placa queda colgando de él.
+- **Junto al Wemos:** imprime `soporte_wemos_zumbador.stl` en lugar de `soporte_wemos.stl`. Sirve para un Wemos con **tiras de pines y conectores dupont**: solo pasa por encima de la punta de la antena, donde no hay pines. A un lado lleva un **aro holgado para el zumbador** (no debe apretarlo: si se estruja, apenas suena); si el zumbador va soldado en una placa pequeña, la placa queda colgando de él. Si tu Wemos **no lleva pines**, usa `soporte_wemos_zumbador_sin_pines.stl`: la pinza normal con el aro encima.
 
 Se conecta a **D1**:
 

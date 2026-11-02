@@ -30,6 +30,7 @@ Carcasa **diseñada desde cero** como dos bloques de piedra antigua de Hyrule:
 | 6 | Barras de sujeción de la matriz | `barras_sujecion_matriz.stl` | Cualquiera (no se ven) | 1 (2 barras) |
 | 7 | Soporte del Wemos | `soporte_wemos.stl` | Cualquiera (no se ve) | 1 |
 | 7 | **O bien:** soporte para Wemos **con pines soldados** y aro para el zumbador | `soporte_wemos_zumbador.stl` | Cualquiera (no se ve) | 1 |
+| 7 | **O bien:** soporte para Wemos **sin pines** y aro para el zumbador | `soporte_wemos_zumbador_sin_pines.stl` | Cualquiera (no se ve) | 1 |
 | 8 | Fondo del logo | `fondo_logo.stl` | Verde | 1 |
 | 9 | Letras del logo | `logo_letras_geektoybox.stl` | Dorado silk | 1 (14 piezas) |
 | 8 + 9 | **O bien:** logo en una sola pieza (opción B) | `logo_dos_colores.stl` | Verde y dorado, con una pausa | 1 |
@@ -51,7 +52,7 @@ Ya no hace falta que la carcasa sea de color claro: la luz sale por la ventana d
 
 | Archivo | Autor | Licencia |
 |---------|-------|----------|
-| `cuerpo_piedra.stl`, `tapa_trasera.stl`, `tapa_trasera_zumbador.stl`, `ventana_difusora.stl`, `barras_sujecion_matriz.stl`, `soporte_wemos.stl`, `soporte_wemos_zumbador.stl`, Trifuerzas | **Diseño original** de este proyecto | CC BY-NC-SA 4.0 |
+| `cuerpo_piedra.stl`, `tapa_trasera.stl`, `tapa_trasera_zumbador.stl`, `ventana_difusora.stl`, `barras_sujecion_matriz.stl`, `soporte_wemos.stl`, `soporte_wemos_zumbador.stl`, `soporte_wemos_zumbador_sin_pines.stl`, Trifuerzas | **Diseño original** de este proyecto | CC BY-NC-SA 4.0 |
 | `logo_letras_geektoybox.stl` | **geektoybox** ([Printables](https://www.printables.com/model/499505-legend-of-zelda-logo-text)), sin cambios | CC BY-NC 4.0 |
 | `fondo_logo.stl`, `logo_dos_colores.stl` y la cresta | Hechos a partir del logo de geektoybox | CC BY-NC 4.0 |
 
@@ -92,7 +93,7 @@ Material: PLA, 1,75 mm. Ninguna pieza necesita soportes.
 | Tapa trasera | **Boca abajo**: la cara con el texto sobre la cama, tal como viene | 0,2 mm | 20 % | 5 mm de grosor. El texto y los avellanados quedan en la cara de la cama; los bolsillos de las torretas, arriba. |
 | Ventana difusora | Plana | 0,2 mm | 100 % | 131 × 33 × 1 mm: deja pasar la luz difuminada. Para más contraste, prueba con 0,8 mm. |
 | Barras de sujeción | Tal como vienen: cara de los avellanados sobre la cama y columnas hacia arriba | 0,2 mm | 100 % | Dos barras en el mismo archivo. Mejor en **PETG** (más elástico); en PLA también funcionan. |
-| Soporte del Wemos | Plano, tal como viene: avellanados sobre la cama | 0,2 mm | 100 % | Mejor en **PETG**, por la viga elástica; en PLA también funciona. |
+| Soporte del Wemos (también `soporte_wemos_zumbador_sin_pines.stl`) | Plano, tal como viene: avellanados sobre la cama (el aro queda hacia arriba) | 0,2 mm | 100 % | Mejor en **PETG**, por la viga elástica; en PLA también funciona. |
 | Soporte para Wemos con pines (`soporte_wemos_zumbador.stl`) | Tal como viene: **boca abajo**, con la cara de arriba sobre la cama | 0,2 mm | 100 % | Sin soportes: todo baja recto desde la cama. El agujero del aro queda tumbado; si sale alguna rebaba arriba, límala. |
 | Trifuerzas doradas | Con la pestaña plana sobre la cama y los triángulos hacia arriba | 0,12–0,16 mm | 100 % | La cara de arriba de los triángulos es la que se ve. |
 | Fondo del logo | Plano, con el rebaje de las letras hacia arriba | 0,2 mm | 100 % | |
@@ -139,6 +140,7 @@ El logo se monta igual que el de la opción A: con los 2 trozos de filamento en 
    - **En la tapa (`tapa_trasera_zumbador.stl`):** mete el zumbador de 12 mm en el aro que hay por dentro de la tapa (entra suelto, **sin apretar**), con el agujero mirando a la rejilla, y saca los cables por la ranura del aro. Es el que más se oye.
    - **Junto al Wemos (`soporte_wemos_zumbador.stl`):** es el soporte para un Wemos con **tiras de pines y conectores dupont**. No pasa por encima de los pines: cruza solo por la punta de la antena y aprieta la placa con dos patas en sus esquinas libres. A un lado tiene un **aro para el zumbador de 12 mm**. Antes de atornillar el soporte, mete el zumbador en el aro **por delante** (el lado que mira al frente del reloj), con el agujero del zumbador hacia la tapa, hasta que quede a ras por detrás. El aro es **holgado a propósito**: los nervios solo lo rozan. **No lo aprietes ni lo fuerces**: si el cilindro queda estrujado, el disco de dentro se frena y casi no suena. Si baila, sujétalo con una gota de silicona caliente **en la base**, nunca tapando el agujero de arriba. Si el zumbador va soldado en una placa pequeña, la placa queda colgando de él, hacia delante; hay sitio para una de hasta 28 × 20 mm. Después atorníllalo desde atrás con 2 × M3 × 6.
 
+   - **Encima del soporte normal (`soporte_wemos_zumbador_sin_pines.stl`):** para un Wemos **sin pines** soldados. Es la pinza de siempre con un aro sobre el larguero, que sale hacia el frente del reloj. Mete el zumbador **por detrás**, a través del soporte, sin apretar (el aro es holgado a propósito), y saca los cables por la ranura del aro. Después atorníllalo como el soporte normal.
    ![Zumbador en el soporte del Wemos](../imagenes/soporte_wemos_zumbador.png)
 
    La conexión está en el [esquema del zumbador](../imagenes/esquema_zumbador.svg).
