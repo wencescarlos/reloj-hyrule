@@ -4,6 +4,8 @@
 
 ![Reloj de Hyrule v2](../imagenes/reloj_v2.png)
 
+🖨️ **También en Printables:** [Hyrule Clock](https://www.printables.com/model/1882629-hyrule-clock-zelda-inspired-led-clock-esp8266-max7). Si lo imprimes, sube allí tu *make* con una foto.
+
 Carcasa **diseñada desde cero** como dos bloques de piedra antigua de Hyrule:
 
 - **Losa superior:** la pantalla está en una ventana con una ranura tallada alrededor y rombos en las esquinas. Encima va la cresta con el logo.

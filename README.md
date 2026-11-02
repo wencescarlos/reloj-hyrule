@@ -2,7 +2,7 @@
 
 **Español** · [English](README.en.md)
 
-[![Firmware](https://img.shields.io/github/v/release/wencescarlos/reloj-hyrule?label=firmware&color=2e7d32)](https://github.com/wencescarlos/reloj-hyrule/releases/latest) [![Compilación](https://github.com/wencescarlos/reloj-hyrule/actions/workflows/publicar-firmware.yml/badge.svg)](https://github.com/wencescarlos/reloj-hyrule/actions/workflows/publicar-firmware.yml) [![Licencia: CC BY-NC-SA 4.0](https://img.shields.io/badge/licencia-CC%20BY--NC--SA%204.0-lightgrey.svg)](LICENSE) ![ESP8266](https://img.shields.io/badge/placa-Wemos%20D1%20mini-blue)
+[![Firmware](https://img.shields.io/github/v/release/wencescarlos/reloj-hyrule?label=firmware&color=2e7d32)](https://github.com/wencescarlos/reloj-hyrule/releases/latest) [![Compilación](https://github.com/wencescarlos/reloj-hyrule/actions/workflows/publicar-firmware.yml/badge.svg)](https://github.com/wencescarlos/reloj-hyrule/actions/workflows/publicar-firmware.yml) [![Licencia: CC BY-NC-SA 4.0](https://img.shields.io/badge/licencia-CC%20BY--NC--SA%204.0-lightgrey.svg)](LICENSE) ![ESP8266](https://img.shields.io/badge/placa-Wemos%20D1%20mini-blue) [![Printables](https://img.shields.io/badge/Printables-STL-fa6831?logo=printables&logoColor=white)](https://www.printables.com/model/1882629-hyrule-clock-zelda-inspired-led-clock-esp8266-max7)
 
 **Un reloj con aventuras para pequeños héroes.** Hecho con impresión 3D, un Wemos D1 mini y 4 matrices LED, como homenaje a *The Legend of Zelda*.
 
@@ -108,6 +108,8 @@ Carcasa **diseñada desde cero** como dos bloques de piedra de Hyrule: una losa 
   <img src="imagenes/reloj_v2_trasera.png" alt="Tapa trasera con Trifuerza y USB" width="380">
   <img src="imagenes/reloj_v2_interior.png" alt="Interior: matriz y Wemos" width="380">
 </p>
+
+> 🖨️ **También en Printables:** [Hyrule Clock en Printables](https://www.printables.com/model/1882629-hyrule-clock-zelda-inspired-led-clock-esp8266-max7). Si lo imprimes, ¡sube allí tu *make*!
 
 Todas las piezas están en [`modelos_3d/`](modelos_3d/):
 

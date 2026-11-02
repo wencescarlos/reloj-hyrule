@@ -2,7 +2,7 @@
 
 [Español](README.md) · **English**
 
-[![Firmware](https://img.shields.io/github/v/release/wencescarlos/reloj-hyrule?label=firmware&color=2e7d32)](https://github.com/wencescarlos/reloj-hyrule/releases/latest) [![Build](https://github.com/wencescarlos/reloj-hyrule/actions/workflows/publicar-firmware.yml/badge.svg)](https://github.com/wencescarlos/reloj-hyrule/actions/workflows/publicar-firmware.yml) [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/license-CC%20BY--NC--SA%204.0-lightgrey.svg)](LICENSE) ![ESP8266](https://img.shields.io/badge/board-Wemos%20D1%20mini-blue)
+[![Firmware](https://img.shields.io/github/v/release/wencescarlos/reloj-hyrule?label=firmware&color=2e7d32)](https://github.com/wencescarlos/reloj-hyrule/releases/latest) [![Build](https://github.com/wencescarlos/reloj-hyrule/actions/workflows/publicar-firmware.yml/badge.svg)](https://github.com/wencescarlos/reloj-hyrule/actions/workflows/publicar-firmware.yml) [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/license-CC%20BY--NC--SA%204.0-lightgrey.svg)](LICENSE) ![ESP8266](https://img.shields.io/badge/board-Wemos%20D1%20mini-blue) [![Printables](https://img.shields.io/badge/Printables-STL-fa6831?logo=printables&logoColor=white)](https://www.printables.com/model/1882629-hyrule-clock-zelda-inspired-led-clock-esp8266-max7)
 
 **A clock with adventures for little heroes.** Made with 3D printing, a Wemos D1 mini and 4 LED matrices, as a tribute to *The Legend of Zelda*.
 
@@ -108,6 +108,8 @@ A case **designed from scratch** as two Hyrule stone blocks: a slab holding the 
   <img src="imagenes/reloj_v2_trasera.png" alt="Back cover with the Triforce and the USB port" width="380">
   <img src="imagenes/reloj_v2_interior.png" alt="Inside: matrix and Wemos" width="380">
 </p>
+
+> 🖨️ **Also on Printables:** [Hyrule Clock on Printables](https://www.printables.com/model/1882629-hyrule-clock-zelda-inspired-led-clock-esp8266-max7). If you print it, post your *make* there!
 
 All parts are in [`modelos_3d/`](modelos_3d/):
 
