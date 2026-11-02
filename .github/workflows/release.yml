@@ -1,6 +1,7 @@
-# Crea una release en GitHub con el firmware compilado y las piezas 3D
-# cada vez que se sube una etiqueta de versión, por ejemplo:
-#   git tag v1.5.0 && git push origin v1.5.0
+# Crea una release en GitHub con el firmware compilado y las piezas 3D.
+# Dos formas de lanzarla:
+#   - Pestaña Actions -> "Crear release" -> Run workflow (usa VERSION_RELOJ)
+#   - Subiendo una etiqueta: git tag v1.5.0 && git push origin v1.5.0
 # Las notas salen de la sección de esa versión en CHANGELOG.md.
 
 name: Crear release
@@ -8,6 +9,7 @@ name: Crear release
 on:
   push:
     tags: ["v*"]
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -26,10 +28,11 @@ jobs:
       - name: Comprobar que la etiqueta coincide con VERSION_RELOJ
         run: |
           VERSION=$(sed -n 's/^#define VERSION_RELOJ[[:space:]]*"\([^"]*\)".*/\1/p' firmware/RelojHyrule/configuracion.h)
-          if [ "v$VERSION" != "$GITHUB_REF_NAME" ]; then
+          if [ "$GITHUB_REF_TYPE" = "tag" ] && [ "v$VERSION" != "$GITHUB_REF_NAME" ]; then
             echo "La etiqueta $GITHUB_REF_NAME no coincide con VERSION_RELOJ ($VERSION)"; exit 1
           fi
           echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+          echo "ETIQUETA=v$VERSION" >> "$GITHUB_ENV"
 
       - name: Instalar Arduino CLI
         uses: arduino/setup-arduino-cli@v2
@@ -69,5 +72,5 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "$GITHUB_REF_NAME" dist/* \
-            --title "Reloj de Hyrule $VERSION" --notes-file notas.md --verify-tag
+          gh release create "$ETIQUETA" dist/* --target "$GITHUB_SHA" \
+            --title "Reloj de Hyrule $VERSION" --notes-file notas.md
