@@ -271,7 +271,6 @@ The code and file names are in Spanish, as the project was born as a gift for a 
 ## 🙏 Credits
 
 - ***Legend of Zelda Logo Text*:** **geektoybox**, [Printables](https://www.printables.com/model/499505-legend-of-zelda-logo-text), CC BY-NC 4.0 license. The letters are included unchanged and their outline shapes the background and the crest.
-- **Original idea of a clock with a Wemos D1 mini and a MAX7219 matrix:** **Qrome (David Payne)**, [Marquee Scroller](https://github.com/Qrome/marquee-scroller). This project uses the same hardware, but the firmware and the case are new.
 - **v2 case, firmware, font, pixel art, texts, web page and gold Triforces:** original work by [wencescarlos](https://github.com/wencescarlos), made from scratch.
 - ***The Legend of Zelda*:** trademark of **Nintendo**. Thanks for so many adventures. 💚
 

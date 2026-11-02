@@ -269,7 +269,6 @@ reloj-hyrule/
 ## 🙏 Créditos
 
 - ***Legend of Zelda Logo Text*:** **geektoybox**, [Printables](https://www.printables.com/model/499505-legend-of-zelda-logo-text), licencia CC BY-NC 4.0. Las letras se incluyen sin cambios y su contorno da forma a la cresta y al fondo.
-- **Idea original del reloj con Wemos D1 mini y matriz MAX7219:** **Qrome (David Payne)**, [Marquee Scroller](https://github.com/Qrome/marquee-scroller). Este proyecto usa el mismo hardware, pero el firmware y la carcasa son nuevos.
 - **Carcasa v2, firmware, fuente de letras, dibujos en píxeles, textos, página web y Trifuerzas doradas:** originales de [wencescarlos](https://github.com/wencescarlos), hechos desde cero.
 - ***The Legend of Zelda*:** marca de **Nintendo**. Gracias por tantas aventuras. 💚
 
